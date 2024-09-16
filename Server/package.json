@@ -1,0 +1,19 @@
+{
+  "name": "http-video-stream",
+  "version": "1.0.0",
+  "main": "movie.js",
+  "scripts": {
+    "start": "node movie.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
