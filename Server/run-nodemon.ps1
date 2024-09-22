@@ -1,1 +1,0 @@
-powershell -ExecutionPolicy Bypass -Command "nodemon movie"
