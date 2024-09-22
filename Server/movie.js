@@ -34,6 +34,8 @@ app.use(session({
 }));
 
 
+
+
 //REQUIRE THE DB SERVICE
 const dbService = require('./dbService.js'); 
 const db = dbService.getDbServiceInstance();
@@ -442,10 +444,22 @@ function checkAuth(req, res, next) {
   }
 }
 
-app.get('/profile', checkAuth, (req, res) => {
+app.get('/profile', checkAuth, async(req, res) => {
   const userId = req.session.userId;
-  // Fetch user profile from database using userId
-  // Return profile data
+  try {
+    const query = 'SELECT * FROM user WHERE id = ?';
+    const results = await db.query(query, [userId]);
+
+    if (results.length > 0) {
+      const user = results[0];
+      res.json({ success: true, data: user });
+    } else {
+      res.status(404).json({ success: false, message: 'User not found' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false, message: 'An error occurred, please try again.' });
+  }
 });
 
 app.post('/logout', (req, res) => {
