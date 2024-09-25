@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 const fs = require("fs");
+const axios = require('axios');
+
 
 const multer = require('multer');
 // for file uploading
@@ -413,26 +415,105 @@ app.get('/api/admin-email', (req, res) => {
 });
 
 
+// app.post('/login', async (request, response) => {
+//   const db = dbService.getDbServiceInstance();
+//   const { email, password } = request.body;
+
+//   try {
+//       const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
+//       const results = await db.query(query, [email, password]);
+
+//       if (results.length > 0) {
+//           // User found
+//           const user = results[0];
+//           request.session.userId = user.id;  // Store user ID in session
+//           response.status(200).json({ success: true });
+//       } else {
+//           // User not found
+//           response.status(401).json({ success: false, message: 'Invalid email or password' });
+//       }
+//   } catch (err) {
+//       console.error(err);
+//       response.status(500).json({ success: false, message: 'An error occurred, please try again.' });
+//   }
+// });
+
+
+
+// app.post('/login', async (request, response) => {
+//   const db = dbService.getDbServiceInstance();
+//   const { email, password } = request.body;
+
+//   try {
+//     const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
+//     const results = await db.query(query, [email, password]);
+// console.log(results)
+//     if (results.length > 0) {
+//       // User found
+//       const user = results[0];
+//       request.session.userId = user.id;  // Store user ID in session
+//       response.status(200).json({ success: true });
+//       console.log("the session done")
+//       // Call the Python Flask API to get movie recommendations
+//       const recommendationsResponse = await axios.post('http://localhost:5000/recommend', {
+//         user_id: user.id
+//       });
+//       console.log("called flask")
+//       // Send the recommendations along with the login success response
+//       response.status(200).json({
+//         success: true,
+//         recommendations: recommendationsResponse.data
+      
+//       });
+//       console.log(recommendationsResponse.data)
+//     } else {
+//       // User not found
+//       response.status(401).json({ success: false, message: 'Invalid email or password' });
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     response.status(500).json({ success: false, message: 'An error occurred, please try again.' });
+//   }
+// });
+
 app.post('/login', async (request, response) => {
   const db = dbService.getDbServiceInstance();
   const { email, password } = request.body;
 
   try {
-      const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
-      const results = await db.query(query, [email, password]);
+    const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
+    const results = await db.query(query, [email, password]);
+    console.log(results);
 
-      if (results.length > 0) {
-          // User found
-          const user = results[0];
-          request.session.userId = user.id;  // Store user ID in session
-          response.status(200).json({ success: true });
-      } else {
-          // User not found
-          response.status(401).json({ success: false, message: 'Invalid email or password' });
+    if (results.length > 0) {
+      const user = results[0];
+      request.session.userId = user.id;
+      console.log("the session done");
+
+      try {
+        const recommendationsResponse = await axios.post('http://localhost:5000/recommend', {
+          user_id: user.id
+        });
+        console.log("called flask");
+        console.log(recommendationsResponse.data);
+
+        response.status(200).json({
+          success: true,
+          recommendations: recommendationsResponse.data
+        });
+      } catch (flaskError) {
+        console.error("Error calling Flask API:", flaskError);
+        response.status(200).json({
+          success: true,
+          recommendations: []
+        });
       }
+    } else {
+      response.status(401).json({ success: false, message: 'Invalid email or password' });
+    }
   } catch (err) {
-      console.error(err);
-      response.status(500).json({ success: false, message: 'An error occurred, please try again.' });
+    console.error(err);
+    response.status(500).json({ success: false, message: 'An error occurred, please try again.' });
   }
 });
 
