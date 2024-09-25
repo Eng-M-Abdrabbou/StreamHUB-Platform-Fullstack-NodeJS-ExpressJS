@@ -119,37 +119,52 @@
             body: JSON.stringify({ email, password }),
         });
 
-        if (response.status === 401) {
-            console.log('Invalid email or password');
-            alert('Invalid email or password');
-        } else if (response.ok) {
-          
-            fetch('/api/admin-email')
-  .then(response => response.json())
-  .then(data => {
-    const adminEmail = data.email;
-    // Use the admin email variable to redirect the user
-    if (adminEmail === email) {
-  // Redirect to admin page
-  console.log('Login successful');
-  window.location.href = '/admin.html';
-} else {
-  // Redirect to regular user page
-  console.log('Login successful');
-  window.location.href = '/userprofile.html';
-}
-});
-            console.log('Login successful');
-            window.location.href = '/dashboard.html';  // Example redirection
+        const data = await response.json();
+
+        if (data.success) {
+            // Store user data and recommendations in localStorage
+            localStorage.setItem('sessionData', JSON.stringify({
+                //fName: data.user.fName,
+              //  lName: data.user.lName,
+                recommendations: data.recommendations
+            }));
+
+            if (response.status === 401) {
+                console.log('Invalid email or password');
+                alert('Invalid email or password');
+            } else if (response.ok) {
+                fetch('/api/admin-email')
+                    .then(response => response.json())
+                    .then(data => {
+                        const adminEmail = data.email;
+                        // Use the admin email variable to redirect the user
+                        if (adminEmail === email) {
+                            // Redirect to admin page
+                            console.log('Login successful');
+                            window.location.href = '/admin.html';
+                        } else {
+                            // Redirect to regular user page
+                            console.log('Login successful');
+                            window.location.href = '/userprofile.html';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Fetch error:', error);
+                        alert('An error occurred, please try again.');
+                    });
+            } else {
+                console.log('An error occurred:', response.status);
+                alert('An error occurred, please try again.');
+            }
         } else {
-            console.log('An error occurred:', response.status);
+            console.log('An error occurred:', data.message);
             alert('An error occurred, please try again.');
         }
     } catch (err) {
         console.error('Fetch error:', err);
         alert('An error occurred, please try again.');
     }
-});
+    });
 
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
@@ -157,3 +172,4 @@
 </body>
 
 </html>
+

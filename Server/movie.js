@@ -496,11 +496,24 @@ app.post('/login', async (request, response) => {
         });
         console.log("called flask");
         console.log(recommendationsResponse.data);
-
+        
+        const sessionData = {
+          userId: user.id,
+          fName: user.fName, // Assuming you have these fields
+          lName: user.lName,  // Adjust based on your actual column names
+          recommendations: recommendationsResponse.data
+        };
+      //  localStorage.setItem('sessionData', JSON.stringify(sessionData));
+    
         response.status(200).json({
           success: true,
           recommendations: recommendationsResponse.data
         });
+
+        // response.status(200).json({
+        //   success: true,
+        //   recommendations: recommendationsResponse.data
+        // });
       } catch (flaskError) {
         console.error("Error calling Flask API:", flaskError);
         response.status(200).json({

@@ -9,6 +9,21 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/Inter.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
+    <style>
+        .movie-carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+        }
+        .movie-card {
+            flex: 0 0 auto;
+            width: 250px;
+            margin-right: 20px;
+            scroll-snap-align: start;
+        }
+    </style>
 </head>
 
 
@@ -33,6 +48,25 @@
     <header class="bg-dark">
 
     </header>
+
+    <section class="py-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-4">
+                    <h2>User Profile</h2>
+                    <h4 id="profile-container2"></h4>
+                </div>
+                <div class="col-md-8">
+                    <h2>Recommended Movies</h2>
+                    <h4 id="recs"></h4>
+                    <div class="movie-carousel" id="movie-carousel">
+                        <!-- Movie cards will be dynamically inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="py-5">
         <div class="container text-center py-5">
             <p class="mb-4" style="font-size: 1.6rem;">Inspired by some of&nbsp;<span class="text-success"></span>the best companies in the world.</p><a href="#"> <img class="m-3" src="assets/img/brands/google.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/microsoft.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/apple.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/facebook.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/twitter.png"></a>
@@ -83,11 +117,26 @@
 const storedSessionData = localStorage.getItem('sessionData');
 if (storedSessionData) {
   const userData = JSON.parse(storedSessionData);
+  console.log(userData);
+
+
   const profileContainer = document.getElementById('profile-container');
   profileContainer.innerHTML = `
     <p>Name: ${userData.fName} ${userData.lName}</p>
     <!-- Add other profile fields as needed -->
   `;
+  
+  if (userData.recommendations) {
+    displayRecommendedMovies(userData.recommendations);
+    console.log(userData.recommendations);
+    displayRecMovies(userData.recommendations);
+  } else {
+  // Fetch profile and recommendations from the server if no local data
+  fetchUserProfileAndRecommendations();
+}
+
+
+
 } else {
   // If no stored session data, fetch it from the server
   fetch('/profile', {
@@ -103,7 +152,9 @@ if (storedSessionData) {
       profileContainer.innerHTML = `
         <p>Name: ${userData.fName} ${userData.lName}</p>
         <!-- Add other profile fields as needed -->
-      `;
+         
+      `
+      ;
     } else {
       console.error('Error:', data.message);
     }
@@ -118,6 +169,128 @@ if (storedSessionData) {
 // .then((response) => response.json())
 // .then((data) => {
   
+
+function displayRecommendedMovies(recommendations) {
+    const carousel = document.getElementById('movie-carousel');
+    carousel.innerHTML = '';
+    console.log(recommendations).forEach((movie) => {
+        console.log(movie);
+    });
+    recommendations.forEach((movie) => {
+      fetch(`/movie-info/${movie}`)
+      .then((response) => response.json())
+      .then((movieInfo) => {
+        const movieCard = createMovieCard(movieInfo);
+        carousel.appendChild(movieCard);
+      })
+      .catch((error) => console.error('Error fetching movie info:', error));
+    });
+  }
+  
+  // Function to create movie cards
+  function createMovieCard(movieInfo) {
+    const card = document.createElement('div');
+    card.className = 'movie-card';
+    card.innerHTML = `
+      <img src="${movieInfo.poster}" alt="${movieInfo.title}" style="width: 100%; height: auto;">
+      <h5>${movieInfo.title}</h5>
+      <p>${movieInfo.description}</p>
+      <button onclick="watchMovie(${movieInfo.id})">Watch</button>
+    `;
+    return card;
+  }
+  
+  function watchMovie(movieId) {
+    window.location.href = `/movie?id=${movieId}`;
+  }
+
+function fetchUserProfileAndRecommendations() {
+    fetch('/profile', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        if (data.success) {
+            const userData = data.data;
+            console.log(data.data);
+            displayUserProfile(userData);
+        } else {
+            console.error('Error:', data.message);
+        }
+    })
+    .catch((error) => console.error(error));
+}
+
+function displayUserProfile(userData) {
+    const profileContainer = document.getElementById('profile-container2');
+    profileContainer.innerHTML = `
+        <h4>Name: ${userData.fName} ${userData.lName}</h4>
+        <!-- Add other profile fields as needed -->
+    `;
+
+    const profileContainer2 = document.getElementById('profile-container');
+    profileContainer2.innerHTML = `
+        <p>Name: ${userData.fName} ${userData.lName}</p>
+        <!-- Add other profile fields as needed -->
+    `;
+
+}
+
+
+function displayRecMovies(recommendation) {
+    console.log(recommendation);
+    const recs = document.getElementById('recs');
+  
+    if (recommendation) {
+      const recValues = Object.values(recommendation);
+      recs.innerHTML = `
+        <h4>Movies:</h4>
+        <ul>
+          ${recValues.map((movie) => `<li>${movie}</li>`).join('')}
+        </ul>
+      `;
+    } else {
+      recs.innerHTML = `
+        <h4>Movies:</h4>
+        <p>No recommendations available.</p>
+      `;
+    }
+  }
+
+function displayRecommendedMovies(recommendations) {
+    const carousel = document.getElementById('movie-carousel');
+    carousel.innerHTML = '';
+    recommendations.forEach((movie) => {
+        fetch(`/movie-info/${movie}`)
+        .then((response) => response.json())
+        .then((movieInfo) => {
+            const movieCard = createMovieCard(movieInfo);
+            carousel.appendChild(movieCard);
+        })
+        .catch((error) => console.error('Error fetching movie info:', error));
+    });
+}
+
+function createMovieCard(movieInfo) {
+    const card = document.createElement('div');
+    card.className = 'movie-card';
+    card.innerHTML = `
+        <img src="${movieInfo.poster}" alt="${movieInfo.title}" style="width: 100%; height: auto;">
+        <h5>${movieInfo.title}</h5>
+        <p>${movieInfo.description}</p>
+        <button onclick="watchMovie(${movieInfo.id})">Watch</button>
+    `;
+    return card;
+}
+
+function watchMovie(movieId) {
+    window.location.href = `/movie?id=${movieId}`;
+}
+
+// Initialize the page
+fetchUserProfileAndRecommendations();
+
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
