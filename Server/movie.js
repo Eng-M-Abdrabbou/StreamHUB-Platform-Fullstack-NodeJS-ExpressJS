@@ -530,6 +530,7 @@ app.post('/login', async (request, response) => {
   }
 });
 
+
 function checkAuth(req, res, next) {
   if (req.session.userId) {
     next(); // User is authenticated, allow them to access the route
