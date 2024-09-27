@@ -408,6 +408,7 @@ app.post('/insert', async (request, response) => {
 
 
 const bodyParser = require('body-parser');
+const { get } = require("http");
 app.use(bodyParser.json());
 
 app.get('/api/admin-email', (req, res) => {
@@ -627,7 +628,16 @@ app.get('/search/:fName/:lName', async (request, response) => {
   }
 });
 
-
+app.get('/movie-info/:title', async (request, response) => {
+  try {
+      const { title } = request.params;
+      const result = await db.fetchMovieInfo(title);
+      response.json({ data: result });
+  } catch (err) {
+      console.log(err);
+      response.status(500).json({ success: false, message: err.message });
+  }
+});
 
 app.get("/signup.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'signup.html'));

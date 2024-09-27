@@ -162,7 +162,7 @@ class DbService {
     async fetchMovie(id) {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "SELECT filepath, imgpath FROM movies WHERE mid = ?";
+                const query = "SELECT filepath, imgpath FROM movies WHERE movie_id = ?";
                 connection.query(query, [id], (err, results) => {
                     if (err) reject(new Error(err.message));
                     resolve(results[0]);
@@ -180,7 +180,7 @@ class DbService {
     async deleteMovie(id) {
         try {
             const response = await new Promise((resolve, reject) => {
-                const query = "DELETE FROM movies WHERE mid = ?";
+                const query = "DELETE FROM movies WHERE movie_id = ?";
                 connection.query(query, [id], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result.affectedRows);
@@ -212,7 +212,7 @@ class DbService {
         try {
           const keys = Object.keys(updateFields).filter(key => updateFields[key] !== null);  // Ignore null fields
           const values = keys.map(key => updateFields[key]);
-          const query = `UPDATE movies SET ${keys.map(key => `${key} = ?`).join(', ')} WHERE mid = ?`;
+          const query = `UPDATE movies SET ${keys.map(key => `${key} = ?`).join(', ')} WHERE movie_id = ?`;
           
           values.push(id);  // Add movie ID to the values array
           
@@ -226,7 +226,7 @@ class DbService {
       
       async getMovieById(id) {
         try {
-          const query = "SELECT * FROM movies WHERE mid = ?";
+          const query = "SELECT * FROM movies WHERE movie_id = ?";
           const result = await this.query(query, [id]);
           return result[0];  // Return the first result
         } catch (error) {
@@ -236,7 +236,17 @@ class DbService {
       }
 
 
+      async fetchMovieInfo(title) {
+        try {
+          const query = "SELECT * FROM movies WHERE title = ?";
+          const result = await this.query(query, [title]);
+          return result[0];  // Return the first result
+        } catch (error) {
+          console.error('Error getting movie info by ID:', error);
+          throw error;
+        }
 
+      }
 
 
 }
