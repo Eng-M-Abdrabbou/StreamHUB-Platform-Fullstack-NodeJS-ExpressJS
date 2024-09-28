@@ -246,26 +246,6 @@ function displayUserProfile(userData) {
 }
 
 
-//function displayRecMovies(recommendation) {
-//    console.log(recommendation);
-//    const recs = document.getElementById('recs');
-//  
-//    if (recommendation) {
-//      const recValues = Object.values(recommendation);
-//      recs.innerHTML = `
-//        <h4>Movies:</h4>
-//        <ul>
-//          ${recValues.map((movie) => `<li>${movie}</li>`).join('')}
-//        </ul>
-//      `;
-//    } else {
-//      recs.innerHTML = `
-//        <h4>Movies:</h4>
-//        <p>No recommendations available.</p>
-//      `;
-//    }
-//  }
-
 function displayRecommendedMovies(recommendations) {
     const carousel = document.getElementById('movie-carousel');
     carousel.innerHTML = '';

@@ -7,6 +7,7 @@
     <title>Products - StreamHub</title>
     <meta name="description" content="Experience seamless streaming with Stream Hub. Our platform integrates advanced social media features and an AI-driven recommendation system to personalize your entertainment. Discover, connect, and enjoy—all in one place.">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
     <link rel="stylesheet" href="assets/css/Inter.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
@@ -31,133 +32,36 @@
             <p  style="margin-right: -100px;" id="profile-container"></p>
         </div>
     </nav>
-    <section class="py-5">
-        <div class="container py-5">
-            <div class="row mb-4 mb-lg-5">
-                <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <h2 class="fw-bold">Movies</h2>
-                    <p class="text-muted">No matter the project, our team can handle it.&nbsp;</p>
-                </div>
-            </div>
-            <div class="row mx-auto">
-                <div class="col">
-                    <div data-reflow-type="product-list" data-reflow-layout="cards" data-reflow-order="date_desc" data-reflow-product-link="/product.html?product={id}">
+
+   
+   
+   <h3 style="margin-left: 100px;"> Featured Movies:</h3>
+                    <div class="movie-carousel" style="margin-left: 1000px;" id="movie-carousel">
+                        <!-- Movie cards will be dynamically inserted here -->
+                    </div>
+    
+                    <div id="carouselContainer" class="carousel slide" data-ride="carousel" style="margin-left: 150px;">
+                        <div class="carousel-inner">
+                          <div class="carousel-item active">
+                            <!-- Movie card content here -->
+                          </div>
+                          <div class="carousel-item">
+                            <!-- Movie card content here -->
+                          </div>
+                          <!-- More carousel items -->
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselContainer" role="button" data-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselContainer" role="button" data-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                      </div>
 
 
-                        <section class="py-5">
-                            <div class="container py-5">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                            <tr>
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div class="card mb-4">
-                                                                <img class="card-img-top w-100 d-block" src="assets/img/poster-placeholder.png" alt="Card image cap" />
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">Movie Title</h5>
-                                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                                    <a href="watch.php"><button class="btn btn-primary">Watch</button></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="card mb-4">
-                                                                <img class="card-img-top w-100 d-block" src="assets/img/poster-placeholder.png" alt="Card image cap" />
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">Movie Title</h5>
-                                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                                    <a href="watch.php"><button class="btn btn-primary">Watch</button></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div class="card mb-4">
-                                                                <img class="card-img-top w-100 d-block" src="assets/img/poster-placeholder.png" alt="Card image cap" />
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">Movie Title</h5>
-                                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                                    <a href="watch.php"><button class="btn btn-primary">Watch</button></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="card mb-4">
-                                                                <img class="card-img-top w-100 d-block" src="assets/img/poster-placeholder.png" alt="Card image cap" />
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">Movie Title</h5>
-                                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                                    <a href="watch.php"><button class="btn btn-primary">Watch</button></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div class="card mb-4">
-                                                                <img class="card-img-top w-100 d-block" src="assets/img/poster-placeholder.png" alt="Card image cap" />
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">Movie Title</h5>
-                                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                                    <a href="watch.php"><button class="btn btn-primary">Watch</button></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="card mb-4">
-                                                                <img class="card-img-top w-100 d-block" src="assets/img/poster-placeholder.png" alt="Card image cap" />
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">Movie Title</h5>
-                                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                                    <a href="watch.php"><button class="btn btn-primary">Watch</button></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="row">
-                                                        <div class="col">
-                                                            <div class="card mb-4">
-                                                                <img class="card-img-top w-100 d-block" src="assets/img/poster-placeholder.png" alt="Card image cap" />
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">Movie Title</h5>
-                                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                                    <a href="watch.php"><button class="btn btn-primary">Watch</button></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="card mb-4">
-                                                                <img class="card-img-top w-100 d-block" src="assets/img/poster-placeholder.png" alt="Card image cap" />
-                                                                <div class="card-body">
-                                                                    <h5 class="card-title">Movie Title</h5>
-                                                                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                                                                    <a href="watch.php"><button class="btn btn-primary">Watch</button></a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </section>
-
-
-
-
+                </body>
 
 
 
@@ -198,7 +102,7 @@
         </div>
     </footer>
     <script>
-
+        
         const storedSessionData = localStorage.getItem('sessionData');
         console.log("hey this is the UPindex ",storedSessionData);
 if (storedSessionData) {
@@ -252,6 +156,118 @@ function displayUserProfile(userData) {
     `;
 
 }
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    fetchAllMovies();
+  });
+  
+  function fetchAllMovies() {
+    fetch('http://localhost:8000/getAllMovies')
+      .then(response => response.json())
+      .then(data => {
+        const movies = data.data;
+        displayMoviesInCarousels(movies);
+      })
+      .catch(error => console.error('Error fetching movies:', error));
+  }
+  
+  function createMovieCard(movieInfo) {
+    const card = document.createElement('div');
+    card.className = 'movie-card';
+    card.setAttribute('data-movie-id', movieInfo.id);
+    const pathos = movieInfo.imgpath.split('\\').join('/');
+    card.innerHTML = `
+      <img src="${pathos}" alt="${movieInfo.title}" style="width: 200px; height: auto;">
+      <h5>${movieInfo.title}</h5>
+      <p>${movieInfo.description}</p>
+      <button onclick="watchMovie(${movieInfo.id})">Watch</button>
+      <br><br>
+    `;
+    return card;
+  }
+  
+  function createCarousel(movies) {
+    const carousel = document.createElement('div');
+    carousel.className = 'carousel slide';
+    carousel.setAttribute('data-ride', 'carousel');
+  
+    const carouselInner = document.createElement('div');
+    carouselInner.className = 'carousel-inner';
+  
+    const carouselItem = document.createElement('div');
+    carouselItem.className = 'carousel-item active';
+  
+    const row = document.createElement('div');
+    row.className = 'row';
+  
+    movies.forEach(movie => {
+      const col = document.createElement('div');
+      col.className = 'col';
+      const card = createMovieCard(movie);
+      col.appendChild(card);
+      row.appendChild(col);
+    });
+  
+    carouselItem.appendChild(row);
+    carouselInner.appendChild(carouselItem);
+    carousel.appendChild(carouselInner);
+  
+    return carousel;
+  }
+  
+  function displayMoviesInCarousels(movies) {
+    const carouselContainer = document.getElementById('carouselContainer');
+    carouselContainer.innerHTML = '';
+  
+    for (let i = 0; i < movies.length; i += 5) {
+      const movieChunk = movies.slice(i, i + 5);
+      const carousel = createCarousel(movieChunk);
+      carouselContainer.appendChild(carousel);
+    }
+  }
+  
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const movieCards = document.querySelectorAll('.movie-card');
+  
+    movieCards.forEach(card => {
+      card.addEventListener('click', async () => {
+        const movieId = card.getAttribute('data-movie-id');
+        const userId = 'your_user_id'; // Replace with actual user ID
+  
+        try {
+          const response = await fetch('/watch-movie', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ movieId, userId })
+          });
+  
+          if (response.ok) {
+            window.location.href = '/movie';
+          } else {
+            console.error('Failed to start movie session');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  });
+
+
+function watchMovie(movieId) {
+    window.location.href = `/movie?id=${movieId}`;
+}
+
+
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdn.reflowhq.com/v2/toolkit.min.js"></script>

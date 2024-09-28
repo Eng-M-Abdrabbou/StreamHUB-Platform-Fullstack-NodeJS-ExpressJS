@@ -249,6 +249,18 @@ class DbService {
       }
 
 
+      async fetchMovieInfoById(id) {
+        try {
+          const query = "SELECT * FROM movies WHERE movie_id = ?";
+          const result = await this.query(query, [id]);
+          return result[0];  // Return the first result
+        } catch (error) {
+          console.error('Error getting movie info by ID:', error);
+          throw error;
+        }
+
+      }
+
 }
 
 
