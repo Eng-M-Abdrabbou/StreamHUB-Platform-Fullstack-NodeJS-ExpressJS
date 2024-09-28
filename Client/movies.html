@@ -351,7 +351,7 @@ function setupEventListeners() {
 
         const xhr = new XMLHttpRequest();
         xhr.open('POST', 'http://localhost:8000/insertMovie', true);
-        xhr.timeout = 60000; // Set timeout to 60 seconds
+        xhr.timeout = 180000; // Set timeout to 60 seconds
 
         
         xhr.upload.onprogress = function(e) {
@@ -532,8 +532,8 @@ function loadMoviesTable(movies) {
 
     movies.forEach(function (movie) {
         tableHtml += `
-        <tr data-id="${movie.mid}">
-            <td>${movie.mid}</td>
+        <tr data-id="${movie.movie_id}">
+            <td>${movie.movie_id}</td>
             <td>${movie.title}</td>
             <td>${movie.genre}</td>
             <td>${new Date(movie.rdate).toLocaleDateString()}</td>
@@ -615,7 +615,7 @@ function handleEditMovie(movieId) {
         console.log('Parsed data:', data);
         if (data.success) {
           const movie = data.data;
-          document.getElementById('update-mid-input').value = movie.mid;
+          document.getElementById('update-mid-input').value = movie.movie_id;
           document.getElementById('update-title-input').value = movie.title;
           document.getElementById('update-genre-input').value = movie.genre;
           document.getElementById('update-rdate-input').value = movie.rdate.split('T')[0];

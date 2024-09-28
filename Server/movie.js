@@ -312,67 +312,7 @@ app.get('/searchMovies', async (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'movie.html'));
 });
 
-// plan to start a session here, where when a user presses a mvies to watch it will be stored in the session and direct them to this page 
-// where they can watch the video, the video path will be a variable in the session and the video info from the db too.
 
-// app.get("/video", function (req, res) {
-//   // Ensure there is a range given for the video
-//   const range = req.headers.range;
-//   if (!range) {
-//     return res.status(400).send("Requires Range header");
-//   }
-
-//   console.log('Range:', range);
-
-//   // get video stats (about 61MB)
-//   const videoPath = "uploads/movies/1726081504391.mp4";
-  
-//   if (!fs.existsSync(videoPath)) {
-//     console.error(`Video file not found: ${videoPath}`);
-//     return res.status(404).send("Video not found");
-//   }
-
-//   const videoSize = fs.statSync(`${__dirname}/${videoPath}`).size;
-//   // Parse Range
-//   // Example: "bytes=32324-"
-//   const CHUNK_SIZE = 10 ** 6; // 1MB
-//   const start = Number(range.replace(/\D/g, ""));
-//   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-
-//   console.log(`Streaming bytes ${start}-${end} of ${videoSize}`);
-
-//   // Create headers
-//   const contentLength = end - start + 1;
-//   const headers = {
-//     "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-//     "Accept-Ranges": "bytes",
-//     "Content-Length": contentLength,
-//     "Content-Type": "video/mp4",
-//   };
-
-
-//   // HTTP Status 206 for Partial Content
-//   res.writeHead(206, headers);
-
-//   // create video read stream for this particular chunk
-//   const videoStream = fs.createReadStream(videoPath, { start, end });
-
-//   // Stream the video chunk to the client
-//   videoStream.on('open', () => {
-//     videoStream.pipe(res);
-//   });
-
-//   videoStream.on('error', (streamErr) => {
-//     console.error('Stream Error:', streamErr);
-//     res.end(streamErr);
-//   });
-// });
-
-
-
-// app.listen(8000, function () {
-//   console.log("Listening on port 8000!");
-// });
 
 app.listen(process.env.PORT, () => {
   console.log(`App is running on port ${process.env.PORT}`);
@@ -572,72 +512,6 @@ app.get('/search/:fName/:lName', async (request, response) => {
 });
 
 
-// app.post("/watch-movie", async (req, res) => {
-//   const { movieId, userId } = req.body;
-
-//   try {
-//     // Fetch movie info from the database
-//     const movieInfo = await db.fetchMovieInfoById(movieId);
-
-//     // Store movie info and user info in the session
-//     req.session.movieInfo = movieInfo;
-//     req.session.userId = userId;
-
-//     // Redirect to the movie page
-//     res.redirect("/movie");
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ success: false, message: err.message });
-//   }
-// });
-
-// // Serve the movie page
-// app.get("/movie", function (req, res) {
-//   if (!req.session.movieInfo) {
-//     return res.status(400).send("No movie info in session");
-//   }
-
-//   res.sendFile(path.join(__dirname, '..', 'Client', 'movie.html'));
-// });
-
-// // Serve the video
-// app.get("/video", function (req, res) {
-//   const range = req.headers.range;
-//   if (!range) {
-//     return res.status(400).send("Requires Range header");
-//   }
-
-//   const videoPath = req.session.movieInfo.videoPath;
-//   if (!fs.existsSync(videoPath)) {
-//     console.error(`Video file not found: ${videoPath}`);
-//     return res.status(404).send("Video not found");
-//   }
-
-//   const videoSize = fs.statSync(videoPath).size;
-//   const CHUNK_SIZE = 10 ** 6; // 1MB
-//   const start = Number(range.replace(/\D/g, ""));
-//   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-
-//   const contentLength = end - start + 1;
-//   const headers = {
-//     "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-//     "Accept-Ranges": "bytes",
-//     "Content-Length": contentLength,
-//     "Content-Type": "video/mp4",
-//   };
-
-//   res.writeHead(206, headers);
-
-//   const videoStream = fs.createReadStream(videoPath, { start, end });
-//   videoStream.pipe(res);
-
-//   videoStream.on('error', (streamErr) => {
-//     console.error('Stream Error:', streamErr);
-//     res.end(streamErr);
-//   });
-// });
-
-
 
 
 
@@ -762,6 +636,7 @@ app.get("/video", function (req, res) {
   }
   
   const videoPath = req.session.movieInfo.filepath;
+  console.log("Video path:", videoPath);
   if (!fs.existsSync(videoPath)) {
       console.error(`Video file not found: ${videoPath}`);
       return res.status(404).send("Video not found");
