@@ -316,58 +316,58 @@ app.get('/searchMovies', async (req, res) => {
 // plan to start a session here, where when a user presses a mvies to watch it will be stored in the session and direct them to this page 
 // where they can watch the video, the video path will be a variable in the session and the video info from the db too.
 
-app.get("/video", function (req, res) {
-  // Ensure there is a range given for the video
-  const range = req.headers.range;
-  if (!range) {
-    return res.status(400).send("Requires Range header");
-  }
+// app.get("/video", function (req, res) {
+//   // Ensure there is a range given for the video
+//   const range = req.headers.range;
+//   if (!range) {
+//     return res.status(400).send("Requires Range header");
+//   }
 
-  console.log('Range:', range);
+//   console.log('Range:', range);
 
-  // get video stats (about 61MB)
-  const videoPath = "uploads/movies/1726081504391.mp4";
+//   // get video stats (about 61MB)
+//   const videoPath = "uploads/movies/1726081504391.mp4";
   
-  if (!fs.existsSync(videoPath)) {
-    console.error(`Video file not found: ${videoPath}`);
-    return res.status(404).send("Video not found");
-  }
+//   if (!fs.existsSync(videoPath)) {
+//     console.error(`Video file not found: ${videoPath}`);
+//     return res.status(404).send("Video not found");
+//   }
 
-  const videoSize = fs.statSync(`${__dirname}/${videoPath}`).size;
-  // Parse Range
-  // Example: "bytes=32324-"
-  const CHUNK_SIZE = 10 ** 6; // 1MB
-  const start = Number(range.replace(/\D/g, ""));
-  const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+//   const videoSize = fs.statSync(`${__dirname}/${videoPath}`).size;
+//   // Parse Range
+//   // Example: "bytes=32324-"
+//   const CHUNK_SIZE = 10 ** 6; // 1MB
+//   const start = Number(range.replace(/\D/g, ""));
+//   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
 
-  console.log(`Streaming bytes ${start}-${end} of ${videoSize}`);
+//   console.log(`Streaming bytes ${start}-${end} of ${videoSize}`);
 
-  // Create headers
-  const contentLength = end - start + 1;
-  const headers = {
-    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-    "Accept-Ranges": "bytes",
-    "Content-Length": contentLength,
-    "Content-Type": "video/mp4",
-  };
+//   // Create headers
+//   const contentLength = end - start + 1;
+//   const headers = {
+//     "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+//     "Accept-Ranges": "bytes",
+//     "Content-Length": contentLength,
+//     "Content-Type": "video/mp4",
+//   };
 
 
-  // HTTP Status 206 for Partial Content
-  res.writeHead(206, headers);
+//   // HTTP Status 206 for Partial Content
+//   res.writeHead(206, headers);
 
-  // create video read stream for this particular chunk
-  const videoStream = fs.createReadStream(videoPath, { start, end });
+//   // create video read stream for this particular chunk
+//   const videoStream = fs.createReadStream(videoPath, { start, end });
 
-  // Stream the video chunk to the client
-  videoStream.on('open', () => {
-    videoStream.pipe(res);
-  });
+//   // Stream the video chunk to the client
+//   videoStream.on('open', () => {
+//     videoStream.pipe(res);
+//   });
 
-  videoStream.on('error', (streamErr) => {
-    console.error('Stream Error:', streamErr);
-    res.end(streamErr);
-  });
-});
+//   videoStream.on('error', (streamErr) => {
+//     console.error('Stream Error:', streamErr);
+//     res.end(streamErr);
+//   });
+// });
 
 
 
@@ -628,6 +628,258 @@ app.get('/search/:fName/:lName', async (request, response) => {
 });
 
 
+// app.post("/watch-movie", async (req, res) => {
+//   const { movieId, userId } = req.body;
+
+//   try {
+//     // Fetch movie info from the database
+//     const movieInfo = await db.fetchMovieInfoById(movieId);
+
+//     // Store movie info and user info in the session
+//     req.session.movieInfo = movieInfo;
+//     req.session.userId = userId;
+
+//     // Redirect to the movie page
+//     res.redirect("/movie");
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).json({ success: false, message: err.message });
+//   }
+// });
+
+// // Serve the movie page
+// app.get("/movie", function (req, res) {
+//   if (!req.session.movieInfo) {
+//     return res.status(400).send("No movie info in session");
+//   }
+
+//   res.sendFile(path.join(__dirname, '..', 'Client', 'movie.html'));
+// });
+
+// // Serve the video
+// app.get("/video", function (req, res) {
+//   const range = req.headers.range;
+//   if (!range) {
+//     return res.status(400).send("Requires Range header");
+//   }
+
+//   const videoPath = req.session.movieInfo.videoPath;
+//   if (!fs.existsSync(videoPath)) {
+//     console.error(`Video file not found: ${videoPath}`);
+//     return res.status(404).send("Video not found");
+//   }
+
+//   const videoSize = fs.statSync(videoPath).size;
+//   const CHUNK_SIZE = 10 ** 6; // 1MB
+//   const start = Number(range.replace(/\D/g, ""));
+//   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+
+//   const contentLength = end - start + 1;
+//   const headers = {
+//     "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+//     "Accept-Ranges": "bytes",
+//     "Content-Length": contentLength,
+//     "Content-Type": "video/mp4",
+//   };
+
+//   res.writeHead(206, headers);
+
+//   const videoStream = fs.createReadStream(videoPath, { start, end });
+//   videoStream.pipe(res);
+
+//   videoStream.on('error', (streamErr) => {
+//     console.error('Stream Error:', streamErr);
+//     res.end(streamErr);
+//   });
+// });
+
+
+
+
+
+
+app.post("/prepare-movie", async (req, res) => {
+  const { movieId, userId } = req.body;
+  
+  console.log("Received request to prepare movie:", { movieId, userId });
+  
+  try {
+      // Fetch movie info from the database
+      const movieInfo = await db.fetchMovieInfoById(movieId);
+      
+      console.log("Fetched movie info:", movieInfo);
+      
+      if (!movieInfo) {
+          console.log("No movie info found for id:", movieId);
+          return res.status(404).json({ success: false, message: "Movie not found" });
+      }
+      
+      // Store movie info and user info in the session
+      req.session.movieInfo = movieInfo;
+      req.session.userId = userId;
+      
+      console.log('Movie info set in session:', req.session.movieInfo);
+      
+      // Save the session explicitly
+      req.session.save((err) => {
+          if (err) {
+              console.error("Session save error:", err);
+              return res.status(500).json({ success: false, message: "Error saving session" });
+          }
+          console.log('Session saved successfully. Session data:', req.session);
+          res.json({ success: true, message: "Movie prepared successfully" });
+      });
+  } catch (err) {
+      console.error("Error in /prepare-movie:", err);
+      res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
+
+
+
+app.get("/movie", function (req, res) {
+  console.log("Session in /movie:", req.session);
+  if (!req.session.movieInfo) {
+      console.log("No movie info found in session");
+      return res.status(400).send("No movie info in session. Please select a movie first.");
+  }
+  
+  console.log("Movie info found:", req.session.movieInfo);
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
+});
+
+
+app.get("/movie-info", (req, res) => {
+  console.log("Session in /movie-info:", req.session);
+  if (!req.session.movieInfo) {
+      console.log("No movie info found in /movie-info");
+      return res.status(400).json({ success: false, message: "No movie info in session" });
+  }
+  
+  console.log("Sending movie info:", req.session.movieInfo);
+  res.json({
+      success: true,
+      movieInfo: req.session.movieInfo,
+      userId: req.session.userId
+  });
+});
+
+
+
+
+
+app.use((req, res, next) => {
+  console.log('Session ID:', req.sessionID);
+  console.log('Session Data:', req.session);
+  next();
+});
+
+
+
+
+
+
+
+
+
+app.post("/watch-movie", async (req, res) => {
+  const { movieId, userId } = req.body;
+  
+  try {
+      // Fetch movie info from the database
+      const movieInfo = await db.fetchMovieInfoById(movieId);
+      
+      // Store movie info and user info in the session
+      req.session.movieInfo = movieInfo;
+      req.session.userId = userId;
+      
+      // Redirect to the movie page
+      res.redirect("/movie");
+  } catch (err) {
+      console.log(err);
+      res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// app.get("/movie", function (req, res) {
+//   if (!req.session.movieInfo) {
+//       return res.status(400).send("No movie info in session");
+//   }
+  
+//   res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
+// });
+
+app.get("/video", function (req, res) {
+  const range = req.headers.range;
+  if (!range) {
+      return res.status(400).send("Requires Range header");
+  }
+  
+  const videoPath = req.session.movieInfo.filepath;
+  if (!fs.existsSync(videoPath)) {
+      console.error(`Video file not found: ${videoPath}`);
+      return res.status(404).send("Video not found");
+  }
+  
+  const videoSize = fs.statSync(videoPath).size;
+  const CHUNK_SIZE = 10 ** 6; // 1MB
+  const start = Number(range.replace(/\D/g, ""));
+  const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+  
+  const contentLength = end - start + 1;
+  const headers = {
+      "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+      "Accept-Ranges": "bytes",
+      "Content-Length": contentLength,
+      "Content-Type": "video/mp4",
+  };
+  
+  res.writeHead(206, headers);
+  
+  const videoStream = fs.createReadStream(videoPath, { start, end });
+  videoStream.pipe(res);
+  
+  videoStream.on('error', (streamErr) => {
+      console.error('Stream Error:', streamErr);
+      res.end(streamErr);
+  });
+});
+
+
+// app.get("/movie-info", (req, res) => {
+//   if (!req.session.movieInfo) {
+//       return res.status(400).json({ success: false, message: "No movie info in session" });
+//   }
+  
+//   res.json({
+//       success: true,
+//       movieInfo: req.session.movieInfo,
+//       userId: req.session.userId
+//   });
+// });
+
+
+
+
+
+
+
+
+
+
+
+app.get('/movie-info/:title', async (request, response) => {
+  try {
+      const { title } = request.params;
+      const result = await db.fetchMovieInfo(title);
+      response.json({ data: result });
+  } catch (err) {
+      console.log(err);
+      response.status(500).json({ success: false, message: err.message });
+  }
+});
 
 app.get("/signup.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'signup.html'));

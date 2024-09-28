@@ -4,78 +4,67 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Home - StreamHub</title>
+    <title>Products - StreamHub</title>
     <meta name="description" content="Experience seamless streaming with Stream Hub. Our platform integrates advanced social media features and an AI-driven recommendation system to personalize your entertainment. Discover, connect, and enjoy—all in one place.">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
     <link rel="stylesheet" href="assets/css/Inter.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
-    <style>
-        .movie-carousel {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
-        }
-        .movie-card {
-            flex: 0 0 auto;
-            width: 250px;
-            margin-right: 20px;
-            scroll-snap-align: start;
-        }
-    </style>
 </head>
-
 
 <body>
     <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
         <div class="container"><img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="index.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.html"><strong>Movies</strong></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="UPindex.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong>Movies</strong></a></li>
                     <!-- <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li> -->
                     <li class="nav-item"><a class="nav-link" href="Forums.html"><strong>Forums</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="chat.html"><strong>Chat</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="userProfile.html"><strong>profile</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="index.html"><strong>Log out</strong></a></li>
                    
             </div>
             <p  style="margin-right: -100px;" id="profile-container"></p>
         </div>
     </nav>
-    <header class="bg-dark">
 
-    </header>
-
-    <section class="py-5">
-        <div class="container py-5">
-            <div class="row">
-                <div class="col-md-4">
-                    <h2>User Profile</h2>
-                    <h4 id="profile-container2"></h4>
-                </div>
-                <div class="col-md-8">
-                    <h2>Recommended Movies</h2>
-                    <h4 id="recs"></h4>
-                    <div class="movie-carousel" id="movie-carousel">
+   
+   
+   <h3 style="margin-left: 100px;"> Featured Movies:</h3>
+                    <div class="movie-carousel" style="margin-left: 1000px;" id="movie-carousel">
                         <!-- Movie cards will be dynamically inserted here -->
                     </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-5">
-        <div class="container text-center py-5">
-            <p class="mb-4" style="font-size: 1.6rem;">Inspired by some of&nbsp;<span class="text-success"></span>the best companies in the world.</p><a href="#"> <img class="m-3" src="assets/img/brands/google.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/microsoft.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/apple.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/facebook.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/twitter.png"></a>
-        </div>
-    </section>
-    <section>
-        
-    </section>
     
+                    <div id="carouselContainer" class="carousel slide" data-ride="carousel" style="margin-left: 150px;">
+                        <div class="carousel-inner">
+                          <div class="carousel-item active">
+                            <!-- Movie card content here -->
+                          </div>
+                          <div class="carousel-item">
+                            <!-- Movie card content here -->
+                          </div>
+                          <!-- More carousel items -->
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselContainer" role="button" data-slide="prev">
+                          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                          <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselContainer" role="button" data-slide="next">
+                          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                          <span class="sr-only">Next</span>
+                        </a>
+                      </div>
+
+
+                </body>
+
+
+
     <footer class="bg-dark">
         <div class="container py-4 py-lg-5">
             <div class="row justify-content-center">
@@ -113,10 +102,12 @@
         </div>
     </footer>
     <script>
-
-const storedSessionData = localStorage.getItem('sessionData');
+        
+        const storedSessionData = localStorage.getItem('sessionData');
+        console.log("hey this is the UPindex ",storedSessionData);
 if (storedSessionData) {
   const userData = JSON.parse(storedSessionData);
+  console.log("hey this is the UPindex ",userData);
   console.log(userData);
 
 
@@ -127,84 +118,17 @@ if (storedSessionData) {
   `;
   
   if (userData.recommendations) {
-    displayRecommendedMovies(userData.recommendations);
+    //displayRecommendedMovies(userData.recommendations);
     console.log(userData.recommendations);
-    displayRecMovies(userData.recommendations);
+    fetchUserProfileAndRecommendations();
+    //displayRecMovies(userData.recommendations);
   } else {
   // Fetch profile and recommendations from the server if no local data
   fetchUserProfileAndRecommendations();
-}
+}}
 
 
-
-} else {
-  // If no stored session data, fetch it from the server
-  fetch('/profile', {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  })
-  .then((response) => response.json())
-  .then((data) => {
-    console.log(data);
-    if (data.success) {
-      const userData = data.data; // access the nested data object
-      const profileContainer = document.getElementById('profile-container');
-      profileContainer.innerHTML = `
-        <p>Name: ${userData.fName} ${userData.lName}</p>
-        <!-- Add other profile fields as needed -->
-         
-      `
-      ;
-    } else {
-      console.error('Error:', data.message);
-    }
-  })
-  .catch((error) => console.error(error));}
-
-
-// fetch('/profile', {
-//   method: 'GET',
-//   headers: { 'Content-Type': 'application/json' },
-// })
-// .then((response) => response.json())
-// .then((data) => {
-  
-
-function displayRecommendedMovies(recommendations) {
-    const carousel = document.getElementById('movie-carousel');
-    carousel.innerHTML = '';
-    console.log(recommendations).forEach((movie) => {
-        console.log(movie);
-    });
-    recommendations.forEach((movie) => {
-      fetch(`/movie-info/${movie}`)
-      .then((response) => response.json())
-      .then((movieInfo) => {
-        const movieCard = createMovieCard(movieInfo);
-        carousel.appendChild(movieCard);
-      })
-      .catch((error) => console.error('Error fetching movie info:', error));
-    });
-  }
-  
-  // Function to create movie cards
-  function createMovieCard(movieInfo) {
-    const card = document.createElement('div');
-    card.className = 'movie-card';
-    card.innerHTML = `
-      <img src="${movieInfo.poster}" alt="${movieInfo.title}" style="width: 100%; height: auto;">
-      <h5>${movieInfo.title}</h5>
-      <p>${movieInfo.description}</p>
-      <button onclick="watchMovie(${movieInfo.id})">Watch</button>
-    `;
-    return card;
-  }
-  
-  function watchMovie(movieId) {
-    window.location.href = `/movie?id=${movieId}`;
-  }
-
-function fetchUserProfileAndRecommendations() {
+  function fetchUserProfileAndRecommendations() {
     fetch('/profile', {
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
@@ -215,7 +139,7 @@ function fetchUserProfileAndRecommendations() {
             const userData = data.data;
             console.log(data.data);
             displayUserProfile(userData);
-            
+            console.log(userData);
         } else {
             console.error('Error:', data.message);
         }
@@ -224,14 +148,9 @@ function fetchUserProfileAndRecommendations() {
 }
 
 function displayUserProfile(userData) {
-    const profileContainer = document.getElementById('profile-container2');
-    profileContainer.innerHTML = `
-        <h4>Name: ${userData.fName} ${userData.lName}</h4>
-        <!-- Add other profile fields as needed -->
-    `;
 
-    const profileContainer2 = document.getElementById('profile-container');
-    profileContainer2.innerHTML = `
+    const profileContainer = document.getElementById('profile-container');
+    profileContainer.innerHTML = `
         <p>Name: ${userData.fName} ${userData.lName}</p>
         <!-- Add other profile fields as needed -->
     `;
@@ -239,53 +158,112 @@ function displayUserProfile(userData) {
 }
 
 
-function displayRecMovies(recommendation) {
-    console.log(recommendation);
-    const recs = document.getElementById('recs');
+document.addEventListener('DOMContentLoaded', () => {
+    fetchAllMovies();
+  });
   
-    if (recommendation) {
-      const recValues = Object.values(recommendation);
-      recs.innerHTML = `
-        <h4>Movies:</h4>
-        <ul>
-          ${recValues.map((movie) => `<li>${movie}</li>`).join('')}
-        </ul>
-      `;
-    } else {
-      recs.innerHTML = `
-        <h4>Movies:</h4>
-        <p>No recommendations available.</p>
-      `;
-    }
+  function fetchAllMovies() {
+    fetch('http://localhost:8000/getAllMovies')
+      .then(response => response.json())
+      .then(data => {
+        const movies = data.data;
+        displayMoviesInCarousels(movies);
+      })
+      .catch(error => console.error('Error fetching movies:', error));
   }
-
-function displayRecommendedMovies(recommendations) {
-    const carousel = document.getElementById('movie-carousel');
-    carousel.innerHTML = '';
-    recommendations.forEach((movie) => {
-        fetch(`/movie-info/${movie}`)
-        .then((response) => response.json())
-        .then((movieInfo) => {
-            const movieCard = createMovieCard(movieInfo);
-            carousel.appendChild(movieCard);
-        })
-        .catch((error) => console.error('Error fetching movie info:', error));
-    });
-}
-
-function createMovieCard(movieInfo) {
+  
+  function createMovieCard(movieInfo) {
     const card = document.createElement('div');
     card.className = 'movie-card';
+    card.setAttribute('data-movie-id', movieInfo.id);
+    const pathos = movieInfo.imgpath.split('\\').join('/');
     card.innerHTML = `
-        <img src="${pathos}" alt="${movieInfo.data.title}" style="width: 100%; height: auto;">
-        <h5>${movieInfo.data.title}</h5>
-        <p>${movieInfo.data.description}</p>
-        <button onclick="watchMovie(${movieInfo.data.movie_id})">Watch</button>
+      <img src="${pathos}" alt="${movieInfo.title}" style="width: 200px; height: auto;">
+      <h5>${movieInfo.title}</h5>
+      <p>${movieInfo.description}</p>
+      <button onclick="watchMovie(${movieInfo.movie_id})">Watch</button>
+      <br><br>
     `;
     return card;
-}
+  }
+  
+  function createCarousel(movies) {
+    const carousel = document.createElement('div');
+    carousel.className = 'carousel slide';
+    carousel.setAttribute('data-ride', 'carousel');
+  
+    const carouselInner = document.createElement('div');
+    carouselInner.className = 'carousel-inner';
+  
+    const carouselItem = document.createElement('div');
+    carouselItem.className = 'carousel-item active';
+  
+    const row = document.createElement('div');
+    row.className = 'row';
+  
+    movies.forEach(movie => {
+      const col = document.createElement('div');
+      col.className = 'col';
+      const card = createMovieCard(movie);
+      col.appendChild(card);
+      row.appendChild(col);
+    });
+  
+    carouselItem.appendChild(row);
+    carouselInner.appendChild(carouselItem);
+    carousel.appendChild(carouselInner);
+  
+    return carousel;
+  }
+  
+  function displayMoviesInCarousels(movies) {
+    const carouselContainer = document.getElementById('carouselContainer');
+    carouselContainer.innerHTML = '';
+  
+    for (let i = 0; i < movies.length; i += 5) {
+      const movieChunk = movies.slice(i, i + 5);
+      const carousel = createCarousel(movieChunk);
+      carouselContainer.appendChild(carousel);
+    }
+  }
+  
 
-function getUserIdFromSession() {
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const movieCards = document.querySelectorAll('.movie-card');
+  
+    movieCards.forEach(card => {
+      card.addEventListener('click', async () => {
+        const movieId = card.getAttribute('data-movie-id');
+        const userId = 'your_user_id'; // Replace with actual user ID
+  
+        try {
+          const response = await fetch('/watch-movie', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ movieId, userId })
+          });
+  
+          if (response.ok) {
+            window.location.href = '/movie';
+          } else {
+            console.error('Failed to start movie session');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      });
+    });
+  });
+
+
+
+
+
+  function getUserIdFromSession() {
     return new Promise((resolve, reject) => {
         fetch('/profile', {
             method: 'GET',
@@ -318,42 +296,7 @@ function getUserIdFromSession() {
 
 
 
-
-
-
-// function watchMovie(movieId) {
-//     const userId = getUserIdFromSession();
-//     console.log("User ID: and HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", userId);
-//     console.log("Sending request to prepare movie:", { movieId, userId });
-//     
-//     fetch('/prepare-movie', {
-//         method: 'POST',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify({ movieId, userId }),
-//     })
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log("Received response:", data);
-//         if (data.success) {
-//             setTimeout(() => {
-//                 window.location.href = '/movie';
-//             }, 1000);
-//         } else {
-//             console.error('Error preparing movie:', data.message);
-//             alert('Error preparing movie: ' + data.message);
-//         }
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//         alert('An error occurred: ' + error.message);
-//     });
-// }
-
-
-
-async function watchMovie(movieId) {
+  async function watchMovie(movieId) {
     try {
         const userId = await getUserIdFromSession();
         if (!userId) {
@@ -391,11 +334,9 @@ async function watchMovie(movieId) {
 
 
 
-// Initialize the page
-fetchUserProfileAndRecommendations();
-
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.reflowhq.com/v2/toolkit.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/bold-and-dark.js"></script>
 </body>
