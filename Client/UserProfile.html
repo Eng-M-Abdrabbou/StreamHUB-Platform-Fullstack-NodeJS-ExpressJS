@@ -223,6 +223,7 @@ function fetchUserProfileAndRecommendations() {
             const userData = data.data;
             console.log("checking the data",data);
             displayUserProfile(userData);
+            
         } else {
             console.error('Error:', data.message);
         }
@@ -270,15 +271,117 @@ function createMovieCard(movieInfo) {
         <img src="${pathos}" alt="${movieInfo.data.title}" style="width: 100%; height: auto;">
         <h5>${movieInfo.data.title}</h5>
         <p>${movieInfo.data.description}</p>
-        <button onclick="watchMovie(${movieInfo.data.id})">Watch</button>
+        <button onclick="watchMovie(${movieInfo.data.movie_id})">Watch</button>
     `;
     console.log(movieInfo.data.imgpath);
     return card;
 }
 
-function watchMovie(movieId) {
-    window.location.href = `/movie?id=${movieId}`;
+function getUserIdFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.id) {
+                    console.log("User ID found:", userData.id);
+                    resolve(userData.id);
+                } else {
+                    console.error('User ID not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
 }
+
+
+
+
+
+
+
+// function watchMovie(movieId) {
+//     const userId = getUserIdFromSession();
+//     console.log("User ID: and HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", userId);
+//     console.log("Sending request to prepare movie:", { movieId, userId });
+//     
+//     fetch('/prepare-movie', {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json',
+//         },
+//         body: JSON.stringify({ movieId, userId }),
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log("Received response:", data);
+//         if (data.success) {
+//             setTimeout(() => {
+//                 window.location.href = '/movie';
+//             }, 1000);
+//         } else {
+//             console.error('Error preparing movie:', data.message);
+//             alert('Error preparing movie: ' + data.message);
+//         }
+//     })
+//     .catch(error => {
+//         console.error('Error:', error);
+//         alert('An error occurred: ' + error.message);
+//     });
+// }
+
+
+
+async function watchMovie(movieId) {
+    try {
+        const userId = await getUserIdFromSession();
+        if (!userId) {
+            console.error('No user ID found. User might not be logged in.');
+            alert('Please log in to watch the movie.');
+            return;
+        }
+
+        console.log("Sending request to prepare movie:", { movieId, userId });
+        
+        const response = await fetch('/prepare-movie', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ movieId, userId }),
+        });
+
+        const data = await response.json();
+        console.log("Received response:", data);
+
+        if (data.success) {
+            setTimeout(() => {
+                window.location.href = '/movie';
+            }, 1000);
+        } else {
+            console.error('Error preparing movie:', data.message);
+            alert('Error preparing movie: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred: ' + error.message);
+    }
+}
+
+
 
 // Initialize the page
 fetchUserProfileAndRecommendations();

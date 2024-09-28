@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Products - StreamHub</title>
+    <title>watching - StreamHub</title>
     <meta name="description" content="Experience seamless streaming with Stream Hub. Our platform integrates advanced social media features and an AI-driven recommendation system to personalize your entertainment. Discover, connect, and enjoy—all in one place.">
     <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
@@ -48,28 +48,9 @@
             <br>
             <br>       
                      
-         
-<script>
-    function countFrom1To100() {
-        for (let i = 1; i <= 100; i++) {
-            console.log(i);
-        }
-    }
-    countFrom1To100();
-</script>
-
-
-
+     
 <div class="d-flex justify-content-center">
     <div class="embed-responsive embed-responsive-16by9">
-
-        <!-- <video id="videoPlayer" class="embed-responsive-item" width="650" controls muted="muted" autoplay>
-            <source src="/video" type="video/mp4" />
-        </video> -->
-
-    <!-- </div>
-</div>
-    -->
 
         <div class="video-container paused" data-volume-level="high">
             <img class="thumbnail-img">
@@ -149,9 +130,16 @@
 </div>
    
 <br>
-<br>
-<br>
-<br>
+
+<div id="movie-info"></div>
+<div id="rating-container">
+  <br>
+    <input type="number" id="rating-input" min="1" max="5" step="0.5">
+    <button class="btn btn-primary shadow mx-auto" onclick="submitRating()">Submit Rating</button>
+</div>
+
+        </div>
+</section>
 
     <footer class="bg-dark">
         <div class="container py-4 py-lg-5">
@@ -190,6 +178,123 @@
         </div>
     </footer>
     <script>
+
+
+      document.addEventListener('DOMContentLoaded', () => {
+        fetchMovieInfo();
+    });
+
+    function getUserIdFromSession() {
+        const storedSessionData = localStorage.getItem('sessionData');
+        if (storedSessionData) {
+            const userData = JSON.parse(storedSessionData);
+            return userData.userId; // Assuming the user ID is stored under the key 'userId'
+        }
+        return null; // Return null if no user ID is found
+    }
+
+    function fetchMovieInfo() {
+        fetch('/movie-info')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayMovieInfo(data.movieInfo);
+                } else {
+                    console.error('Error:', data.message);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function displayMovieInfo(movieInfo) {
+        const movieInfoDiv = document.getElementById('movie-info');
+
+        const hours = Math.floor(movieInfo.runtime / 60);
+        const minutes = movieInfo.runtime % 60;
+
+        movieInfoDiv.innerHTML = `
+            <h2 class="fw-bold">${movieInfo.title}</h2>
+            <p class="fw-bold text-success mb-2">released: </p>
+            <p> ${movieInfo.rdate}ad</p>
+            <p class="fw-bold text-success mb-2">Genre: </p>
+            <p> ${movieInfo.genre}</p>
+            <p class="fw-bold text-success mb-2">Runtime: </p>
+            <p>  ${hours} hours and ${minutes} minutes</p>
+            <p class="fw-bold text-success mb-2">Description: </p>
+            <p> ${movieInfo.description}</p>
+            <br>
+            <button class="btn btn-primary shadow mx-auto" type="button" onclick="window.open('${movieInfo.trailer_url}', '_blank')">Watch Trailer</button>
+              <br>
+        `;
+    }
+
+    function submitRating() {
+        const rating = document.getElementById('rating-input').value;
+        const userId = getUserIdFromSession();
+        const movieId = getMovieIdFromSession(); // You'll need to implement this function
+
+        if (!userId) {
+            console.error('User ID not found in session');
+            return;
+        }
+
+        if (!movieId) {
+            console.error('Movie ID not found in session');
+            return;
+        }
+
+        // Send the rating to your server
+        fetch('/submit-rating', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, movieId, rating }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Rating submitted successfully');
+                // You might want to update the UI here to reflect the new rating
+            } else {
+                console.error('Error submitting rating:', data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    function getMovieIdFromSession() {
+        // Implement this function to retrieve the movie ID from your session storage
+        // This might be similar to getUserIdFromSession, depending on how you store it
+        const storedSessionData = localStorage.getItem('sessionData');
+        if (storedSessionData) {
+            const sessionData = JSON.parse(storedSessionData);
+            return sessionData.movieId; // Assuming the movie ID is stored under the key 'movieId'
+        }
+        return null; // Return null if no movie ID is found
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       const storedSessionData = localStorage.getItem('sessionData');
       console.log("hey this is the UPindex ",storedSessionData);
@@ -244,6 +349,8 @@ function displayUserProfile(userData) {
   `;
 
 }
+
+
   </script>
     <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdn.reflowhq.com/v2/toolkit.min.js"></script>
