@@ -109,7 +109,8 @@
               </div>
             </div>
             <video  id="videoPlayer" class="embed-responsive-item" width="1050" muted="muted"  autoplay>
-                <source src="/video" type="video/mp4" />
+            
+              <source src="/video" type="video/mp4"  id="videoSource"/>
               <track kind="captions" srclang="en" src="assets/subtitles.srt">
             </video>
           </div>
@@ -166,104 +167,101 @@
         </div>
     </footer>
     <script>
-
-
-      document.addEventListener('DOMContentLoaded', () => {
-        fetchMovieInfo();
-    });
-
-    function getUserIdFromSession() {
-        const storedSessionData = localStorage.getItem('sessionData');
-        if (storedSessionData) {
-            const userData = JSON.parse(storedSessionData);
-            return userData.userId; // Assuming the user ID is stored under the key 'userId'
-        }
-        return null; // Return null if no user ID is found
-    }
-
-    function fetchMovieInfo() {
-        fetch('/movie-info')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    displayMovieInfo(data.movieInfo);
-                } else {
-                    console.error('Error:', data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-    }
-
-    function displayMovieInfo(movieInfo) {
-        const movieInfoDiv = document.getElementById('movie-info');
-
-        const hours = Math.floor(movieInfo.runtime / 60);
-        const minutes = movieInfo.runtime % 60;
-
-        movieInfoDiv.innerHTML = `
-            <h2 class="fw-bold">${movieInfo.title}</h2>
-            <p class="fw-bold text-success mb-2">released: </p>
-            <p> ${movieInfo.rdate}ad</p>
-            <p class="fw-bold text-success mb-2">Genre: </p>
-            <p> ${movieInfo.genre}</p>
-            <p class="fw-bold text-success mb-2">Runtime: </p>
-            <p>  ${hours} hours and ${minutes} minutes</p>
-            <p class="fw-bold text-success mb-2">Description: </p>
-            <p> ${movieInfo.description}</p>
-            <br>
-            <button class="btn btn-primary shadow mx-auto" type="button" onclick="window.open('${movieInfo.trailer_url}', '_blank')">Watch Trailer</button>
-              <br>
-        `;
-    }
-
-    function submitRating() {
-        const rating = document.getElementById('rating-input').value;
-        const userId = getUserIdFromSession();
-        const movieId = getMovieIdFromSession(); // You'll need to implement this function
-
-        if (!userId) {
-            console.error('User ID not found in session');
-            return;
-        }
-
-        if (!movieId) {
-            console.error('Movie ID not found in session');
-            return;
-        }
-
-        // Send the rating to your server
-        fetch('/submit-rating', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ userId, movieId, rating }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('Rating submitted successfully');
-                // You might want to update the UI here to reflect the new rating
-            } else {
-                console.error('Error submitting rating:', data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
-
-    function getMovieIdFromSession() {
-        // Implement this function to retrieve the movie ID from your session storage
-        // This might be similar to getUserIdFromSession, depending on how you store it
-        const storedSessionData = localStorage.getItem('sessionData');
-        if (storedSessionData) {
-            const sessionData = JSON.parse(storedSessionData);
-            return sessionData.movieId; // Assuming the movie ID is stored under the key 'movieId'
-        }
-        return null; // Return null if no movie ID is found
-    }
-
-
-
+//
+//
+//      document.addEventListener('DOMContentLoaded', () => {
+//        fetchMovieInfo();
+//    });
+//
+//    function getUserIdFromSession() {
+//        const storedSessionData = localStorage.getItem('sessionData');
+//        if (storedSessionData) {
+//            const userData = JSON.parse(storedSessionData);
+//            return userData.userId; // Assuming the user ID is stored under the key 'userId'
+//        }
+//        return null; // Return null if no user ID is found
+//    }
+//
+//    function fetchMovieInfo() {
+//        fetch('/movie-info')
+//            .then(response => response.json())
+//            .then(data => {
+//                if (data.success) {
+//                    displayMovieInfo(data.movieInfo);
+//                } else {
+//                    console.error('Error:', data.message);
+//                }
+//            })
+//            .catch(error => console.error('Error:', error));
+//    }
+//
+//    function displayMovieInfo(movieInfo) {
+//        const movieInfoDiv = document.getElementById('movie-info');
+//
+//        const hours = Math.floor(movieInfo.runtime / 60);
+//        const minutes = movieInfo.runtime % 60;
+//
+//        movieInfoDiv.innerHTML = `
+//            <h2 class="fw-bold">${movieInfo.title}</h2>
+//            <p class="fw-bold text-success mb-2">released: </p>
+//            <p> ${movieInfo.rdate}ad</p>
+//            <p class="fw-bold text-success mb-2">Genre: </p>
+//            <p> ${movieInfo.genre}</p>
+//            <p class="fw-bold text-success mb-2">Runtime: </p>
+//            <p>  ${hours} hours and ${minutes} minutes</p>
+//            <p class="fw-bold text-success mb-2">Description: </p>
+//            <p> ${movieInfo.description}</p>
+//            <br>
+//            <button class="btn btn-primary shadow mx-auto" type="button" onclick="window.open('${movieInfo.trailer_url}', '_blank')">Watch Trailer</button>
+//              <br>
+//        `;
+//    }
+//
+//    function submitRating() {
+//        const rating = document.getElementById('rating-input').value;
+//        const userId = getUserIdFromSession();
+//        const movieId = getMovieIdFromSession(); // You'll need to implement this function
+//
+//        if (!userId) {
+//            console.error('User ID not found in session');
+//            return;
+//        }
+//
+//        if (!movieId) {
+//            console.error('Movie ID not found in session');
+//            return;
+//        }
+//
+//        // Send the rating to your server
+//        fetch('/submit-rating', {
+//            method: 'POST',
+//            headers: {
+//                'Content-Type': 'application/json',
+//            },
+//            body: JSON.stringify({ userId, movieId, rating }),
+//        })
+//        .then(response => response.json())
+//        .then(data => {
+//            if (data.success) {
+//                console.log('Rating submitted successfully');
+//                // You might want to update the UI here to reflect the new rating
+//            } else {
+//                console.error('Error submitting rating:', data.message);
+//            }
+//        })
+//        .catch(error => console.error('Error:', error));
+//    }
+//
+//    function getMovieIdFromSession() {
+//        // Implement this function to retrieve the movie ID from your session storage
+//        // This might be similar to getUserIdFromSession, depending on how you store it
+//        const storedSessionData = localStorage.getItem('sessionData');
+//        if (storedSessionData) {
+//            const sessionData = JSON.parse(storedSessionData);
+//            return sessionData.movieId; // Assuming the movie ID is stored under the key 'movieId'
+//        }
+//        return null; // Return null if no movie ID is found
+//    }
 
 
 
@@ -273,6 +271,109 @@
 
 
 
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      fetchMovieInfo();
+  });
+  
+  function getUserIdFromSession() {
+      const storedSessionData = localStorage.getItem('sessionData');
+      if (storedSessionData) {
+          const userData = JSON.parse(storedSessionData);
+          return userData.userId;
+      }
+      return null;
+  }
+  
+  function fetchMovieInfo() {
+      fetch('/movie-info')
+          .then(response => response.json())
+          .then(data => {
+              if (data.success) {
+                  displayMovieInfo(data.movieInfo);
+                  setupVideoPlayer(data.movieInfo);
+              } else {
+                  console.error('Error:', data.message);
+              }
+          })
+          .catch(error => console.error('Error:', error));
+  }
+  
+  function displayMovieInfo(movieInfo) {
+      const movieInfoDiv = document.getElementById('movie-info');
+  
+      const hours = Math.floor(movieInfo.runtime / 60);
+      const minutes = movieInfo.runtime % 60;
+  
+      movieInfoDiv.innerHTML = `
+          <h2 class="fw-bold">${movieInfo.title}</h2>
+          <p class="fw-bold text-success mb-2">Released: </p>
+          <p>${movieInfo.rdate}</p>
+          <p class="fw-bold text-success mb-2">Genre: </p>
+          <p>${movieInfo.genre}</p>
+          <p class="fw-bold text-success mb-2">Runtime: </p>
+          <p>${hours} hours and ${minutes} minutes</p>
+          <p class="fw-bold text-success mb-2">Description: </p>
+          <p>${movieInfo.description}</p>
+          <br>
+          <button class="btn btn-primary shadow mx-auto" type="button" onclick="window.open('${movieInfo.trailer_url}', '_blank')">Watch Trailer</button>
+          <br>
+      `;
+  }
+  
+  function setupVideoPlayer(movieInfo) {
+      const videoPlayer = document.getElementById('videoPlayer');
+      if (videoPlayer) {
+          videoPlayer.src = `/video?movieId=${movieInfo.id}`;
+          videoPlayer.load(); // Reload the video player with the new source
+      } else {
+          console.error('Video player element not found');
+      }
+  }
+  
+  function submitRating() {
+      const rating = document.getElementById('rating-input').value;
+      const userId = getUserIdFromSession();
+      const movieId = getMovieIdFromSession();
+  
+      if (!userId) {
+          console.error('User ID not found in session');
+          return;
+      }
+  
+      if (!movieId) {
+          console.error('Movie ID not found in session');
+          return;
+      }
+  
+      fetch('/submit-rating', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ userId, movieId, rating }),
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              console.log('Rating submitted successfully');
+              // You might want to update the UI here to reflect the new rating
+          } else {
+              console.error('Error submitting rating:', data.message);
+          }
+      })
+      .catch(error => console.error('Error:', error));
+  }
+  
+  function getMovieIdFromSession() {
+      const storedSessionData = localStorage.getItem('sessionData');
+      if (storedSessionData) {
+          const sessionData = JSON.parse(storedSessionData);
+          return sessionData.movieId;
+      }
+      return null;
+  }
 
 
 

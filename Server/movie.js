@@ -516,44 +516,79 @@ app.get('/search/:fName/:lName', async (request, response) => {
 
 
 
+// app.post("/prepare-movie", async (req, res) => {
+//   const { movieId, userId } = req.body;
+  
+//   console.log("Received request to prepare movie:", { movieId, userId });
+  
+//   try {
+//       // Fetch movie info from the database
+//       const movieInfo = await db.fetchMovieInfoById(movieId);
+      
+//       console.log("Fetched movie info:", movieInfo);
+      
+//       if (!movieInfo) {
+//           console.log("No movie info found for id:", movieId);
+//           return res.status(404).json({ success: false, message: "Movie not found" });
+//       }
+      
+//       // Store movie info and user info in the session
+//       req.session.movieInfo = movieInfo;
+//       req.session.userId = userId;
+      
+//       console.log('Movie info set in session:', req.session.movieInfo);
+      
+//       // Save the session explicitly
+//       req.session.save((err) => {
+//           if (err) {
+//               console.error("Session save error:", err);
+//               return res.status(500).json({ success: false, message: "Error saving session" });
+//           }
+//           console.log('Session saved successfully. Session data:', req.session);
+//           res.json({ success: true, message: "Movie prepared successfully" });
+//       });
+//   } catch (err) {
+//       console.error("Error in /prepare-movie:", err);
+//       res.status(500).json({ success: false, message: err.message });
+//   }
+// });
+
 app.post("/prepare-movie", async (req, res) => {
   const { movieId, userId } = req.body;
   
   console.log("Received request to prepare movie:", { movieId, userId });
   
   try {
-      // Fetch movie info from the database
-      const movieInfo = await db.fetchMovieInfoById(movieId);
-      
-      console.log("Fetched movie info:", movieInfo);
-      
-      if (!movieInfo) {
-          console.log("No movie info found for id:", movieId);
-          return res.status(404).json({ success: false, message: "Movie not found" });
+    // Fetch movie info from the database
+    const movieInfo = await db.fetchMovieInfoById(movieId);
+    
+    console.log("Fetched movie info:", movieInfo);
+    
+    if (!movieInfo) {
+      console.log("No movie info found for id:", movieId);
+      return res.status(404).json({ success: false, message: "Movie not found" });
+    }
+    
+    // Store movie info and user info in the session
+    req.session.movieInfo = movieInfo;
+    req.session.userId = userId;
+    
+    console.log('Movie info set in session:', req.session.movieInfo);
+    
+    // Save the session explicitly
+    req.session.save((err) => {
+      if (err) {
+        console.error("Session save error:", err);
+        return res.status(500).json({ success: false, message: "Error saving session" });
       }
-      
-      // Store movie info and user info in the session
-      req.session.movieInfo = movieInfo;
-      req.session.userId = userId;
-      
-      console.log('Movie info set in session:', req.session.movieInfo);
-      
-      // Save the session explicitly
-      req.session.save((err) => {
-          if (err) {
-              console.error("Session save error:", err);
-              return res.status(500).json({ success: false, message: "Error saving session" });
-          }
-          console.log('Session saved successfully. Session data:', req.session);
-          res.json({ success: true, message: "Movie prepared successfully" });
-      });
+      console.log('Session saved successfully. Session data:', req.session);
+      res.json({ success: true, message: "Movie prepared successfully" });
+    });
   } catch (err) {
-      console.error("Error in /prepare-movie:", err);
-      res.status(500).json({ success: false, message: err.message });
+    console.error("Error in /prepare-movie:", err);
+    res.status(500).json({ success: false, message: err.message });
   }
 });
-
-
 
 
 
@@ -621,25 +656,61 @@ app.post("/watch-movie", async (req, res) => {
   }
 });
 
-// app.get("/movie", function (req, res) {
-//   if (!req.session.movieInfo) {
-//       return res.status(400).send("No movie info in session");
+
+// app.get("/video", function (req, res) {
+//   const range = req.headers.range;
+//   if (!range) {
+//       return res.status(400).send("Requires Range header");
 //   }
   
-//   res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
+//   const videoPath = req.session.movieInfo.filepath;
+//   console.log("Video path:", videoPath);
+//   if (!fs.existsSync(videoPath)) {
+//       console.error(`Video file not found: ${videoPath}`);
+//       return res.status(404).send("Video not found");
+//   }
+  
+//   const videoSize = fs.statSync(videoPath).size;
+//   const CHUNK_SIZE = 10 ** 6; // 1MB
+//   const start = Number(range.replace(/\D/g, ""));
+//   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
+  
+//   const contentLength = end - start + 1;
+//   const headers = {
+//       "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+//       "Accept-Ranges": "bytes",
+//       "Content-Length": contentLength,
+//       "Content-Type": "video/mp4",
+//   };
+  
+//   res.writeHead(206, headers);
+  
+//   const videoStream = fs.createReadStream(videoPath, { start, end });
+//   videoStream.pipe(res);
+  
+//   videoStream.on('error', (streamErr) => {
+//       console.error('Stream Error:', streamErr);
+//       res.end(streamErr);
+//   });
 // });
 
+// Modify the /video endpoint to handle potential errors
 app.get("/video", function (req, res) {
   const range = req.headers.range;
   if (!range) {
-      return res.status(400).send("Requires Range header");
+    return res.status(400).send("Requires Range header");
   }
   
+  if (!req.session.movieInfo || !req.session.movieInfo.filepath) {
+    console.error("No movie info or filepath in session");
+    return res.status(400).send("No movie selected");
+  }
+
   const videoPath = req.session.movieInfo.filepath;
   console.log("Video path:", videoPath);
   if (!fs.existsSync(videoPath)) {
-      console.error(`Video file not found: ${videoPath}`);
-      return res.status(404).send("Video not found");
+    console.error(`Video file not found: ${videoPath}`);
+    return res.status(404).send("Video not found");
   }
   
   const videoSize = fs.statSync(videoPath).size;
@@ -647,12 +718,16 @@ app.get("/video", function (req, res) {
   const start = Number(range.replace(/\D/g, ""));
   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
   
+  if (start >= videoSize) {
+    return res.status(416).send("Requested range not satisfiable");
+  }
+
   const contentLength = end - start + 1;
   const headers = {
-      "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-      "Accept-Ranges": "bytes",
-      "Content-Length": contentLength,
-      "Content-Type": "video/mp4",
+    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+    "Accept-Ranges": "bytes",
+    "Content-Length": contentLength,
+    "Content-Type": "video/mp4",
   };
   
   res.writeHead(206, headers);
@@ -661,26 +736,14 @@ app.get("/video", function (req, res) {
   videoStream.pipe(res);
   
   videoStream.on('error', (streamErr) => {
-      console.error('Stream Error:', streamErr);
-      res.end(streamErr);
+    console.error('Stream Error:', streamErr);
+    if (!res.headersSent) {
+      res.status(500).send("Error streaming video");
+    } else {
+      res.end();
+    }
   });
 });
-
-
-// app.get("/movie-info", (req, res) => {
-//   if (!req.session.movieInfo) {
-//       return res.status(400).json({ success: false, message: "No movie info in session" });
-//   }
-  
-//   res.json({
-//       success: true,
-//       movieInfo: req.session.movieInfo,
-//       userId: req.session.userId
-//   });
-// });
-
-
-
 
 
 
