@@ -17,21 +17,24 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
-        <div class="container"><img src="/assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="index.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="products.html"><strong>Movies</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><strong>Log in</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html"><strong>Sign up</strong></a></li>
-                </ul><a class="btn btn-primary shadow mx-auto" role="button" href="signup.html" style="height: 61.68px;width: 116.52px;margin: 0px;padding: 4.6px 32px;">Sign up</a>
-            </div>
+  <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
+    <div class="container"><img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="index.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="collapse navbar-collapse" id="navcol-1">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item"><a class="nav-link active" href="UPindex.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong>Movies</strong></a></li>
+                <!-- <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
+                <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
+                <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li> -->
+                <li class="nav-item"><a class="nav-link" href="Forums.html"><strong>Forums</strong></a></li>
+                <li class="nav-item"><a class="nav-link" href="chat.html"><strong>Chat</strong></a></li>
+                <li class="nav-item"><a class="nav-link" href="userProfile.html"><strong>profile</strong></a></li>
+                <li class="nav-item"><a class="nav-link" href="index.html"><strong>Log out</strong></a></li>
+               
         </div>
-    </nav>
+        <p  style="margin-right: -100px;" id="profile-container"></p>
+    </div>
+</nav>
     <section class="py-5">
         <div class="container py-5">
             <div class="row mb-4 mb-lg-5">
@@ -186,6 +189,62 @@
             </div>
         </div>
     </footer>
+    <script>
+
+      const storedSessionData = localStorage.getItem('sessionData');
+      console.log("hey this is the UPindex ",storedSessionData);
+if (storedSessionData) {
+const userData = JSON.parse(storedSessionData);
+console.log("hey this is the UPindex ",userData);
+console.log(userData);
+
+
+const profileContainer = document.getElementById('profile-container');
+profileContainer.innerHTML = `
+  <p>Name: ${userData.fName} ${userData.lName}</p>
+  <!-- Add other profile fields as needed -->
+`;
+
+if (userData.recommendations) {
+  //displayRecommendedMovies(userData.recommendations);
+  console.log(userData.recommendations);
+  fetchUserProfileAndRecommendations();
+  //displayRecMovies(userData.recommendations);
+} else {
+// Fetch profile and recommendations from the server if no local data
+fetchUserProfileAndRecommendations();
+}}
+
+
+function fetchUserProfileAndRecommendations() {
+  fetch('/profile', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+  })
+  .then((response) => response.json())
+  .then((data) => {
+      if (data.success) {
+          const userData = data.data;
+          console.log(data.data);
+          displayUserProfile(userData);
+          console.log(userData);
+      } else {
+          console.error('Error:', data.message);
+      }
+  })
+  .catch((error) => console.error(error));
+}
+
+function displayUserProfile(userData) {
+
+  const profileContainer = document.getElementById('profile-container');
+  profileContainer.innerHTML = `
+      <p>Name: ${userData.fName} ${userData.lName}</p>
+      <!-- Add other profile fields as needed -->
+  `;
+
+}
+  </script>
     <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdn.reflowhq.com/v2/toolkit.min.js"></script>
     <script src="/assets/js/bs-init.js"></script>

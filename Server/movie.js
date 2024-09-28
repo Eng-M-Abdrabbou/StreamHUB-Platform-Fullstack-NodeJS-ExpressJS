@@ -222,7 +222,6 @@ app.patch('/updateMovie/:id', async (req, res) => {
 
 
 
-
 // Delete a movie
 app.delete('/deleteMovie/:id', async (req, res) => {
   console.log(`Received delete request for movie ID: ${req.params.id}`);
@@ -416,67 +415,6 @@ app.get('/api/admin-email', (req, res) => {
 });
 
 
-// app.post('/login', async (request, response) => {
-//   const db = dbService.getDbServiceInstance();
-//   const { email, password } = request.body;
-
-//   try {
-//       const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
-//       const results = await db.query(query, [email, password]);
-
-//       if (results.length > 0) {
-//           // User found
-//           const user = results[0];
-//           request.session.userId = user.id;  // Store user ID in session
-//           response.status(200).json({ success: true });
-//       } else {
-//           // User not found
-//           response.status(401).json({ success: false, message: 'Invalid email or password' });
-//       }
-//   } catch (err) {
-//       console.error(err);
-//       response.status(500).json({ success: false, message: 'An error occurred, please try again.' });
-//   }
-// });
-
-
-
-// app.post('/login', async (request, response) => {
-//   const db = dbService.getDbServiceInstance();
-//   const { email, password } = request.body;
-
-//   try {
-//     const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
-//     const results = await db.query(query, [email, password]);
-// console.log(results)
-//     if (results.length > 0) {
-//       // User found
-//       const user = results[0];
-//       request.session.userId = user.id;  // Store user ID in session
-//       response.status(200).json({ success: true });
-//       console.log("the session done")
-//       // Call the Python Flask API to get movie recommendations
-//       const recommendationsResponse = await axios.post('http://localhost:5000/recommend', {
-//         user_id: user.id
-//       });
-//       console.log("called flask")
-//       // Send the recommendations along with the login success response
-//       response.status(200).json({
-//         success: true,
-//         recommendations: recommendationsResponse.data
-      
-//       });
-//       console.log(recommendationsResponse.data)
-//     } else {
-//       // User not found
-//       response.status(401).json({ success: false, message: 'Invalid email or password' });
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     response.status(500).json({ success: false, message: 'An error occurred, please try again.' });
-//   }
-// });
-
 app.post('/login', async (request, response) => {
   const db = dbService.getDbServiceInstance();
   const { email, password } = request.body;
@@ -508,9 +446,13 @@ app.post('/login', async (request, response) => {
     
         response.status(200).json({
           success: true,
+          userId: user.id,
+          fName: user.fName, // Assuming you have these fields
+          lName: user.lName,  // Adjust based on your actual column names
           recommendations: recommendationsResponse.data
         });
 
+      
         // response.status(200).json({
         //   success: true,
         //   recommendations: recommendationsResponse.data
@@ -542,6 +484,7 @@ function checkAuth(req, res, next) {
 
 app.get('/profile', checkAuth, async(req, res) => {
   const userId = req.session.userId;
+  console.log("the session id from profile", userId);
   try {
     const query = 'SELECT * FROM user WHERE id = ?';
     const results = await db.query(query, [userId]);
@@ -690,6 +633,31 @@ app.get("/users.html", (req, res) => {
 app.get("/UserProfile.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'UserProfile.html'));
 });
+
+app.get("/UPindex.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPindex.html'));
+});
+
+app.get('/UPindex.html', (req, res) => {
+  if (req.session.user) {
+    res.render('UPindex', { user: req.session.user });
+  } else {
+    res.redirect('/login.html');
+  }
+});
+
+
+app.get("/UPmovies.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovies.html'));
+});
+
+
+
+app.get("/UPmovie.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
+});
+
+
 
 app.get("*", (req, res) => {
   res.status(404).send("Page not found");
