@@ -26,8 +26,8 @@
                 <!-- <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
                 <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
                 <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li> -->
-                <li class="nav-item"><a class="nav-link" href="Forums.html"><strong>Forums</strong></a></li>
-                <li class="nav-item"><a class="nav-link" href="chat.html"><strong>Chat</strong></a></li>
+                <li class="nav-item"><a class="nav-link" href="upForums.html"><strong>Forums</strong></a></li>
+                <li class="nav-item"><a class="nav-link" href="upchat.html"><strong>Chat</strong></a></li>
                 <li class="nav-item"><a class="nav-link" href="userProfile.html"><strong>profile</strong></a></li>
                 <li class="nav-item"><a class="nav-link" href="index.html"><strong>Log out</strong></a></li>
                
@@ -124,7 +124,7 @@
 <div id="rating-container">
   <br>
     <input type="number" id="rating-input" min="1" max="5" step="0.5">
-    <button class="btn btn-primary shadow mx-auto" onclick="submitRating()">Submit Rating</button>
+    <button class="btn btn-primary shadow mx-auto" id ="submit-rating-btn" onclick="submitRating()">Submit Rating</button>
 </div>
 
         </div>
@@ -176,12 +176,18 @@
   });
   
   function getUserIdFromSession() {
-      const storedSessionData = localStorage.getItem('sessionData');
-      if (storedSessionData) {
-          const userData = JSON.parse(storedSessionData);
-          return userData.userId;
+    return fetch('/profile', {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        const userData = data.data;
+        return userData.id;
       }
       return null;
+    });
   }
   
   function fetchMovieInfo() {
@@ -189,6 +195,8 @@
           .then(response => response.json())
           .then(data => {
               if (data.success) {
+                  console.log("the movie info is",data.movieInfo);
+                  
                   displayMovieInfo(data.movieInfo);
                   setupVideoPlayer(data.movieInfo);
               } else {
@@ -230,49 +238,68 @@
       }
   }
   
-  function submitRating() {
-      const rating = document.getElementById('rating-input').value;
-      const userId = getUserIdFromSession();
-      const movieId = getMovieIdFromSession();
   
-      if (!userId) {
-          console.error('User ID not found in session');
-          return;
-      }
-  
-      if (!movieId) {
-          console.error('Movie ID not found in session');
-          return;
-      }
-  
-      fetch('/submit-rating', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ userId, movieId, rating }),
-      })
-      .then(response => response.json())
-      .then(data => {
-          if (data.success) {
-              console.log('Rating submitted successfully');
-              // You might want to update the UI here to reflect the new rating
-          } else {
-              console.error('Error submitting rating:', data.message);
-          }
-      })
-      .catch(error => console.error('Error:', error));
-  }
+  async function submitRating() {
+    const rating = document.getElementById('rating-input').value;
+    if (rating < 0 || rating > 5) {
+        alert('Rating has to be between 0 and 5!');
+        return;
+    }
+
+    try {
+        const userId = await getUserIdFromSession();
+        const movieId = await getMovieIdFromSession();
+
+        console.log("hey this is the ids ", userId, " -------------- ", movieId);
+
+        if (!userId) {
+            console.error('User ID not found in session');
+            return;
+        }
+
+        if (!movieId) {
+            console.error('Movie ID not found in session');
+            return;
+        }
+
+        const response = await fetch('/submit-rating', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ userId, movieId, rating }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert('Rating submitted successfully');
+            console.log('Rating submitted successfully');
+            // You might want to update the UI here to reflect the new rating
+        } else {
+            console.error('Error submitting rating:', data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
   
   function getMovieIdFromSession() {
-      const storedSessionData = localStorage.getItem('sessionData');
-      if (storedSessionData) {
-          const sessionData = JSON.parse(storedSessionData);
-          return sessionData.movieId;
-      }
-      return null;
+    return new Promise((resolve, reject) => {
+      fetch('/movie-info')
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          console.log("the movie info is",data.movieInfo);
+          resolve(data.movieInfo.movie_id);
+        } else {
+          reject(data.message);
+        }
+      })
+      .catch(error => reject(error));
+    });
   }
-
 
       const storedSessionData = localStorage.getItem('sessionData');
       console.log("hey this is the UPindex ",storedSessionData);
@@ -310,7 +337,7 @@ function fetchUserProfileAndRecommendations() {
           const userData = data.data;
           console.log(data.data);
           displayUserProfile(userData);
-          console.log(userData);
+          console.log("xxxxxxxxxxxxxxxxxxx",userData);
       } else {
           console.error('Error:', data.message);
       }
@@ -327,6 +354,9 @@ function displayUserProfile(userData) {
   `;
 
 }
+
+
+
 
 
   </script>

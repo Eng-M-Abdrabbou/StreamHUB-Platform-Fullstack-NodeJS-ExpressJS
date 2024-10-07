@@ -3,6 +3,8 @@ const app = express();
 const fs = require("fs");
 const axios = require('axios');
 
+const server = require('http').createServer(app);
+const io = require('socket.io')(server);
 
 const multer = require('multer');
 // for file uploading
@@ -18,6 +20,9 @@ const cors = require("cors");
 
 const dotenv = require("dotenv").config();
 //helps with config management and security
+
+const router = express.Router();
+
 
 const PORT = process.env.PORT || 8000;
 
@@ -35,8 +40,14 @@ app.use(session({
   cookie: { secure: false }
 }));
 
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
 
 
+// app.listen(process.env.PORT, () => {
+//   console.log(`App is running on port ${process.env.PORT}`);
+// });
 
 //REQUIRE THE DB SERVICE
 const dbService = require('./dbService.js'); 
@@ -60,6 +71,69 @@ app.use((err, req, res, next) => {
 
 
 
+
+
+
+
+
+
+
+app.post('/api/find-user', async (req, res) => {
+    try {
+        const user = await db.findUserByEmail(req.body.email);
+        if (user) {
+            res.json({ success: true, user });
+        } else {
+            res.json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+app.get('/api/messages/:userId1/:userId2', async (req, res) => {
+    try {
+        const messages = await db.getMessages(req.params.userId1, req.params.userId2);
+        res.json({ success: true, messages });
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+// Socket.IO connection handling
+io.on('connection', (socket) => {
+    socket.on('join', (userId) => {
+        socket.join(userId);
+    });
+
+    socket.on('private message', async (data) => {
+        try {
+            await db.saveMessage(data.senderId, data.receiverId, data.message);
+            io.to(data.receiverId.toString()).emit('private message', {
+                senderId: data.senderId,
+                senderName: data.senderName,
+                message: data.message
+            });
+        } catch (error) {
+            console.error('Error handling private message:', error);
+        }
+    });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(cors({
@@ -68,9 +142,65 @@ app.use(cors({
 }));
 
 
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//       const uploadDir = file.fieldname === 'movie' ? 'uploads/movies' : 'uploads/posters';
+//       cb(null, uploadDir);
+//   },
+//   filename: (req, file, cb) => {
+//       cb(null, Date.now() + path.extname(file.originalname));
+//   }
+// });
+
+// const fileFilter = (req, file, cb) => {
+//   if (file.fieldname === 'movie' && !file.mimetype.startsWith('video/')) {
+//       return cb(new Error('Only video files are allowed for movies'));
+//   }
+//   if (file.fieldname === 'poster' && !file.mimetype.startsWith('image/')) {
+//       return cb(new Error('Only image files are allowed for posters'));
+//   }
+//   cb(null, true);
+// };
+
+// const upload = multer({
+//   storage: storage,
+//   limits: { fileSize: 1000 * 1024 * 1024 }, // 1000 MB limit
+//   fileFilter: fileFilter
+// });
+
+
+// const uploadDirs = ['uploads/movies', 'uploads/posters'];
+
+// uploadDirs.forEach(dir => {
+//     const fullPath = path.join(__dirname, dir);
+//     if (!fs.existsSync(fullPath)) {
+//         fs.mkdirSync(fullPath, { recursive: true });
+//         console.log(`Created directory: ${fullPath}`);
+//     }
+// });
+
+
+
+
+
+
+
+
+
+
+// Set storage engine
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      const uploadDir = file.fieldname === 'movie' ? 'uploads/movies' : 'uploads/posters';
+      let uploadDir;
+      if (file.fieldname === 'movie') {
+          uploadDir = 'uploads/movies';
+      } else if (file.fieldname === 'poster') {
+          uploadDir = 'uploads/posters';
+      } else if (file.fieldname === 'image') {
+          uploadDir = 'uploads/forum-images';
+      } else {
+          return cb(new Error('Invalid field name'));
+      }
       cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
@@ -78,6 +208,7 @@ const storage = multer.diskStorage({
   }
 });
 
+// File filter to check file types
 const fileFilter = (req, file, cb) => {
   if (file.fieldname === 'movie' && !file.mimetype.startsWith('video/')) {
       return cb(new Error('Only video files are allowed for movies'));
@@ -85,25 +216,46 @@ const fileFilter = (req, file, cb) => {
   if (file.fieldname === 'poster' && !file.mimetype.startsWith('image/')) {
       return cb(new Error('Only image files are allowed for posters'));
   }
+  if (file.fieldname === 'image' && !file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed for forum images'));
+  }
   cb(null, true);
 };
 
+// Initialize upload
 const upload = multer({
   storage: storage,
   limits: { fileSize: 1000 * 1024 * 1024 }, // 1000 MB limit
   fileFilter: fileFilter
 });
 
-
-const uploadDirs = ['uploads/movies', 'uploads/posters'];
+// Ensure upload directories exist
+const uploadDirs = ['uploads/movies', 'uploads/posters', 'uploads/forum-images'];
 
 uploadDirs.forEach(dir => {
-    const fullPath = path.join(__dirname, dir);
-    if (!fs.existsSync(fullPath)) {
-        fs.mkdirSync(fullPath, { recursive: true });
-        console.log(`Created directory: ${fullPath}`);
-    }
+  const fullPath = path.join(__dirname, dir);
+  if (!fs.existsSync(fullPath)) {
+      fs.mkdirSync(fullPath, { recursive: true });
+      console.log(`Created directory: ${fullPath}`);
+  }
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Get all movies
 app.get('/getAllMovies', (req, res) => {
@@ -313,10 +465,6 @@ app.get('/searchMovies', async (req, res) => {
 });
 
 
-
-app.listen(process.env.PORT, () => {
-  console.log(`App is running on port ${process.env.PORT}`);
-});
 
 
 // new create
@@ -598,6 +746,198 @@ app.use((req, res, next) => {
 
 
 
+app.post('/submit-rating', async (req, res) => {
+  const { userId, movieId, rating } = req.body;
+
+  // Check if the rating is valid
+  if (rating < 0 || rating > 5) {
+    return res.status(400).json({ success: false, message: 'Rating has to be between 0 and 5!' });
+  }
+
+  // Check if the user ID and movie ID are valid
+  if (!userId || !movieId) {
+    return res.status(400).json({ success: false, message: 'User ID and movie ID are required' });
+  }
+
+  try {
+    const oldRating = await db.getRatingByUserIdAndMovieId(userId, movieId);
+
+    if (oldRating) {
+      // Update the old rating
+      const result = await db.updateRating(oldRating.interaction_id, rating);
+
+      if (result.success) {
+        res.json({ success: true, message: 'Rating updated successfully' });
+      } else {
+        res.status(400).json({ success: false, message: result.message });
+      }
+    } else {
+      // Insert the new rating
+      const result = await db.insertRating(userId, movieId, rating);
+
+      if (result.success) {
+
+        res.json({ success: true, message: 'Rating submitted successfully' });
+      } else {
+        res.status(400).json({ success: false, message: result.message });
+      }
+    }
+  } catch (error) {
+    console.error('Error submitting rating:', error);
+    res.status(500).json({ success: false, message: 'An error occurred while submitting the rating' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+router.post('/forums', async (req, res) => {
+  try {
+      const { forumName } = req.body;
+      const userId = req.session.userId;
+      
+      if (!userId) {
+          return res.status(401).json({ success: false, message: 'User not authenticated' });
+      }
+
+      const forumId = await db.createForum(forumName, userId);
+      res.json({ success: true, forumId });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Search forums
+// router.get('/forums/search', async (req, res) => {
+//   try {
+//       const { q } = req.query;
+//       const forums = await db.searchForums(q);
+//       res.json({ success: true, forums });
+//   } catch (error) {
+//       res.status(500).json({ success: false, message: error.message });
+//   }
+// });
+
+router.get('/forums/search', async (req, res) => {
+  try {
+      const { q } = req.query;
+      const forums = await db.searchForums(q);
+      res.json({ success: true, forums });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
+// Get forum details and posts
+router.get('/forums/:forumId', async (req, res) => {
+  try {
+      const { forumId } = req.params;
+      const forum = await db.getForum(forumId);
+      const posts = await db.getForumPosts(forumId);
+      res.json({ success: true, forum, posts });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Delete forum
+router.delete('/forums/:forumId', async (req, res) => {
+  try {
+      const { forumId } = req.params;
+      const userId = req.session.userId;
+      
+      if (!userId) {
+          return res.status(401).json({ success: false, message: 'User not authenticated' });
+      }
+
+      const deleted = await db.deleteForum(forumId, userId);
+      if (!deleted) {
+          return res.status(403).json({ success: false, message: 'Not authorized to delete this forum' });
+      }
+      res.json({ success: true });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Create a new post in a forum
+router.post('/forums/:forumId/posts', upload.single('image'), async (req, res) => {
+  try {
+      const { forumId } = req.params;
+      const { content } = req.body;
+      const userId = req.session.userId;
+      const imagePath = req.file ? `/uploads/forum-images/${req.file.filename}` : null;
+      
+      if (!userId) {
+          return res.status(401).json({ success: false, message: 'User not authenticated' });
+      }
+
+      const postId = await db.createPost(forumId, userId, content, imagePath);
+      res.json({ success: true, postId });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Delete a post
+router.delete('/forums/:forumId/posts/:postId', async (req, res) => {
+  try {
+      const { forumId, postId } = req.params;
+      const userId = req.session.userId;
+      
+      if (!userId) {
+          return res.status(401).json({ success: false, message: 'User not authenticated' });
+      }
+
+      const forum = await db.getForum(forumId);
+      if (forum.creator_id !== userId) {
+          return res.status(403).json({ success: false, message: 'Not authorized to delete posts in this forum' });
+      }
+
+      const deleted = await db.deletePost(postId, forumId);
+      if (!deleted) {
+          return res.status(404).json({ success: false, message: 'Post not found' });
+      }
+      res.json({ success: true });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.use('/api', router);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.post("/watch-movie", async (req, res) => {
   const { movieId, userId } = req.body;
   
@@ -756,6 +1096,15 @@ app.get("/UPmovies.html", (req, res) => {
 });
 
 
+
+app.get("/UPforums.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPforums.html'));
+});
+
+
+app.get("/UPchat.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPchat.html'));
+});
 
 app.get("/UPmovie.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
