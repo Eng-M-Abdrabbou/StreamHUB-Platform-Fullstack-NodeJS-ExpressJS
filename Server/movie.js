@@ -881,6 +881,66 @@ app.get('/movie-info/:title', async (request, response) => {
   }
 });
 
+
+// forums api 
+
+app.post('/users', (req, res) => {
+  const { fName, lName, Email, Password } = req.body;
+  const sql = 'INSERT INTO user (fName, lName, Email, Password) VALUES (?, ?, ?, ?)';
+  db.query(sql, [fName, lName, Email, Password], (err, result) => {
+    if (err) throw err;
+    res.sendStatus(201);
+  });
+});
+
+app.get('/forums', (req, res) => {
+  const sql = 'SELECT forums.*, user.fName as username FROM forums JOIN user ON forums.user_id = user.id';
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+app.get('/comments', (req, res) => {
+  const forumId = req.query.forum_id;
+  const sql = 'SELECT comments.*, user.fName as username FROM comments JOIN user ON comments.user_id = user.id WHERE forum_id = ?';
+  db.query(sql, [forumId], (err, result) => {
+    if (err) throw err;
+    res.json(result);
+  });
+});
+
+app.post('/forums', (req, res) => {
+  const { title, content, user_id } = req.body;
+  const sql = 'INSERT INTO forums (title, content, user_id) VALUES (?, ?, ?)';
+  db.query(sql, [title, content, user_id], (err, result) => {
+    if (err) throw err;
+    res.sendStatus(201);
+  });
+});
+
+app.post('/comments', (req, res) => {
+  const { forum_id, user_id, content, image_url } = req.body;
+  const sql = 'INSERT INTO comments (forum_id, user_id, content, image_url) VALUES (?, ?, ?, ?)';
+  db.query(sql, [forum_id, user_id, content, image_url], (err, result) => {
+    if (err) throw err;
+    res.sendStatus(201);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.get("/signup.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'signup.html'));
  });
@@ -931,6 +991,11 @@ app.get("/users.html", (req, res) => {
 
 app.get("/UserProfile.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'UserProfile.html'));
+});
+
+// forums link 
+app.get("/forums.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'forums.html'));
 });
 
 app.get("*", (req, res) => {
