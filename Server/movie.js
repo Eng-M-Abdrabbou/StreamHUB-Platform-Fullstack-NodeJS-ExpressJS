@@ -886,7 +886,7 @@ app.get('/movie-info/:title', async (request, response) => {
 
 // Server/movie.js
 app.post('/addcomment', (req, res) => {
-  let comment = { forum_id: req.body.forum_id, body: req.body.body, user_id: req.body.user_id };
+  let comment = { forum_id: req.body.forum_id, content: req.body.content, user_id: req.body.user_id };
   let sql = 'INSERT INTO comments SET ?';
   db.query(sql, comment, (err) => {
       if (err) {
@@ -920,7 +920,7 @@ app.get('/comments/:forum_id', (req, res) => {
 
 // Create a new forum
 app.post('/addforum', (req, res) => {
-  let forum = { title: req.body.title, body: req.body.body, user_id: req.body.user_id };
+  let forum = { title: req.body.title, content: req.body.content, user_id: req.body.user_id };
   let sql = 'INSERT INTO forums SET ?';
   db.query(sql, forum, (err) => {
       if (err) {

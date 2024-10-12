@@ -6,12 +6,19 @@
 <body>
     <h1>Create a Forum</h1>
     <form action="/addforum" method="post">
+
         <label for="user_id">User ID:</label><br>
         <input type="text" id="user_id" name="user_id"><br>
+
+
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title"><br>
-        <label for="body">Body:</label><br>
-        <textarea id="body" name="body"></textarea><br>
+
+
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
+
+
         <button type="submit">Create Forum</button>
     </form>
 
@@ -33,10 +40,15 @@
                         <div id="comments-${forum.id}"></div>
                         <form action="/addcomment" method="post">
                             <input type="hidden" name="forum_id" value="${forum.id}">
+
                             <label for="user_id">User ID:</label><br>
                             <input type="text" id="user_id" name="user_id"><br>
+
+
                             <label for="body">Comment:</label><br>
                             <textarea id="body" name="body"></textarea><br>
+
+                            
                             <button type="submit">Add Comment</button>
                         </form>
                     `;
