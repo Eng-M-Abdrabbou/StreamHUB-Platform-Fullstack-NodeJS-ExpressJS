@@ -884,49 +884,52 @@ app.get('/movie-info/:title', async (request, response) => {
 
 // forums api 
 
-app.post('/users', (req, res) => {
-  const { fName, lName, Email, Password } = req.body;
-  const sql = 'INSERT INTO user (fName, lName, Email, Password) VALUES (?, ?, ?, ?)';
-  db.query(sql, [fName, lName, Email, Password], (err, result) => {
-    if (err) throw err;
-    res.sendStatus(201);
+// Server/movie.js
+app.post('/addcomment', (req, res) => {
+  let comment = { forum_id: req.body.forum_id, body: req.body.body, user_id: req.body.user_id };
+  let sql = 'INSERT INTO comments SET ?';
+  db.query(sql, comment, (err) => {
+      if (err) {
+          throw err;
+      }
+      res.send('Comment added...');
   });
 });
 
+// Get all Forums
 app.get('/forums', (req, res) => {
-  const sql = 'SELECT forums.*, user.fName as username FROM forums JOIN user ON forums.user_id = user.id';
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    res.json(result);
+  let sql = 'SELECT * FROM forums';
+  db.query(sql, (err, results) => {
+      if (err) {
+          throw err;
+      }
+      res.json(results);
   });
 });
 
-app.get('/comments', (req, res) => {
-  const forumId = req.query.forum_id;
-  const sql = 'SELECT comments.*, user.fName as username FROM comments JOIN user ON comments.user_id = user.id WHERE forum_id = ?';
-  db.query(sql, [forumId], (err, result) => {
-    if (err) throw err;
-    res.json(result);
+// Get Comments for a Forum
+app.get('/comments/:forum_id', (req, res) => {
+  let sql = `SELECT * FROM comments WHERE forum_id = ${req.params.forum_id}`;
+  db.query(sql, (err, results) => {
+      if (err) {
+          throw err;
+      }
+      res.json(results);
   });
 });
 
-app.post('/forums', (req, res) => {
-  const { title, content, user_id } = req.body;
-  const sql = 'INSERT INTO forums (title, content, user_id) VALUES (?, ?, ?)';
-  db.query(sql, [title, content, user_id], (err, result) => {
-    if (err) throw err;
-    res.sendStatus(201);
+// Create a new forum
+app.post('/addforum', (req, res) => {
+  let forum = { title: req.body.title, body: req.body.body, user_id: req.body.user_id };
+  let sql = 'INSERT INTO forums SET ?';
+  db.query(sql, forum, (err) => {
+      if (err) {
+          throw err;
+      }
+      res.send('Forum added...');
   });
 });
 
-app.post('/comments', (req, res) => {
-  const { forum_id, user_id, content, image_url } = req.body;
-  const sql = 'INSERT INTO comments (forum_id, user_id, content, image_url) VALUES (?, ?, ?, ?)';
-  db.query(sql, [forum_id, user_id, content, image_url], (err, result) => {
-    if (err) throw err;
-    res.sendStatus(201);
-  });
-});
 
 
 
