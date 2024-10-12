@@ -944,6 +944,7 @@ app.post('/addforum', (req, res) => {
 
 
 
+
 app.get("/signup.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'signup.html'));
  });
