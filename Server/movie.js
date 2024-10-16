@@ -459,9 +459,9 @@ app.get('/searchMovies', async (req, res) => {
 
 
 
-
+// changes this route so it redirects to index.html
  app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, '..', 'Client', 'movie.html'));
+  res.sendFile(path.join(__dirname, '..', 'Client', 'index.html'));
 });
 
 
