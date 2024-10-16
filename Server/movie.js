@@ -123,64 +123,12 @@ io.on('connection', (socket) => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(cors({
   origin: 'http://localhost:8000', // replace with your frontend URL
   credentials: true
 }));
-
-
-// const storage = multer.diskStorage({
-//   destination: (req, file, cb) => {
-//       const uploadDir = file.fieldname === 'movie' ? 'uploads/movies' : 'uploads/posters';
-//       cb(null, uploadDir);
-//   },
-//   filename: (req, file, cb) => {
-//       cb(null, Date.now() + path.extname(file.originalname));
-//   }
-// });
-
-// const fileFilter = (req, file, cb) => {
-//   if (file.fieldname === 'movie' && !file.mimetype.startsWith('video/')) {
-//       return cb(new Error('Only video files are allowed for movies'));
-//   }
-//   if (file.fieldname === 'poster' && !file.mimetype.startsWith('image/')) {
-//       return cb(new Error('Only image files are allowed for posters'));
-//   }
-//   cb(null, true);
-// };
-
-// const upload = multer({
-//   storage: storage,
-//   limits: { fileSize: 1000 * 1024 * 1024 }, // 1000 MB limit
-//   fileFilter: fileFilter
-// });
-
-
-// const uploadDirs = ['uploads/movies', 'uploads/posters'];
-
-// uploadDirs.forEach(dir => {
-//     const fullPath = path.join(__dirname, dir);
-//     if (!fs.existsSync(fullPath)) {
-//         fs.mkdirSync(fullPath, { recursive: true });
-//         console.log(`Created directory: ${fullPath}`);
-//     }
-// });
-
-
-
 
 
 
