@@ -38,13 +38,21 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 col-xl-4">
                     <div>
-                        <form class="p-3 p-xl-4" method="post">
-                            <div class="mb-3"><input class="form-control" type="text" id="name-1" name="name" placeholder="Name"></div>
-                            <div class="mb-3"><input class="form-control" type="email" id="email-1" name="email" placeholder="Email"></div>
-                            <div class="mb-3"><textarea class="form-control" id="message-1" name="message" rows="6" placeholder="Message"></textarea></div>
-                            <div><button class="btn btn-primary shadow d-block w-100" type="submit">Send </button></div>
-                        </form>
-                    </div>
+                        <form class="p-3 p-xl-4" method="post" onsubmit="sendEmail(event)">
+                            <div class="mb-3">
+                                <input class="form-control" type="text" id="name-1" name="name" placeholder="Name">
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-control" type="email" id="email-1" name="email" placeholder="Email">
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="message-1" name="message" rows="6" placeholder="Message"></textarea>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary shadow d-block w-100" id="send-mail" type="submit">Send</button>
+                            </div>
+                        
+                </div>
                 </div>
                 <div class="col-md-4 col-xl-4 d-flex justify-content-center justify-content-xl-start">
                     <div class="d-flex flex-wrap flex-md-column justify-content-md-start align-items-md-start h-100">
@@ -111,6 +119,19 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/bold-and-dark.js"></script>
+    <script>function sendEmail(event) {
+        event.preventDefault();
+        
+        var name = document.getElementById('name-1').value;
+        var email = document.getElementById('email-1').value;
+        var message = document.getElementById('message-1').value;
+        
+        var mailtoLink = 'mailto:202010177@aau.ac.ae' +
+                         '?subject=Msg%20from%20User%20' + encodeURIComponent(name) +
+                         '&body=' + encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nMessage: ' + message);
+        
+        window.location.href = mailtoLink;
+    }</script>
 </body>
 
 </html>

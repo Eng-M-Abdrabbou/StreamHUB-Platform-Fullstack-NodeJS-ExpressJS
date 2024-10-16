@@ -271,7 +271,7 @@ function createMovieCard(movieInfo) {
         <img src="${pathos}" alt="${movieInfo.data.title}" style="width: 100%; height: auto;">
         <h5>${movieInfo.data.title}</h5>
         <p>${movieInfo.data.description}</p>
-        <button onclick="watchMovie(${movieInfo.data.movie_id})">Watch</button>
+        <button class="btn btn-outline-primary" onclick="watchMovie(${movieInfo.data.movie_id})">Watch</button>
     `;
     console.log(movieInfo.data.imgpath);
     return card;

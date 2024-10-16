@@ -1110,6 +1110,10 @@ app.get("/UPmovie.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
 });
 
+app.get("/learn.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'learn.html'));
+});
+
 
 
 app.get("*", (req, res) => {

@@ -13,7 +13,7 @@
 
 <body>
     <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
-        <div class="container"><img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="index.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+        <div class="container"><img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="admin.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navcol-1">
                 <ul class="navbar-nav ms-0">
                     <li class="nav-item"><a class="nav-link active" href="admin.html">Home</a></li>
@@ -36,8 +36,10 @@
         <div class="container bg-dark py-5">
             <div class="row">
                 <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <p class="fw-bold text-success mb-2">Welcome Back</p>
-                    <h4 class="fw-bold">This page is for admins only.<br> <br> Here you can manage the users or the movies on StreaHUB</h4>
+                    <p class="fw-bold text-success mb-2">Welcome Back Boss</p>
+                    <h4 class="fw-bold">Here you can manage the users or the movies on StreaHUB</h4>
+                    <br>
+
                 </div>
             </div>
             <div class="py-5 p-lg-5">
@@ -52,37 +54,29 @@
                 <tbody>
                     <tr>
                         <td>
-                            <table class="table table-dark table-hover">
+                            <table class="table table-dark">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Add Movie</th>
-                                        <th scope="col">Remove Movie</th>
-                                        <th scope="col">Update Movie</th>
+                                        <th scope="col">Movies</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="AddMovie.php">Add Movie</a></td>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="RemoveMovie.php">Remove Movie</a></td>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="UpdateMovie.php">Update Movie</a></td>
+                                        <td><a class="btn btn-primary shadow mx-auto d-block" role="button" href="movies.html">Manage Movies</a></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </td>
                         <td>
-                            <table class="table table-dark table-hover">
+                            <table class="table table-dark">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Add User</th>
-                                        <th scope="col">Remove User</th>
-                                        <th scope="col">Update User</th>
+                                        <th scope="col">Users</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="AddUser.php">Add User</a></td>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="RemoveUser.php">Remove User</a></td>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="UpdateUser.php">Update User</a></td>
+                                        <td><a class="btn btn-primary shadow mx-auto d-block" role="button" href="users.html">Manage Users</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -92,6 +86,7 @@
             </table>
 
             </div>
+            <h6 class="fw-bold">This page is for admins only.</h6>
         </div>
     </section>
    

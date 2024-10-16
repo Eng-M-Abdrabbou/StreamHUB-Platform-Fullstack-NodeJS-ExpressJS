@@ -181,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
       <img src="${pathos}" alt="${movieInfo.title}" style="width: 200px; height: auto;">
       <h5>${movieInfo.title}</h5>
       <p>${movieInfo.description}</p>
-      <button onclick="watchMovie(${movieInfo.movie_id})">Watch</button>
+      <button class="btn btn-outline-primary" onclick="watchMovie(${movieInfo.movie_id})">Watch</button>
       <br><br>
     `;
     return card;
