@@ -685,38 +685,6 @@ async function handleUpdateMovie(e) {
 }
 
 
-// function handleUpdateMovie(event) {
-//   event.preventDefault();
-
-//   const movieId = document.getElementById('update-mid-input').value;
-//   const form = document.getElementById('update-movie-form');
-
-//   const formData = new FormData(form); // Create FormData from the form
-//   formData.append('mid', movieId); // Add movie ID to formData explicitly if it's not included in the form
-
-//   const xhr = new XMLHttpRequest();
-//   xhr.open('PATCH', `http://localhost:8000/updateMovie/${movieId}`, true);
-
-//   xhr.onload = function() {
-//     if (xhr.status === 200) {
-//       const response = JSON.parse(xhr.responseText);
-//       if (response.success) {
-//         alert('Movie updated successfully');
-//       } else {
-//         alert('Failed to update movie: ' + response.message);
-//       }
-//     } else {
-//       alert('An error occurred while updating the movie.');
-//     }
-//   };
-
-//   xhr.onerror = function() {
-//     alert('An error occurred while updating the movie.');
-//   };
-
-//   xhr.send(formData); // Send the form data (including files)
-// }
-
 function handleTableActions(event) {
     const movieId = event.target.closest('tr').dataset.id;
 

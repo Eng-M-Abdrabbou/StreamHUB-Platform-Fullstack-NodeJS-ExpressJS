@@ -154,7 +154,7 @@ if (storedSessionData) {
 
   const profileContainer = document.getElementById('profile-container');
   profileContainer.innerHTML = `
-    <p>Name: ${userData.fName} ${userData.lName}</p>
+    <p>User: ${userData.fName} ${userData.lName}</p>
     <!-- Add other profile fields as needed -->
   `;
   
@@ -192,7 +192,7 @@ function displayUserProfile(userData) {
 
     const profileContainer = document.getElementById('profile-container');
     profileContainer.innerHTML = `
-        <p>Name: ${userData.fName} ${userData.lName}</p>
+        <p>User: ${userData.fName} ${userData.lName}</p>
         <!-- Add other profile fields as needed -->
     `;
 
@@ -228,21 +228,6 @@ function displayUserProfile(userData) {
         });
     });
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -531,6 +516,19 @@ window.addEventListener('unhandledrejection', event => {
   handleError(event.reason, 'Unhandled error occurred');
 });
 
+
+
+
+document.querySelectorAll('a').forEach(link => {
+    if (['company', 'legacy', 'team'].includes(link.innerHTML.trim().toLowerCase())) {
+        link.addEventListener('click', function(event) {
+            if (!link.closest('.navbar')) { // Check if the link is not inside a navbar
+                event.preventDefault(); // Prevent default anchor behavior
+                window.location.href = 'Aboutus.html'; // Redirect to about.html
+            }
+        });
+    }
+});
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="https://cdn.reflowhq.com/v2/toolkit.min.js"></script>

@@ -212,7 +212,16 @@ async function watchMovie() {
   window.location.href = '/login.html?alert=true';
 }
 
-
+document.querySelectorAll('a').forEach(link => {
+    if (['company', 'legacy', 'team'].includes(link.innerHTML.trim().toLowerCase())) {
+        link.addEventListener('click', function(event) {
+            if (!link.closest('.navbar')) { // Check if the link is not inside a navbar
+                event.preventDefault(); // Prevent default anchor behavior
+                window.location.href = 'Aboutus.html'; // Redirect to about.html
+            }
+        });
+    }
+});
 
 </script>
 <script src="assets/bootstrap/js/bootstrap.min.js"></script>
