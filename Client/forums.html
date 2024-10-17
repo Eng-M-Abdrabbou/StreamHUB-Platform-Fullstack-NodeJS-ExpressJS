@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Forums</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
 <body>
     <h1>Create a Forum</h1>
@@ -10,20 +11,18 @@
         <label for="user_id">User ID:</label><br>
         <input type="text" id="user_id" name="user_id"><br>
 
-
         <label for="title">Title:</label><br>
         <input type="text" id="title" name="title"><br>
 
-
         <label for="content">Content:</label><br>
         <textarea id="content" name="content"></textarea><br>
-
 
         <button type="submit">Create Forum</button>
     </form>
 
     <h1>Forums</h1>
-    <div id="forums"></div>
+    <div id="forums">
+    </div>
 
     <script>
         fetch('/forums')
@@ -33,12 +32,15 @@
                 data.forEach(forum => {
                     let forumElement = document.createElement('div');
                     forumElement.innerHTML = `
-                        <h2>${forum.title}</h2>
-                        <p>${forum.content}</p>
-                        <p>User ID: ${forum.user_id}</p>
-                        <h3>Comments:</h3>
-                        <div id="comments-${forum.id}"></div>
-                        <form action="/addcomment" method="post">
+                        <div class="card">
+                            <div class="card-header">
+                                Forum Title : ${forum.title}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="user_id"> posted by ${forum.user_id} </h5>
+                                <p class="content"> ${forum.content} </p>
+                                <div id="comments-${forum.id}"></div>
+                                 <form action="/addcomment" method="post">
                             <input type="hidden" name="forum_id" value="${forum.id}">
 
                             <label for="user_id">User ID:</label><br>
@@ -49,8 +51,11 @@
                             <textarea id="content" name="content"></textarea><br>
 
                             
-                            <button type="submit">Add Comment</button>
+                            <button type="submit" class="btn btn-primary">Add Comment</button>
                         </form>
+                         
+                            </div>
+                        </div>
                     `;
                     forumContainer.appendChild(forumElement);
 
@@ -69,4 +74,3 @@
     </script>
 </body>
 </html>
-
