@@ -34,11 +34,18 @@
                     forumElement.innerHTML = `
                         <div class="card">
                             <div class="card-header">
-                                Forum Title : ${forum.title}
+                                <h4>Forum Title: ${forum.title}</h4>
+                                <p>Posted by: ${forum.user_id}</p>
                             </div>
                             <div class="card-body">
-                                <h5 class="user_id"> posted by ${forum.user_id} </h5>
-                                <p class="content"> ${forum.content} </p>
+                                <p class="content"> <h3>Forum Content</h3> ${forum.content} </p>
+
+
+                                </div>
+
+
+                                    <div class="card">
+                                        <h3>Comments</h3>
                                 <div id="comments-${forum.id}"></div>
                                  <form action="/addcomment" method="post">
                             <input type="hidden" name="forum_id" value="${forum.id}">
