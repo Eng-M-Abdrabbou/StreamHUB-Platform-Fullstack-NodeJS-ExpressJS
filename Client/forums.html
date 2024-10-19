@@ -21,7 +21,7 @@
         <button type="submit">Create</button>
     </form>
     <script>
-        const userId = 1;
+        const userId = 8;
         const apiUrl = 'http://localhost:8000';
 
         document.getElementById('createForumForm').addEventListener('submit', function (e) {
@@ -48,24 +48,34 @@
                     const forumsDiv = document.getElementById('forums');
                     forumsDiv.innerHTML = '';
                     forums.forEach(forum => {
-                        const forumElement = document.createElement('div');
-                        forumElement.className = 'forum';
-                        forumElement.innerHTML = `
-                            <h3>${forum.title}</h3>
-                            <p>${forum.content}</p>
-                            <p>Created by User ID: ${forum.user_id}</p>
-                            <div id="comments-${forum.id}"></div>
-                            <form onsubmit="createComment(event, ${forum.id})">
-                                <textarea placeholder="Content" required></textarea>
-                                <button type="submit">Comment</button>
-                            </form>
-                            <h3>Comments:</h3>
-                            <div id="comments-${forum.id}"></div>
-                            <button onclick="deleteForum(${forum.id})">Delete</button>
-                        `;
-                        forumsDiv.appendChild(forumElement);
-                        loadComments(forum.id);
-                    });
+  const forumElement = document.createElement('div');
+  forumElement.className = 'forum';
+  forumElement.innerHTML = `
+    <h3>${forum.title}</h3>
+    <p>${forum.content}</p>
+    <p>Created by User ID: ${forum.user_id}</p>
+    <form id="comment-form-${forum.id}">
+      <input type="hidden" name="forumId" value="${forum.id}">
+      <textarea placeholder="Content" required></textarea>
+      <button type="submit">Comment</button>
+    </form>
+    <h3>Comments:</h3>
+    <div id="comments-${forum.id}"></div>
+    ${forum.user_id == userId ? `<button onclick="deleteForum(${forum.id})">Delete forum</button>` : ''}
+  `;
+  forumsDiv.appendChild(forumElement);
+
+  const commentForm = document.getElementById(`comment-form-${forum.id}`);
+  commentForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const textarea = commentForm.querySelector('textarea');
+    const content = textarea.value;
+    const forumId = commentForm.querySelector('input[name="forumId"]').value;
+    createComment(content, forumId);
+  });
+
+  loadComments(forum.id);
+});
                 })
                 .catch(error => console.error('Error:', error));
         }
@@ -89,13 +99,14 @@
     const commentsDiv = document.getElementById(`comments-${forumId}`);
     commentsDiv.innerHTML = '';
     comments.forEach(comment => {
-      const commentElement = document.createElement('div');
-      commentElement.className = 'comment';
-      commentElement.textContent = `${comment.content}`;
-
-      const commentedBy = document.createElement('p');
-      commentedBy.textContent = `Commented by User ID: ${comment.user_id}`;
-      commentElement.appendChild(commentedBy);
+        const commentElement = document.createElement('div');
+    commentElement.className = 'comment';
+    const commentText = document.createElement('p');
+    commentText.textContent = ` Commented by User ID: ${comment.user_id} - ${comment.content} `;
+    commentElement.appendChild(commentText);
+    
+    // ...
+    commentsDiv.appendChild(commentElement);
 
       if (comment.user_id == userId) {
         const deleteButton = document.createElement('button');
@@ -115,17 +126,14 @@
 }
 
 
-
-function createComment(event, forumId) {
-  event.preventDefault();
-  const content = event.target.querySelector('textarea').value;
-  fetch(`${apiUrl}/forums/${forumId}/postcomments`, {
+function createComment(content, forumId) {
+  fetch(`${apiUrl}/forums/${forumId}/comments`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'user-id': userId
     },
-    body: JSON.stringify({ content })
+    body: JSON.stringify({ content: content }) // Send content as a JSON object
   })
   .then(response => response.text())
   .then(data => {
@@ -134,6 +142,7 @@ function createComment(event, forumId) {
   })
   .catch(error => console.error('Error:', error));
 }
+
 
         function deleteComment(commentId) {
             fetch(`${apiUrl}/comments/${commentId}`, {
@@ -151,20 +160,24 @@ function createComment(event, forumId) {
         }
 
         function deleteForum(forumId) {
-            fetch(`${apiUrl}/forums/${forumId}`, {
-                method: 'DELETE',
-                headers: {
-                    'user-id': userId
-                }
-            })
-            .then(response => response.text())
-            .then(data => {
-                alert(data);
-                loadForums();
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
+  fetch(`${apiUrl}/forums/${forumId}`, {
+    method: 'DELETE',
+    headers: {
+      'user-id': userId
+    }
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert(data);
+    const forumElement = document.querySelector(`.forum[data-forum-id="${forumId}"]`);
+    if (forumElement) {
+      forumElement.remove();
+    }
+    loadForums();
+  })
+  .catch(error => console.error('Error:', error));
+}
+       
         loadForums();
     </script>
 </body>

@@ -922,15 +922,15 @@ app.delete('/forums/:id', isLoggedIn, (req, res) => {
   });
 });
 
-app.post('/forums/:id/postcomments', isLoggedIn, (req, res) => {
+app.post('/forums/:forumId/comments', isLoggedIn, (req, res) => {
   if (!req.user) return res.status(403).send('Login required');
 
   const { content } = req.body;
-  const forum_id = req.params.id;
+  const forum_id = req.params.forumId;
   const user_id = req.user.id;
   db.query('INSERT INTO comments (forum_id, user_id, content) VALUES (?, ?, ?)', [forum_id, user_id, content], (err, result) => {
-      if (err) throw err;
-      res.send('Comment created');
+    if (err) throw err;
+    res.send('Comment created');
   });
 });
 
