@@ -9,43 +9,143 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/Inter.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
+
     <style>
-        .movie-carousel {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch;
+
+         .fjalla-one-regular {
+  font-family: 'Fjalla One', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.movie-card {
+  position: relative;
+  width: calc(120px * 1.618); /* Golden ratio */
+  height: 240px;
+  margin: 10px;
+  transition: transform 0.3s, background 0.3s, z-index 0.3s;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.movie-card:hover {
+  transform: scale(1.1); /* Slight growth */
+  background: rgba(128, 128, 128, 0.125); /* Solid grey background */
+  z-index: 10; /* Ensure it overlays other elements */
+  /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  border: 2px solid neon;
+  animation: glow 0.5s ease; */
+}
+
+/* @keyframes glow {
+  0% { box-shadow: 0 0 5px #ff0000; }
+  100% { box-shadow: 0 0 15px neon, 0 0 25px neon, 0 0 35px neon, 0 0 45px neon; }
+} */
+
+.movie-card, .movie-card * {
+  user-select: none;
+}
+
+
+.movie-poster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s;
+}
+
+.movie-card:hover .movie-poster {
+  opacity: 0.4; 
+}
+
+.movie-info {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 10px;
+  color: white;
+  box-sizing: border-box;
+  z-index: 5;
+  font-size: 12px; /* Smaller font size */
+}
+
+.movie-card:hover .movie-info {
+  display: block;
+}
+
+.movie-info h5 {
+  font-weight: bold;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  font-size: 12px; /* Smaller font size */
+  margin: 0;
+}
+
+.movie-info p {
+  margin: 5px 0;
+  color: lightgrey;
+  font-size: 12px; /* Much smaller font size */
+  text-shadow: 1px 1px 2px black;
+}
+::-webkit-scrollbar {
+                width: 12px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #000; 
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #fff;
+            }
+            </style>
+
+        <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- <style>
+            .fjalla-one-regular {
+          font-family: 'Fjalla One', sans-serif;
+          font-weight: 400;
+          font-style: normal;
         }
-        .movie-card {
-            flex: 0 0 auto;
-            width: 250px;
-            margin-right: 20px;
-            scroll-snap-align: start;
-        }
-    </style>
+        </style> -->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
-
-<body>
-    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
-        <div class="container"><img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="UPindex.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="UPindex.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong>Movies</strong></a></li>
-                    <!-- <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li> -->
-                    <li class="nav-item"><a class="nav-link" href="upForums.html"><strong>Forums</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="upchat.html"><strong>Chat</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="userProfile.html"><strong>profile</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html"><strong>Log out</strong></a></li>
-                   
+    <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
+        <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+           
+            <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
+                <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
+                    <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
+                        <li class="nav-item"><a class="nav-link" href="UPindex.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                        <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
+                        <li class="nav-item"><a class="nav-link" href="upForums.html"><strong style="color: rgb(0, 0, 0);">Forums</strong></a></li>
+                        <li class="nav-item"><a class="nav-link" href="upchat.html"><strong style="color: rgb(0, 0, 0);">Chat</strong></a></li>
+                        <li class="nav-item"><a class="nav-link active" href="userProfile.html"><strong style="color: rgb(0, 0, 0);">profile</strong></a></li>
+                        <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Log out</strong></a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 0, 0);">
+                              <i class="fas fa-user" style="margin-right: 5px;"></i> YourUsername
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                              <a class="dropdown-item" href="#">Action</a>
+                              <a class="dropdown-item" href="#">Another action</a>
+                              <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                          </li>                          
+                          <li class="nav-item d-flex align-items-center">
+                            <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
+                            <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
+                              <i class="fas fa-search"></i>
+                            </button>
+                          </li>                         
+                    </ul>                   
+                </div>
             </div>
-            <p  style="margin-right: -100px;" id="profile-container"></p>
-        </div>
-    </nav>
+        </nav>
     <header class="bg-dark">
 
     </header>
@@ -83,7 +183,7 @@
         
     </section>
     
-    <footer class="bg-dark">
+    <footer class="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
         <div class="container py-4 py-lg-5">
             <div class="row justify-content-center">
                 <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
@@ -127,10 +227,9 @@ if (storedSessionData) {
   const userData = JSON.parse(storedSessionData);
   console.log(userData);
 
-
-  const profileContainer = document.getElementById('profile-container');
+  const profileContainer = document.getElementById('navbarDropdownMenuLink');
   profileContainer.innerHTML = `
-    <p>Name: ${userData.fName} ${userData.lName}</p>
+  <i class="fas fa-user" style="margin-right: 5px;"></i> <p>User Name: ${userData.fName} ${userData.lName}</p>
     <!-- Add other profile fields as needed -->
   `;
   
@@ -145,7 +244,8 @@ if (storedSessionData) {
 
 
 
-} else {
+} else  {
+
   // If no stored session data, fetch it from the server
   fetch('/profile', {
     method: 'GET',
@@ -164,10 +264,13 @@ if (storedSessionData) {
       `
       ;
     } else {
+
       console.error('Error:', data.message);
     }
+   
   })
   .catch((error) => console.error(error));}
+
 
 
 function displayRecommendedMovies(recommendations) {
@@ -187,19 +290,62 @@ function displayRecommendedMovies(recommendations) {
     });
   }
   
-  // Function to create movie cards
-  function createMovieCard(movieInfo) {
-    const card = document.createElement('div');
-    card.className = 'movie-card';
-    card.innerHTML = `
-      <img src="${movieInfo.poster}" alt="${movieInfo.title}" style="width: 100%; height: auto;">
-      <h5>${movieInfo.title}</h5>
-      <p>${movieInfo.description}</p>
-      <button onclick="watchMovie(${movieInfo.id})">Watch</button>
-    `;
-    return card;
-  }
+
+
+
+  window.onload = async function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const movieId = urlParams.get('movieId');
   
+  if (movieId) {
+    await watchMovie(movieId);
+  }
+}
+
+
+
+
+
+
+  // Function to create movie cards
+//   function createMovieCard(movieInfo) {
+//     const card = document.createElement('div');
+//     card.className = 'movie-card';
+//     card.innerHTML = `
+//       <img src="${movieInfo.poster}" alt="${movieInfo.title}" style="width: 100%; height: auto;">
+//       <h5>${movieInfo.title}</h5>
+//       <p>${movieInfo.description}</p>
+//       <button onclick="watchMovie(${movieInfo.id})">Watch</button>
+//     `;
+//     return card;
+//   }
+  
+
+
+
+function createMovieCard(movieInfo) {
+  const card = document.createElement('div');
+  card.className = 'movie-card';
+  card.setAttribute('data-movie-id', movieInfo.id);
+  card.onclick = function() { watchMovie(movieInfo.movie_id); };
+  const pathos = movieInfo.imgpath.split('\\').join('/');
+  const duration = movieInfo.runtime < 60 ? `${movieInfo.runtime}m` : `${Math.floor(movieInfo.runtime / 60)}h ${movieInfo.runtime % 60}m`;
+
+  card.innerHTML = `
+    <img src="${pathos}" alt="${movieInfo.title}" class="movie-poster" style="width: 100%; height: auto;>
+    <div class="movie-info">
+      <h5>${movieInfo.title}</h5>
+      <p>${movieInfo.description.length > 25 ? movieInfo.description.substring(0, 100) + '...' : movieInfo.description}</p>
+      <p>${movieInfo.genre}</p>
+      <p>${duration}</p>
+    </div>
+  `;
+
+  return card;
+}
+
+
+
   function watchMovie(movieId) {
     window.location.href = `/movie?id=${movieId}`;
   }
@@ -218,24 +364,33 @@ function fetchUserProfileAndRecommendations() {
             
         } else {
             console.error('Error:', data.message);
+            window.location.href = '/login.html?alertU=true';
+
         }
     })
     .catch((error) => console.error(error));
 }
 
+
+
 function displayUserProfile(userData) {
     const profileContainer = document.getElementById('profile-container2');
     profileContainer.innerHTML = `
-        <h4>User Full Name: ${userData.fName} ${userData.lName}</h4>
+    <body>
+        <br>
+        <div style="width: 200px; height: 200px; background-color: white; border-radius: 300%; display: flex; justify-content: center; align-items: center;">
+            <i class="fas fa-user fa-6x" style="color: black;"></i>
+        </div>
+        <br><br>
+        <h4>Username: ${userData.fName} ${userData.lName}</h4>
         <p>Email: ${userData.Email}</p>        
         <!-- Add other profile fields as needed -->
     `;
 
-    const profileContainer2 = document.getElementById('profile-container');
-    profileContainer2.innerHTML = `
-        <p>User: ${userData.fName} ${userData.lName}</p>
-        <!-- Add other profile fields as needed -->
-    `;
+     const profileContainer2 = document.getElementById('navbarDropdownMenuLink');
+  profileContainer2.innerHTML = `
+   <i class="fas fa-user" style="margin-right: 5px;"></i>${userData.fName} ${userData.lName}
+     `;
 
 }
 
@@ -255,20 +410,51 @@ function displayRecommendedMovies(recommendations) {
         .catch((error) => console.error('Error fetching movie info:', error));
     });
 }
+
 function createMovieCard(movieInfo) {
     const card = document.createElement('div');
     card.className = 'movie-card';
-    const pathos = movieInfo.data.imgpath.split('\\').join('/')
+    card.setAttribute('data-movie-id', movieInfo.id);
+    card.onclick = function() { watchMovie(movieInfo.movie_id); };
+    const pathos = movieInfo.data.imgpath.split('\\').join('/');
+    const duration = movieInfo.data.runtime < 60 ? `${movieInfo.data.runtime}m` : `${Math.floor(movieInfo.data.runtime / 60)}h ${movieInfo.data.runtime % 60}m`;
     console.log(pathos);
     card.innerHTML = `
-        <img src="${pathos}" alt="${movieInfo.data.title}" style="width: 100%; height: auto;">
-        <h5>${movieInfo.data.title}</h5>
-        <p>${movieInfo.data.description}</p>
-        <button class="btn btn-outline-primary" onclick="watchMovie(${movieInfo.data.movie_id})">Watch</button>
+        <img src="${pathos}" alt="${movieInfo.data.title}" class="movie-poster" style="width: 100%; height: auto;">
+      
+        <div class="movie-info">
+       <h5>${movieInfo.data.title}</h5>
+       <p>${movieInfo.data.description.length > 25 ? movieInfo.data.description.substring(0, 100) + '...' : movieInfo.data.description}</p>
+       <p>${movieInfo.data.genre}</p>
+       <p>${duration}</p>
+     </div>
     `;
     console.log(movieInfo.data.imgpath);
     return card;
 }
+
+
+// function createMovieCard(movieInfo) {
+//   const card = document.createElement('div');
+//   card.className = 'movie-card';
+//   card.setAttribute('data-movie-id', movieInfo.id);
+//   card.onclick = function() { watchMovie(movieInfo.movie_id); };
+//   const pathos = movieInfo.imgpath.split('\\').join('/');
+//   const duration = movieInfo.runtime < 60 ? `${movieInfo.runtime}m` : `${Math.floor(movieInfo.runtime / 60)}h ${movieInfo.runtime % 60}m`;
+
+//   card.innerHTML = `
+//     <img src="${pathos}" alt="${movieInfo.title}" class="movie-poster">
+//     <div class="movie-info">
+//       <h5>${movieInfo.title}</h5>
+//       <p>${movieInfo.description.length > 25 ? movieInfo.description.substring(0, 100) + '...' : movieInfo.description}</p>
+//       <p>${movieInfo.genre}</p>
+//       <p>${duration}</p>
+//     </div>
+//   `;
+
+//   return card;
+// }
+
 
 function getUserIdFromSession() {
     return new Promise((resolve, reject) => {

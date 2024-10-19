@@ -11,21 +11,64 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/Inter.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        .fjalla-one-regular {
+      font-family: 'Fjalla One', sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+    ::-webkit-scrollbar {
+                width: 12px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #000; 
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #fff;
+            }
+    </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
-        <div class="container"><img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="index.php"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.html"><strong>Movies</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li>
-                    <li class="nav-item"><a class="nav-link active" href="login.html"><strong>Log in</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html"><strong>Sign up</strong></a></li>
-                </ul><a class="btn btn-primary shadow mx-auto" role="button" href="/signup.html" style="height: 61.68px;width: 116.52px;margin: 0px;padding: 4.6px 32px;">Sign up</a>
+<body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
+    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+       
+        <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
+            <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
+                <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
+                    <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                    <li class="nav-item"><a class="nav-link " href="products.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="team.html"><strong style="color: rgb(0, 0, 0);">Team</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong style="color: rgb(0, 0, 0);">Contacts</strong></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="login.html"><strong style="color: rgb(0, 0, 0);">Log in</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="signup.html"><strong style="color: rgb(0, 0, 0);">Sign up</strong></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 0, 0);">
+                          <strong>Dropdown link</strong>  
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';"
+                           onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Action</a>
+                          <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Another action</a>
+                          <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Something else here</a>
+                        </div>
+                        
+                      </li>
+                      <li class="nav-item d-flex align-items-center">
+                        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
+                        <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
+                          <i class="fas fa-search"></i>
+                        </button>
+                      </li>
+                      
+                </ul><a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Sign up</a>
+               
             </div>
         </div>
     </nav>
@@ -41,17 +84,17 @@
 
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 col-xl-4">
-                    <div class="card">
+                    <div class="card" style="background-color: #ffffff; color: rgb(0, 0, 0);">
                         <div class="card-body text-center d-flex flex-column align-items-center">
-                            <div class="bs-icon-xl bs-icon-circle bs-icon-primary shadow bs-icon my-4"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
+                            <div class="bs-icon-xl bs-icon-circle bs-icon-dark shadow bs-icon my-4"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
                                     <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
                                 </svg></div>
                                 <form id="loginForm" action="login.html" method="post">
                                 <div class="mb-3"><input class="form-control" id="email" type="email" name="email" placeholder="Email" required></div>
                                 <div class="mb-3"><input class="form-control" id="password" type="password" name="password" placeholder="Password" required></div>
-                                <div class="mb-3"><button class="btn btn-primary shadow d-block w-100" type="submit">Log in</button></div>
+                                <div class="mb-3"><button class="btn btn-dark shadow d-block w-100" type="submit">Log in</button></div>
                             </form>
-                            <p>don't have an account? <a href="signup.html">Sign up</a></p>
+                            <p>don't have an account? <a href="signup.html" style="color: rgb(0, 0, 0);">Sign up</a></p>
                         </div>
                     </div>
                 </div>
@@ -59,7 +102,7 @@
          
         </div>
     </section>
-    <footer class="bg-dark">
+    <footer class="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
         <div class="container py-4 py-lg-5">
             <div class="row justify-content-center">
                 <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
@@ -106,6 +149,26 @@
     </footer>
     <script>
    
+let movieId = null;
+   window.onload = function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  
+  if (urlParams.get('alert')) {
+    alert('You must sign up or log in to watch movies on StreamHub');
+     movieId = urlParams.get('movieId');
+     movieId = localStorage.getItem('movieId');
+     console.log(" movieId is this one",movieId);
+  }
+
+
+  if (urlParams.get('alertU')) {
+    alert('You must sign up or log in to be able to access your profile on StreamHub');
+  }
+
+}
+
+
+
    document.querySelector('form').addEventListener('submit', async (e) => {
     e.preventDefault();
 
@@ -145,10 +208,18 @@
                             console.log('Login successful');
                             window.location.href = '/admin.html';
                         } else {
-                            // Redirect to regular user page
+                            if (movieId != null) {
+                                console.log('going to movie, Login successful');
+                                window.location.href = `/userprofile.html?movieId=${movieId}`
+                            }
+                            else{
+
+                                   // Redirect to regular user page
                             console.log('Login successful');
                             window.location.href = '/userprofile.html';
                         }
+                            }
+                         
                     })
                     .catch(error => {
                         console.error('Fetch error:', error);
@@ -168,12 +239,14 @@
     }
     });
 
-    window.onload = function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  if (urlParams.get('alert')) {
-    alert('You must sign up or log in to be able to watch movies on StreamHub');
-  }
-}
+//     window.onload = function() {
+//   const urlParams = new URLSearchParams(window.location.search);
+  
+//   if (urlParams.get('alert')) {
+//     alert('You must sign up or log in to be able to watch movies on StreamHub');
+//   }
+// }
+
 
 
 document.querySelectorAll('a').forEach(link => {

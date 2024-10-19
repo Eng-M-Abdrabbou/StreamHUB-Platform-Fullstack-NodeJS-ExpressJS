@@ -130,7 +130,7 @@
         </div>
 </section>
 
-    <footer class="bg-dark">
+<footer class="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
         <div class="container py-4 py-lg-5">
             <div class="row justify-content-center">
                 <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
@@ -201,6 +201,7 @@
                   setupVideoPlayer(data.movieInfo);
               } else {
                   console.error('Error:', data.message);
+                  window.location.href = '/login.html?alertU=true';
               }
           })
           .catch(error => console.error('Error:', error));
@@ -309,11 +310,16 @@ console.log("hey this is the UPindex ",userData);
 console.log(userData);
 
 
-const profileContainer = document.getElementById('profile-container');
-profileContainer.innerHTML = `
-  <p>User: ${userData.fName} ${userData.lName}</p>
-  <!-- Add other profile fields as needed -->
-`;
+// const profileContainer = document.getElementById('profile-container');
+// profileContainer.innerHTML = `
+//   <p>User: ${userData.fName} ${userData.lName}</p>
+//   <!-- Add other profile fields as needed -->
+
+   const profileContainer2 = document.getElementById('navbarDropdownMenuLink');
+  profileContainer2.innerHTML = `
+   <i class="fas fa-user" style="margin-right: 5px;"></i>${userData.fName} ${userData.lName}
+     `;
+// `;
 
 if (userData.recommendations) {
   //displayRecommendedMovies(userData.recommendations);
@@ -347,11 +353,10 @@ function fetchUserProfileAndRecommendations() {
 
 function displayUserProfile(userData) {
 
-  const profileContainer = document.getElementById('profile-container');
-  profileContainer.innerHTML = `
-      <p>User: ${userData.fName} ${userData.lName}</p>
-      <!-- Add other profile fields as needed -->
-  `;
+  const profileContainer2 = document.getElementById('navbarDropdownMenuLink');
+  profileContainer2.innerHTML = `
+   <i class="fas fa-user" style="margin-right: 5px;"></i>${userData.fName} ${userData.lName}
+     `;
 
 }
 
