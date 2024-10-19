@@ -1,83 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Forums</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .forum, .comment { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+        .comment { margin-left: 20px; }
+        button { margin-top: 5px; }
+    </style>
 </head>
 <body>
-    <h1>Create a Forum</h1>
-    <form action="/addforum" method="post">
-
-        <label for="user_id">User ID:</label><br>
-        <input type="text" id="user_id" name="user_id"><br>
-
-        <label for="title">Title:</label><br>
-        <input type="text" id="title" name="title"><br>
-
-        <label for="content">Content:</label><br>
-        <textarea id="content" name="content"></textarea><br>
-
-        <button type="submit">Create Forum</button>
+    <h1>Forum App</h1>
+    <div id="forums"></div>
+    <h2>Create Forum</h2>
+    <form id="createForumForm">
+        <input type="text" id="forumTitle" placeholder="Title" required>
+        <textarea id="forumContent" placeholder="Content" required></textarea>
+        <button type="submit">Create</button>
     </form>
-
-    <h1>Forums</h1>
-    <div id="forums">
-    </div>
-
     <script>
-        fetch('/forums')
-            .then(response => response.json())
+        const userId = 1;
+        const apiUrl = 'http://localhost:8000';
+
+        document.getElementById('createForumForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const title = document.getElementById('forumTitle').value;
+            const content = document.getElementById('forumContent').value;
+            fetch(`${apiUrl}/forums`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'user-id': userId
+                },
+                body: JSON.stringify({ title, content })
+            })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+        });
+
+        function loadForums() {
+            fetch(`${apiUrl}/forums`)
+                .then(response => response.json())
+                .then(forums => {
+                    const forumsDiv = document.getElementById('forums');
+                    forumsDiv.innerHTML = '';
+                    forums.forEach(forum => {
+                        const forumElement = document.createElement('div');
+                        forumElement.className = 'forum';
+                        forumElement.innerHTML = `
+                            <h3>${forum.title}</h3>
+                            <p>${forum.content}</p>
+                            <p>Created by User ID: ${forum.user_id}</p>
+                            <div id="comments-${forum.id}"></div>
+                            <form onsubmit="createComment(event, ${forum.id})">
+                                <textarea placeholder="Content" required></textarea>
+                                <button type="submit">Comment</button>
+                            </form>
+                            <h3>Comments:</h3>
+                            <div id="comments-${forum.id}"></div>
+                            <button onclick="deleteForum(${forum.id})">Delete</button>
+                        `;
+                        forumsDiv.appendChild(forumElement);
+                        loadComments(forum.id);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function loadComments(forumId) {
+  console.log(`Sending request to fetch comments for forum ID: ${forumId}`);
+  console.log(`API URL: ${apiUrl}`);
+
+  fetch(`${apiUrl}/forums/${forumId}/comments`, {
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => {
+    console.log(`Response status: ${response.status}`);
+    return response.json();
+  })
+  .then(comments => {
+    console.log('Fetched comments:', comments);
+    const commentsDiv = document.getElementById(`comments-${forumId}`);
+    commentsDiv.innerHTML = '';
+    comments.forEach(comment => {
+      const commentElement = document.createElement('div');
+      commentElement.className = 'comment';
+      commentElement.textContent = `${comment.content}`;
+
+      const commentedBy = document.createElement('p');
+      commentedBy.textContent = `Commented by User ID: ${comment.user_id}`;
+      commentElement.appendChild(commentedBy);
+
+      if (comment.user_id == userId) {
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => deleteComment(comment.id);
+        commentElement.appendChild(deleteButton);
+      }
+
+      commentsDiv.appendChild(commentElement);
+    });
+  })
+  .catch(error => {
+    console.error('Error fetching comments:', error);
+    console.error(`Error message: ${error.message}`);
+    console.error(`Error stack: ${error.stack}`);
+  });
+}
+
+
+
+function createComment(event, forumId) {
+  event.preventDefault();
+  const content = event.target.querySelector('textarea').value;
+  fetch(`${apiUrl}/forums/${forumId}/postcomments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-id': userId
+    },
+    body: JSON.stringify({ content })
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert(data);
+    loadComments(forumId);
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+        function deleteComment(commentId) {
+            fetch(`${apiUrl}/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'user-id': userId
+                }
+            })
+            .then(response => response.text())
             .then(data => {
-                let forumContainer = document.getElementById('forums');
-                data.forEach(forum => {
-                    let forumElement = document.createElement('div');
-                    forumElement.innerHTML = `
-                        <div class="card">
-                            <div class="card-header">
-                                <h4>Forum Title: ${forum.title}</h4>
-                                <p>Posted by: ${forum.user_id}</p>
-                            </div>
-                            <div class="card-body">
-                                <p class="content"> <h3>Forum Content</h3> ${forum.content} </p>
+                alert(data);
+                loadForums();
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
+        function deleteForum(forumId) {
+            fetch(`${apiUrl}/forums/${forumId}`, {
+                method: 'DELETE',
+                headers: {
+                    'user-id': userId
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                loadForums();
+            })
+            .catch(error => console.error('Error:', error));
+        }
 
-                                </div>
-
-
-                                    <div class="card">
-                                        <h3>Comments</h3>
-                                <div id="comments-${forum.id}"></div>
-                                 <form action="/addcomment" method="post">
-                            <input type="hidden" name="forum_id" value="${forum.id}">
-
-                            <label for="user_id">User ID:</label><br>
-                            <input type="text" id="user_id" name="user_id"><br>
-
-
-                            <label for="content">Comment:</label><br>
-                            <textarea id="content" name="content"></textarea><br>
-
-                            
-                            <button type="submit" class="btn btn-primary">Add Comment</button>
-                        </form>
-                         
-                            </div>
-                        </div>
-                    `;
-                    forumContainer.appendChild(forumElement);
-
-                    fetch(`/comments/${forum.id}`)
-                        .then(response => response.json())
-                        .then(comments => {
-                            let commentContainer = document.getElementById(`comments-${forum.id}`);
-                            comments.forEach(comment => {
-                                let commentElement = document.createElement('p');
-                                commentElement.innerHTML = `<strong>${comment.user_id}:</strong> ${comment.content}`;
-                                commentContainer.appendChild(commentElement);
-                            });
-                        });
-                });
-            });
+        loadForums();
     </script>
 </body>
 </html>

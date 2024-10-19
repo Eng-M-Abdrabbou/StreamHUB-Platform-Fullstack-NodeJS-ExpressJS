@@ -884,54 +884,84 @@ app.get('/movie-info/:title', async (request, response) => {
 
 // forums api 
 
-// Server/movie.js
-app.post('/addcomment', (req, res) => {
-  let comment = { forum_id: req.body.forum_id, content: req.body.content, user_id: req.body.user_id };
-  let sql = 'INSERT INTO comments SET ?';
-  db.query(sql, comment, (err) => {
-      if (err) {
-          throw err;
-      }
-      res.send('Comment added...');
+// Middleware to check if user is logged in
+function isLoggedIn(req, res, next) {
+  if (req.headers['user-id']) {
+      req.user = { id: req.headers['user-id'] };
+      next();
+  } else {
+      next();
+  }
+}
+
+app.post('/forums', isLoggedIn, (req, res) => {
+  if (!req.user) return res.status(403).send('Login required');
+
+  const { title, content } = req.body;
+  const user_id = req.user.id;
+  db.query('INSERT INTO forums (title, content, user_id) VALUES (?, ?, ?)', [title, content, user_id], (err, result) => {
+      if (err) throw err;
+      res.send('Forum created');
   });
 });
 
-// Get all Forums
 app.get('/forums', (req, res) => {
-  let sql = 'SELECT * FROM forums';
-  db.query(sql, (err, results) => {
-      if (err) {
-          throw err;
-      }
-      res.json(results);
+  db.query('SELECT * FROM forums', (err, result) => {
+      if (err) throw err;
+      res.send(result);
   });
 });
 
-// Get Comments for a Forum
-app.get('/comments/:forum_id', (req, res) => {
-  let sql = `SELECT * FROM comments WHERE forum_id = ${req.params.forum_id}`;
-  db.query(sql, (err, results) => {
-      if (err) {
-          throw err;
-      }
-      res.json(results);
+app.delete('/forums/:id', isLoggedIn, (req, res) => {
+  if (!req.user) return res.status(403).send('Login required');
+
+  const forum_id = req.params.id;
+  db.query('DELETE FROM forums WHERE id = ? AND user_id = ?', [forum_id, req.user.id], (err, result) => {
+      if (err) throw err;
+      res.send('Forum deleted');
   });
 });
 
-// Create a new forum
-app.post('/addforum', (req, res) => {
-  let forum = { title: req.body.title, content: req.body.content, user_id: req.body.user_id };
-  let sql = 'INSERT INTO forums SET ?';
-  db.query(sql, forum, (err) => {
-      if (err) {
-          throw err;
-      }
-      res.send('Forum added...');
+app.post('/forums/:id/postcomments', isLoggedIn, (req, res) => {
+  if (!req.user) return res.status(403).send('Login required');
+
+  const { content } = req.body;
+  const forum_id = req.params.id;
+  const user_id = req.user.id;
+  db.query('INSERT INTO comments (forum_id, user_id, content) VALUES (?, ?, ?)', [forum_id, user_id, content], (err, result) => {
+      if (err) throw err;
+      res.send('Comment created');
   });
 });
 
+app.get('/forums/:id/comments', async (req, res) => {
+  try {
+    const forumId = req.params.id;
+    if (!forumId) {
+      return res.status(400).send({ error: 'Forum ID is required' });
+    }
 
+    const comments = await db.query('SELECT * FROM comments WHERE forum_id = ?', [forumId]);
+    if (comments.length === 0) {
+      return res.status(404).send({ message: 'No comments found for this forum' });
+    }
 
+    res.send(comments);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Database query failed' });
+  }
+});
+
+app.delete('/comments/:id', isLoggedIn, (req, res) => {
+  if (!req.user) return res.status(403).send('Login required');
+
+  const comment_id = req.params.id;
+  db.query('DELETE FROM comments WHERE id = ? AND user_id = ?', [comment_id, req.user.id], (err, result) => {
+      if (err) throw err;
+      res.send('Comment deleted');
+  });
+});
 
 
 
