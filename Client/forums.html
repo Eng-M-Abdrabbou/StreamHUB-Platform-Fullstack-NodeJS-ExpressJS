@@ -25,7 +25,8 @@
    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
    
    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-</head>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  </head>
 <body>
 
     <h1>Forum App</h1>
@@ -93,29 +94,50 @@
   const forumElement = document.createElement('div');
   forumElement.className = 'forum';
   forumElement.innerHTML = `
-    <div class="card" data-forum-id="${forum.id}">
-      <div class="card-header">
-        The forum is made by : ${forum.user_id}
-      </div>
-      <div class="card-body">
-        <h5 class="card-title">${forum.title}</h5>
-        <p class="card-text">${forum.content}.</p>
-        ${forum.user_id == userId ? `<button class="btn btn-primary" onclick="deleteForum(${forum.id})">Delete forum</button>` : ''}
-        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-${forum.id}" aria-expanded="false" aria-controls="collapse-${forum.id}">
-          View Comments
-        </button>
-        <div class="collapse" id="collapse-${forum.id}">
-          <div class="card card-body">
-            <h5>Comments:</h5>
-            <div id="comments-${forum.id}"></div>
-            <form id="createCommentForm-${forum.id}">
-              <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
-              <button type="submit">Comment</button>
-            </form>
-          </div>
-        </div>
+   <div class="card" data-forum-id="${forum.id}">
+  <div class="card-header">
+    The forum is made by : ${forum.user_id}
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">${forum.title}</h5>
+    <p class="card-text">${forum.content}.</p>
+    ${forum.user_id == userId ? `<button class="btn btn-danger" onclick="deleteForum(${forum.id})">Delete forum</button>` : ''}
+
+    
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-${forum.id}" aria-expanded="false" aria-controls="collapse-${forum.id}">
+      View Comments
+    </button>
+    <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#createCommentModal-${forum.id}">
+      Add Comment
+    </button>
+    <div class="collapse" id="collapse-${forum.id}">
+      <div class="card card-body">
+        <h5>Comments:</h5>
+        <div id="comments-${forum.id}"></div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Modal to create comment -->
+<div class="modal fade" id="createCommentModal-${forum.id}" tabindex="-1" role="dialog" aria-labelledby="createCommentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createCommentModalLabel">Add Comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="createCommentForm-${forum.id}">
+          <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
+          <button type="submit">Comment</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
   `;
       forumCardsContainer.appendChild(forumElement);
       forumsDiv.appendChild(forumCardsContainer);
@@ -126,19 +148,24 @@
                     .then(comments => {
                         const commentsDiv = document.getElementById(`comments-${forum.id}`);
                         comments.forEach(comment => {
-                            const commentElement = document.createElement('div');
-                            commentElement.className = 'comment';
-                            const commentText = document.createElement('p');
-                            commentText.textContent = `Commented by User ID: ${comment.user_id} - ${comment.content}`;
+                          const commentElement = document.createElement('div');
+commentElement.className = 'comment';
+const commentText = document.createElement('p');
+commentText.textContent = `Commented by User ID: ${comment.user_id} - ${comment.content}`;
 
-                            if (comment.user_id == userId) {
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.onclick = () => deleteComment(comment.id);
-        commentElement.appendChild(deleteButton);
-      }
-                            commentElement.appendChild(commentText);
-                            commentsDiv.appendChild(commentElement);
+const commentContainer = document.createElement('div');
+commentContainer.appendChild(commentText);
+
+if (comment.user_id == userId) {
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'btn btn-danger btn-sm';
+  deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+  deleteButton.onclick = () => deleteComment(comment.id);
+  commentContainer.appendChild(deleteButton);
+}
+
+commentElement.appendChild(commentContainer);
+commentsDiv.appendChild(commentElement);
                         });
                     })
                     .catch(error => console.error('Error fetching comments:', error));
