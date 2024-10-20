@@ -7,22 +7,59 @@
     <style>
         body { font-family: Arial, sans-serif; }
         .forum, .comment { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
-        .comment { margin-left: 20px; }
-        button { margin-top: 5px; }
+
+        .forum-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.forum {
+  margin: 2rem;
+  width: 40rem;
+}
+       
     </style>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+   
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
+
     <h1>Forum App</h1>
+  
+    <div class="card">
+      <div class="card-header">
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum">
+          Create Forum
+        </button>
+      </div>
+      <div id="collapse-create-forum" class="collapse">
+        <div class="card-body">
+          <h2>Create Forum</h2>
+          <form id="createForumForm">
+            <div class="form-group">
+              <label for="forumTitle" class="col-form-label text-center">Title</label>
+              <input type="text" id="forumTitle" placeholder="Title" required>
+            </div>
+            <div class="form-group">
+              <label for="forumContent" class="col-form-label text-center">Content</label>
+              <textarea id="forumContent" placeholder="Content" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div id="forums"></div>
-    <h2>Create Forum</h2>
-    <form id="createForumForm">
-        <input type="text" id="forumTitle" placeholder="Title" required>
-        <textarea id="forumContent" placeholder="Content" required></textarea>
-        <button type="submit">Create</button>
-    </form>
+
     <script>
         const userId = 8;
         const apiUrl = 'http://localhost:8000';
+        console.log('User ID:', userId);
 
         document.getElementById('createForumForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -42,88 +79,82 @@
         });
 
         function loadForums() {
-            fetch(`${apiUrl}/forums`)
-                .then(response => response.json())
-                .then(forums => {
-                    const forumsDiv = document.getElementById('forums');
-                    forumsDiv.innerHTML = '';
-                    forums.forEach(forum => {
+          fetch(`${apiUrl}/forums`)
+  .then(response => response.json())
+  .then(forums => {
+    const forumsDiv = document.getElementById('forums');
+    forumsDiv.innerHTML = ''; // Clear the previous forums
+
+    // Create a container for the forum cards
+    const forumCardsContainer = document.createElement('div');
+    forumCardsContainer.className = 'forum-cards-container';
+
+    forums.forEach(forum => {
   const forumElement = document.createElement('div');
   forumElement.className = 'forum';
   forumElement.innerHTML = `
-    <h3>${forum.title}</h3>
-    <p>${forum.content}</p>
-    <p>Created by User ID: ${forum.user_id}</p>
-    <form id="comment-form-${forum.id}">
-      <input type="hidden" name="forumId" value="${forum.id}">
-      <textarea placeholder="Content" required></textarea>
-      <button type="submit">Comment</button>
-    </form>
-    <h3>Comments:</h3>
-    <div id="comments-${forum.id}"></div>
-    ${forum.user_id == userId ? `<button onclick="deleteForum(${forum.id})">Delete forum</button>` : ''}
+    <div class="card" data-forum-id="${forum.id}">
+      <div class="card-header">
+        The forum is made by : ${forum.user_id}
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">${forum.title}</h5>
+        <p class="card-text">${forum.content}.</p>
+        ${forum.user_id == userId ? `<button class="btn btn-primary" onclick="deleteForum(${forum.id})">Delete forum</button>` : ''}
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapse-${forum.id}" aria-expanded="false" aria-controls="collapse-${forum.id}">
+          View Comments
+        </button>
+        <div class="collapse" id="collapse-${forum.id}">
+          <div class="card card-body">
+            <h5>Comments:</h5>
+            <div id="comments-${forum.id}"></div>
+            <form id="createCommentForm-${forum.id}">
+              <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
+              <button type="submit">Comment</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   `;
-  forumsDiv.appendChild(forumElement);
+      forumCardsContainer.appendChild(forumElement);
+      forumsDiv.appendChild(forumCardsContainer);
 
-  const commentForm = document.getElementById(`comment-form-${forum.id}`);
-  commentForm.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const textarea = commentForm.querySelector('textarea');
-    const content = textarea.value;
-    const forumId = commentForm.querySelector('input[name="forumId"]').value;
-    createComment(content, forumId);
-  });
+                // Fetch comments for this forum
+                fetch(`${apiUrl}/forums/${forum.id}/comments`)
+                    .then(response => response.json())
+                    .then(comments => {
+                        const commentsDiv = document.getElementById(`comments-${forum.id}`);
+                        comments.forEach(comment => {
+                            const commentElement = document.createElement('div');
+                            commentElement.className = 'comment';
+                            const commentText = document.createElement('p');
+                            commentText.textContent = `Commented by User ID: ${comment.user_id} - ${comment.content}`;
 
-  loadComments(forum.id);
-});
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        function loadComments(forumId) {
-  console.log(`Sending request to fetch comments for forum ID: ${forumId}`);
-  console.log(`API URL: ${apiUrl}`);
-
-  fetch(`${apiUrl}/forums/${forumId}/comments`, {
-    mode: 'cors',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
-  .then(response => {
-    console.log(`Response status: ${response.status}`);
-    return response.json();
-  })
-  .then(comments => {
-    console.log('Fetched comments:', comments);
-    const commentsDiv = document.getElementById(`comments-${forumId}`);
-    commentsDiv.innerHTML = '';
-    comments.forEach(comment => {
-        const commentElement = document.createElement('div');
-    commentElement.className = 'comment';
-    const commentText = document.createElement('p');
-    commentText.textContent = ` Commented by User ID: ${comment.user_id} - ${comment.content} `;
-    commentElement.appendChild(commentText);
-    
-    // ...
-    commentsDiv.appendChild(commentElement);
-
-      if (comment.user_id == userId) {
+                            if (comment.user_id == userId) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.onclick = () => deleteComment(comment.id);
         commentElement.appendChild(deleteButton);
       }
+                            commentElement.appendChild(commentText);
+                            commentsDiv.appendChild(commentElement);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching comments:', error));
 
-      commentsDiv.appendChild(commentElement);
-    });
-  })
-  .catch(error => {
-    console.error('Error fetching comments:', error);
-    console.error(`Error message: ${error.message}`);
-    console.error(`Error stack: ${error.stack}`);
-  });
+                // Add event listener for comment form submission
+                document.getElementById(`createCommentForm-${forum.id}`).addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const commentContent = document.getElementById(`commentContent-${forum.id}`).value;
+                    createComment(commentContent, forum.id);
+                });
+            });
+        })
+        .catch(error => console.error('Error:', error));
 }
+
+        
 
 
 function createComment(content, forumId) {
@@ -182,3 +213,5 @@ function createComment(content, forumId) {
     </script>
 </body>
 </html>
+
+
