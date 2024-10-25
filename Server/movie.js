@@ -893,7 +893,7 @@ function isLoggedIn(req, res, next) {
       next();
   }
 }
-
+// Create a new forum
 app.post('/forums', isLoggedIn, (req, res) => {
   if (!req.user) return res.status(403).send('Login required');
 
@@ -905,6 +905,8 @@ app.post('/forums', isLoggedIn, (req, res) => {
   });
 });
 
+
+// Get all forums
 app.get('/forums', (req, res) => {
   db.query('SELECT * FROM forums', (err, result) => {
       if (err) throw err;
@@ -912,6 +914,8 @@ app.get('/forums', (req, res) => {
   });
 });
 
+
+// Delete a forum
 app.delete('/forums/:id', isLoggedIn, (req, res) => {
   if (!req.user) return res.status(403).send('Login required');
 
@@ -922,6 +926,7 @@ app.delete('/forums/:id', isLoggedIn, (req, res) => {
   });
 });
 
+// Create a new comment
 app.post('/forums/:forumId/comments', isLoggedIn, (req, res) => {
   if (!req.user) return res.status(403).send('Login required');
 
@@ -934,6 +939,7 @@ app.post('/forums/:forumId/comments', isLoggedIn, (req, res) => {
   });
 });
 
+// Get all comments
 app.get('/forums/:id/comments', async (req, res) => {
   try {
     const forumId = req.params.id;
@@ -953,6 +959,8 @@ app.get('/forums/:id/comments', async (req, res) => {
   }
 });
 
+// Delete a comment
+
 app.delete('/comments/:id', isLoggedIn, (req, res) => {
   if (!req.user) return res.status(403).send('Login required');
 
@@ -963,6 +971,75 @@ app.delete('/comments/:id', isLoggedIn, (req, res) => {
   });
 });
 
+
+
+//code for chatting 
+
+// Send message
+app.post('/send', (req, res) => {
+  const { from_user_id, to_user_id, message } = req.body;
+  if (!from_user_id) {
+    res.status(401).json({ success: false, error: "You must be logged in to send a message" });
+    return;
+  }
+
+  db.query("INSERT INTO messages (from_user_id, to_user_id, message) VALUES (?, ?, ?)", [from_user_id, to_user_id, message], (err, result) => {
+    if (err) {
+      res.status(500).json({ success: false, error: err.message });
+    } else {
+      res.status(200).json({ success: true });
+    }
+  });
+});
+
+// Get messages for user
+app.get('/messages/:user_id', (req, res) => {
+  const user_id = req.params.user_id;
+  console.log(`Received request for messages for user ${user_id}`);
+  console.log('Request headers:', req.headers);
+  console.log('Request query:', req.query);
+  console.log('About to execute database query...');
+
+  db.query("SELECT * FROM messages WHERE to_user_id = ?", [user_id])
+    .then(rows => {
+      if (rows.length === 0) {
+        console.log(`No messages found for user ${user_id}`);
+        res.status(404).json({ error: 'No messages found for this user' });
+      } else {
+        console.log(`Fetched ${rows.length} messages for user ${user_id}`);
+        console.log(`Preparing response...`);
+        console.log('Response data:', rows);
+        res.json({ messages: rows });
+        console.log(`Response sent.`);
+      }
+    })
+    .catch(err => {
+      console.error(`Error fetching messages: ${err.message}`);
+      res.status(500).json({ error: err.message });
+    });
+});
+// Send message
+/*
+const defaultUserId = 1;
+ app.post('/send', (req, res) => {
+  const { to_user_id, message } = req.body;
+  const stmt = db.prepare("INSERT INTO messages (from_user_id, to_user_id, message) VALUES (?, ?, ?)");
+  stmt.run(defaultUserId, to_user_id, message);
+  stmt.finalize();
+  res.status(200).json({ success: true });
+});*/
+
+// Get messages for user
+/*app.get('/messages/:user_id', (req, res) => {
+  const user_id = req.params.user_id;
+  db.all("SELECT * FROM messages WHERE to_user_id = ?", [user_id], (err, rows) => {
+    if (err) {
+      res.status(500).json({ success: false, error: err.message });
+      return;
+    }
+    res.status(200).json({ success: true, messages: rows });
+  });
+});*/
 
 
 
@@ -1032,6 +1109,11 @@ app.get("/forums.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'forums.html'));
 });
 
+
+// chat link 
+app.get("/chat.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'chat.html'));
+});
 app.get("*", (req, res) => {
   res.status(404).send("Page not found");
 });
