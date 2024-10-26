@@ -993,6 +993,7 @@ app.post('/send', (req, res) => {
 });
 
 // Get messages for user
+// Get messages for user
 app.get('/messages/:user_id', (req, res) => {
   const user_id = req.params.user_id;
   console.log(`Received request for messages for user ${user_id}`);
@@ -1000,18 +1001,19 @@ app.get('/messages/:user_id', (req, res) => {
   console.log('Request query:', req.query);
   console.log('About to execute database query...');
 
-  db.query("SELECT * FROM messages WHERE to_user_id = ?", [user_id])
-    .then(rows => {
-      if (rows.length === 0) {
-        console.log(`No messages found for user ${user_id}`);
-        res.status(404).json({ error: 'No messages found for this user' });
-      } else {
-        console.log(`Fetched ${rows.length} messages for user ${user_id}`);
-        console.log(`Preparing response...`);
-        console.log('Response data:', rows);
-        res.json({ messages: rows });
-        console.log(`Response sent.`);
-      }
+  const queries = [
+    db.query("SELECT * FROM messages WHERE to_user_id = ?", [user_id]),
+    db.query("SELECT * FROM messages WHERE from_user_id = ?", [user_id])
+  ];
+
+  Promise.all(queries)
+    .then(([receivedMessages, sentMessages]) => {
+      const allMessages = receivedMessages.concat(sentMessages);
+      console.log(`Fetched ${allMessages.length} messages for user ${user_id}`);
+      console.log(`Preparing response...`);
+      console.log('Response data:', allMessages);
+      res.json({ messages: allMessages });
+      console.log(`Response sent.`);
     })
     .catch(err => {
       console.error(`Error fetching messages: ${err.message}`);

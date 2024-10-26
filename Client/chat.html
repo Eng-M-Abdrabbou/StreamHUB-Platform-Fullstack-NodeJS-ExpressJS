@@ -34,112 +34,102 @@
             background-color: #0056b3;
         }
         .messages {
-            margin-top: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-            background: #f9f9f9;
-            padding: 10px;
-            border-radius: 5px;
+            display: block;
         }
         .message {
-            padding: 5px 10px;
-            margin: 5px 0;
+            display: block;
+            margin-bottom: 10px;
         }
-        .from-me {
-            background-color: #d1ffd1;
-            align-self: flex-start;
+        .message-bubble {
+            padding: 10px;
+            border-radius: 10px;
+            margin-bottom: 10px;
         }
-        .from-them {
-            background-color: #f1f1f1;
-            align-self: flex-end;
+     .message-bubble.signed-in {
+       background-color: #C6F4D6;
+       align-self: flex-end;
+     }
+     
+     .message-bubble.recipient {
+       background-color: #ADD8E6;
+       align-self: flex-start;
+     }
+        .message-container {
+            display: flex;
+            flex-direction: column;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Chat with User 3</h2>
+        <h2>Chat with 1</h2>
+        <div class="messages" id="messages"></div>
         <input type="text" id="message" placeholder="Your message" class="message-input">
         <button class="send-button" onclick="sendMessage()">Send</button>
-        <div class="messages" id="messages"></div>
-      </div>
-    
-      <script>
+    </div>
+    <script>
         const signedInUserId = 1; // Signed in user ID
         const recipientUserId = 3; // Recipient user ID
-    
+
         async function sendMessage() {
-          if (!signedInUserId) {
-            alert("You must be logged in to send a message");
-            return;
-          }
-    
-          const message = document.getElementById('message').value;
-    
-          const response = await fetch('/send', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ from_user_id: signedInUserId, to_user_id: recipientUserId, message })
-          });
-    
-          if (response.ok) {
-            document.getElementById('message').value = '';
-            loadMessages();
-          }
+            const message = document.getElementById('message').value;
+            const response = await fetch('/send', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ from_user_id: signedInUserId, to_user_id: recipientUserId, message })
+            });
+            if (response.ok) {
+                document.getElementById('message').value = '';
+                loadMessages();
+            }
         }
-    
-   async function loadMessages() {
-     console.log('loadMessages function called');
-     console.log('recipientUserId:', recipientUserId);
-     try {
-       const response = await fetch(`/messages/${recipientUserId}`, {
-         method: 'GET',
-         headers: {
-           'Content-Type': 'application/json'
-         }
-       });
-       console.log('response:', response);
-       if (response.ok) {
-         console.log('response.ok is true');
-         const data = await response.json();
-         console.log('data:', data);
-         const messagesContainer = document.getElementById('messages');
-         console.log('messagesContainer:', messagesContainer);
-         messagesContainer.innerHTML = '';
-         console.log('messagesContainer.innerHTML cleared');
-         if (data.messages && data.messages.length > 0) {
-           console.log('data is an array with length > 0');
-           data.messages.forEach(msg => {
-             console.log('msg:', msg);
-             const messageElement = document.createElement('div');
-             console.log('messageElement created');
-             messageElement.className = 'message';
-             if (msg.from_user_id === signedInUserId) {
-               console.log('msg.from_user_id === signedInUserId');
-               messageElement.classList.add('from-me');
-             } else {
-               console.log('msg.from_user_id !== signedInUserId');
-               messageElement.classList.add('from-them');
-             }
-             messageElement.textContent = `User ${msg.from_user_id}: ${msg.message}`;
-             console.log('messageElement.textContent set');
-             messagesContainer.appendChild(messageElement);
-             console.log('messageElement appended to messagesContainer');
-           });
-         } else {
-           console.log('data is empty or not an array');
-         }
-       } else {
-         console.log('response.ok is false');
-         console.log('response.status:', response.status);
-         console.log('response.statusText:', response.statusText);
-       }
-     } catch (error) {
-       console.log('Error:', error);
-     }
-   }
-   loadMessages();
-      </script>
+
+        async function loadMessages() {
+            try {
+                const response = await fetch(`/messages/${signedInUserId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    const messagesContainer = document.getElementById('messages');
+                    messagesContainer.innerHTML = '';
+
+                    if (data.messages && data.messages.length > 0) {
+                        // Sort messages by ID to ensure chronological order
+                        data.messages.sort((a, b) => a.id - b.id);
+
+                        // Combine messages and format them for display
+                        data.messages.forEach(msg => {
+                            const messageBubble = document.createElement('div');
+                            messageBubble.className = 'message-bubble';
+
+                            if (msg.from_user_id === signedInUserId) {
+                                messageBubble.classList.add('signed-in');
+                            } else {
+                                messageBubble.classList.add('recipient');
+                            }
+
+                            messageBubble.innerHTML = msg.message;
+
+                            const messageContainer = document.createElement('div');
+                            messageContainer.className = 'message-container';
+                            messageContainer.appendChild(messageBubble);
+
+                            messagesContainer.appendChild(messageContainer);
+                        });
+                    }
+                }
+            } catch (error) {
+                console.log('Error:', error);
+            }
+        }
+
+        loadMessages();
+    </script>
 </body>
 </html>
