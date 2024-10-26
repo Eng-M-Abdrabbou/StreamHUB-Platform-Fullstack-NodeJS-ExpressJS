@@ -17,6 +17,12 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
+        .hidden {
+            display: none;
+        }
+        .visible {
+            display: block;
+        }
         .message-input {
             width: calc(100% - 22px);
             padding: 10px;
@@ -45,15 +51,14 @@
             border-radius: 10px;
             margin-bottom: 10px;
         }
-     .message-bubble.signed-in {
-       background-color: #C6F4D6;
-       align-self: flex-end;
-     }
-     
-     .message-bubble.recipient {
-       background-color: #ADD8E6;
-       align-self: flex-start;
-     }
+        .message-bubble.signed-in {
+            background-color: #C6F4D6;
+            align-self: flex-end;
+        }
+        .message-bubble.recipient {
+            background-color: #ADD8E6;
+            align-self: flex-start;
+        }
         .message-container {
             display: flex;
             flex-direction: column;
@@ -62,17 +67,50 @@
 </head>
 <body>
     <div class="container">
-        <h2>Chat with 1</h2>
-        <div class="messages" id="messages"></div>
-        <input type="text" id="message" placeholder="Your message" class="message-input">
-        <button class="send-button" onclick="sendMessage()">Send</button>
+        <h2>Chat</h2>
+        <input type="text" id="searchUser" placeholder="Enter user ID" class="message-input">
+        <button class="send-button" onclick="searchUser()">Search</button>
+        <div id="chatContainer" class="hidden">
+            <div class="messages" id="messages"></div>
+            <input type="text" id="message" placeholder="Your message" class="message-input">
+            <button class="send-button" onclick="sendMessage()">Send</button>
+        </div>
     </div>
     <script>
         const signedInUserId = 1; // Signed in user ID
-        const recipientUserId = 3; // Recipient user ID
+        let recipientUserId = null; // Recipient user ID
+
+      async function searchUser() {
+        const userId = document.getElementById('searchUser').value;
+        try {
+          const response = await fetch(`/searchUser/${userId}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          console.log('response:', response);
+          const data = await response.json();
+          console.log('data:', data);
+          if (data.user) {
+            recipientUserId = data.user.id;
+            document.getElementById('chatContainer').classList.remove('hidden');
+            document.getElementById('chatContainer').classList.add('visible');
+            loadMessages();
+          } else {
+            alert('User not found');
+          }
+        } catch (error) {
+          console.error('Error:', error);
+        }
+      }
 
         async function sendMessage() {
             const message = document.getElementById('message').value;
+            if (!recipientUserId) {
+                alert('Please search and select a user first');
+                return;
+            }
             const response = await fetch('/send', {
                 method: 'POST',
                 headers: {
@@ -87,47 +125,46 @@
         }
 
         async function loadMessages() {
-            try {
-                const response = await fetch(`/messages/${signedInUserId}`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                if (response.ok) {
-                    const data = await response.json();
-                    const messagesContainer = document.getElementById('messages');
-                    messagesContainer.innerHTML = '';
-
-                    if (data.messages && data.messages.length > 0) {
-                        // Sort messages by ID to ensure chronological order
-                        data.messages.sort((a, b) => a.id - b.id);
-
-                        // Combine messages and format them for display
-                        data.messages.forEach(msg => {
-                            const messageBubble = document.createElement('div');
-                            messageBubble.className = 'message-bubble';
-
-                            if (msg.from_user_id === signedInUserId) {
-                                messageBubble.classList.add('signed-in');
-                            } else {
-                                messageBubble.classList.add('recipient');
-                            }
-
-                            messageBubble.innerHTML = msg.message;
-
-                            const messageContainer = document.createElement('div');
-                            messageContainer.className = 'message-container';
-                            messageContainer.appendChild(messageBubble);
-
-                            messagesContainer.appendChild(messageContainer);
-                        });
-                    }
-                }
-            } catch (error) {
-                console.log('Error:', error);
-            }
-        }
+  try {
+    const response = await fetch(`/messages/${signedInUserId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    if (response.ok) {
+      const data = await response.json();
+      const messagesContainer = document.getElementById('messages');
+      messagesContainer.innerHTML = '';
+      if (data.messages && data.messages.length > 0) {
+        // Sort messages by ID to ensure chronological order
+        data.messages.sort((a, b) => a.id - b.id);
+        // Filter messages to only show messages between signed-in user and recipient user
+        const filteredMessages = data.messages.filter(msg => {
+          return (msg.from_user_id === signedInUserId && msg.to_user_id === recipientUserId) ||
+                 (msg.from_user_id === recipientUserId && msg.to_user_id === signedInUserId);
+        });
+        // Combine messages and format them for display
+        filteredMessages.forEach(msg => {
+          const messageBubble = document.createElement('div');
+          messageBubble.className = 'message-bubble';
+          if (msg.from_user_id === signedInUserId) {
+            messageBubble.classList.add('signed-in');
+          } else {
+            messageBubble.classList.add('recipient');
+          }
+          messageBubble.innerHTML = msg.message;
+          const messageContainer = document.createElement('div');
+          messageContainer.className = 'message-container';
+          messageContainer.appendChild(messageBubble);
+          messagesContainer.appendChild(messageContainer);
+        });
+      }
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
         loadMessages();
     </script>

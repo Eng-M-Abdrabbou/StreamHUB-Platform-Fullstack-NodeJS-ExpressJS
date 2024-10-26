@@ -1020,6 +1020,35 @@ app.get('/messages/:user_id', (req, res) => {
       res.status(500).json({ error: err.message });
     });
 });
+
+
+
+  app.get('/searchUser/:id', async (req, res) => {
+    const id = req.params.id;
+    console.log('Received request to search user with id:', id);
+  
+    if (!id) {
+      console.error('No ID provided');
+      return res.status(400).json({ success: false, error: 'No ID provided' });
+    }
+  
+    try {
+      const result = await db.query("SELECT * FROM user WHERE id = ?", [id]);
+      if (result.length > 0) {
+        const user = result[0];
+        return res.status(200).json({ user });
+      } else {
+        return res.status(404).json({ success: false, error: 'User not found' });
+      }
+    } catch (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  });
+
+
+
+
 // Send message
 /*
 const defaultUserId = 1;
