@@ -65,45 +65,78 @@
         }
     </style>
 </head>
+<head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</head>
 <body>
-    <div class="container">
-        <h2>Chat</h2>
-        <input type="text" id="searchUser" placeholder="Enter user ID" class="message-input">
-        <button class="send-button" onclick="searchUser()">Search</button>
-        <div id="chatContainer" class="hidden">
-            <div class="messages" id="messages"></div>
-            <input type="text" id="message" placeholder="Your message" class="message-input">
-            <button class="send-button" onclick="sendMessage()">Send</button>
-        </div>
+<div class="container">
+  <h2>Chat</h2>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="input-group mb-3">
+        <input type="text" id="searchUser" placeholder="Enter user ID" class="form-control" aria-label="Search user ID">
+        <button class="btn btn-primary" type="button" onclick="searchUser()">Search</button>
+        <button class="btn btn-success" type="button" id="view-messages-btn" data-toggle="collapse" data-target="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">View Messages</button>
+      </div>
     </div>
+  </div>
+  <div id="searchResults"></div>
+  <div class="collapse multi-collapse" id="multiCollapseExample1">
+    <div class="card card-body">
+      <div id="messages"></div>
+    </div>
+  </div>
+  <div class="input-group mb-3">
+    <input type="text" id="message" placeholder="Your message" class="form-control" aria-label="Your message">
+    <button class="btn btn-primary" type="button" onclick="sendMessage()">Send</button>
+  </div>
+  <div id="error-message" style="display: none; color: red;"></div>
+</div>
     <script>
+
+        document.getElementById('view-messages-btn').addEventListener('click', function() {
+          var searchUserId = document.getElementById('searchUser').value.trim();
+          if (searchUserId === '') {
+            document.getElementById('error-message').innerHTML = 'Please search for a user ID to view messages';
+            document.getElementById('error-message').style.display = 'block';
+            setTimeout(function() {
+              document.getElementById('error-message').style.display = 'none';
+            }, 2000);
+            return false;
+          }
+        });
+
+
         const signedInUserId = 1; // Signed in user ID
         let recipientUserId = null; // Recipient user ID
 
-      async function searchUser() {
-        const userId = document.getElementById('searchUser').value;
-        try {
-          const response = await fetch(`/searchUser/${userId}`, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          });
-          console.log('response:', response);
-          const data = await response.json();
-          console.log('data:', data);
-          if (data.user) {
-            recipientUserId = data.user.id;
-            document.getElementById('chatContainer').classList.remove('hidden');
-            document.getElementById('chatContainer').classList.add('visible');
-            loadMessages();
-          } else {
-            alert('User not found');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-        }
+        async function searchUser() {
+  const userId = document.getElementById('searchUser').value;
+  try {
+    const response = await fetch(`/searchUser/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
       }
+    });
+    console.log('response:', response);
+    const data = await response.json();
+    console.log('data:', data);
+    if (data.user) {
+      recipientUserId = data.user.id;
+      loadMessages();
+      // Toggle the collapse
+      const collapse = document.getElementById('multiCollapseExample1');
+      collapse.classList.toggle('show');
+    } else {
+      alert('User not found');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
         async function sendMessage() {
             const message = document.getElementById('message').value;
