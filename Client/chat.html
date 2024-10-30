@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat - StreamHub</title>
+    <style>
+        #chat-window {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .message {
+            margin-bottom: 10px;
+        }
+        .message .username {
+            font-weight: bold;
+        }
+        #chat-form {
+            margin-top: 10px;
+        }
+        #chat-input {
+            width: 80%;
+            padding: 10px;
+        }
+        #chat-submit {
+            padding: 10px 20px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Chat Room</h2>
+    <div id="chat-window">
+        <!-- Messages will appear here -->
+    </div>
+    <form id="chat-form">
+        <input type="text" id="chat-input" placeholder="Type your message here..." autocomplete="off">
+        <button type="submit" id="chat-submit">Send</button>
+    </form>
+
+    <script>
+        const chatWindow = document.getElementById('chat-window');
+        const chatForm = document.getElementById('chat-form');
+        const chatInput = document.getElementById('chat-input');
+
+        let username = prompt("Enter your username") || 'User';
+
+        let messages = [];
+
+        if (localStorage.getItem('chatMessages')) {
+            messages = JSON.parse(localStorage.getItem('chatMessages'));
+            displayMessages();
+        }
+
+        function displayMessages() {
+            chatWindow.innerHTML = '';
+            messages.forEach(msg => {
+                const msgDiv = document.createElement('div');
+                msgDiv.classList.add('message');
+                msgDiv.innerHTML = `<span class="username">${msg.username}:</span> ${msg.text}`;
+                chatWindow.appendChild(msgDiv);
+            });
+            chatWindow.scrollTop = chatWindow.scrollHeight;
+        }
+
+        chatForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const messageText = chatInput.value.trim();
+            if (messageText !== '') {
+                const message = {
+                    username: username,
+                    text: messageText
+                };
+                messages.push(message);
+                localStorage.setItem('chatMessages', JSON.stringify(messages));
+                displayMessages();
+                chatInput.value = '';
+            }
+        });
+
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'chatMessages') {
+                messages = JSON.parse(event.newValue) || [];
+                displayMessages();
+            }
+        });
+    </script>
+</body>
+</html>
