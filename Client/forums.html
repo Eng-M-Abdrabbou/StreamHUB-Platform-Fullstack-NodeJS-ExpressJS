@@ -52,6 +52,19 @@ body {
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+#create-forum-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+#create-forum-header span:first-child {
+  justify-self: start;
+}
+
+#create-forum-header span:last-child {
+  justify-self: end;
+}
        
     </style>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -88,11 +101,12 @@ body {
 </div>
 
    <div class="card">
-     <div class="card-header" style="background-color:beige">
-       <button class="btn btn-primary" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum">
-         <i class="fas fa-chevron-down"></i> Create Forum
-       </button>
-     </div>
+    <div class="card-header" id="create-forum-header" style="background-color:beige">
+      <button class="btn btn-primary btn-sm" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum">
+        <i class="fas fa-chevron-down"></i> Create Forum
+      </button>
+      <span style="float: right; font-size: 12px;">Logged in as: ${userfname} ${userlname}</span>
+    </div>
      <div id="collapse-create-forum" class="collapse">
 <div class="card">
   <div class="card-body">
@@ -189,9 +203,19 @@ initUserId();
 //getting user first name from session
 async function initUserfnameId() {
   try {
-    userfname= await getUserFnameFromSession();
- 
+    userfname = await getUserFnameFromSession();
+
     console.log('User name retrived from session with data is :', userfname );
+
+    await initUserlnameId();
+
+    const createForumHeaderElement = document.getElementById('create-forum-header');
+    createForumHeaderElement.innerHTML = `
+   <button class="btn btn-xs btn-primary" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum" style="max-width: 150px;">
+     <i class="fas fa-chevron-down"></i> Create
+   </button>
+      <span style="float: right; font-size: 20px; color:black">Welcome: ${userfname} ${userlname}</span>
+    `;
   } catch (error) {
     console.error('Error setting user ID:', error);
   }
