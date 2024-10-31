@@ -1045,7 +1045,14 @@ app.get('/messages/:user_id', (req, res) => {
       return res.status(500).json({ success: false, error: err.message });
     }
   });
-
+// get names for forum 
+app.get('/api/users/:userid', async (req, res) => {
+  const userId = req.params.userid;
+  const query = `SELECT fname, lname FROM user WHERE id = ?`;
+  const user = await db.query(query, [userId]);
+  console.log(user[0].fname, user[0].lname);
+  res.json({ fname: user[0].fname, lname: user[0].lname });
+});
 
 
 

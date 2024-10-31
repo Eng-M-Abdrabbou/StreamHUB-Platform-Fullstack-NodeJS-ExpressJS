@@ -304,6 +304,17 @@ function getUserLnameFromSession() {
     });
 }
 
+async function getUserName(userid) {
+  try {
+    const response = await fetch(`/api/users/${userid}`);
+    const userData = await response.json();
+    return `${userData.fname} ${userData.lname}`;
+    console.log("User data received from database is:", userData.fName ,userData.lName);
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
 
         document.getElementById('createForumForm').addEventListener('submit', function (e) {
@@ -318,35 +329,38 @@ function getUserLnameFromSession() {
                 },
                 body: JSON.stringify({ title, content })
             })
-            .then(response => response.text())
+            .then( response => response.text())
             .then(data => alert(data))
             .catch(error => console.error('Error:', error));
             loadForums(); // Reload the forums after creating a new forum
         });
 
-        function loadForums() {
-          fetch(`${apiUrl}/forums`)
-  .then(response => response.json())
-  .then(forums => {
+        async function loadForums() {
+  fetch(`${apiUrl}/forums`)
+  .then(async response => {
+    const forums = await response.json();
     const forumsDiv = document.getElementById('forums');
     forumsDiv.innerHTML = ''; // Clear the previous forums
 
-    // Create a container for the forum cards
+
+ 
     const forumCardsContainer = document.createElement('div');
     forumCardsContainer.className = 'forum-cards-container';
+  
 
-    const fname =  getUserFnameFromSession();
-    const lname =  getUserLnameFromSession();
-    const username = `${fname} ${lname}`;
+    forums.forEach(async forum => {
+      //getting names from DB
+      const userName = await getUserName(forum.user_id);
+      console.log(' all the User names retrived from databse :', userName);
 
-    forums.forEach(forum => {
+
   const forumElement = document.createElement('div');
   forumElement.className = 'forum';
   forumElement.innerHTML = `
  <div class="card"  style="background-color:beige" data-forum-id="${forum.id}">
  
   <div class="card-header" style="color: #000;">
-    The forum is made by : ${forum.user_id}
+    The forum is made by : ${userName}
      </div>
   </div>
   <div class="card-body"style="color: #000;" >
@@ -401,11 +415,12 @@ function getUserLnameFromSession() {
                     .then(response => response.json())
                     .then(comments => {
                         const commentsDiv = document.getElementById(`comments-${forum.id}`);
-                        comments.forEach(comment => {
+                        comments.forEach(async comment => {
+                          const userName = await getUserName(comment.user_id);
                           const commentElement = document.createElement('div');
 commentElement.className = 'comment';
 const commentText = document.createElement('p');
-commentText.textContent = `Commented by User ID: ${comment.user_id} - ${comment.content}`;
+commentText.textContent = ` ${userName} - ${comment.content}`;
 
 const commentContainer = document.createElement('div');
 commentContainer.appendChild(commentText);
