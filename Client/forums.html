@@ -170,9 +170,141 @@ body {
 </div>
 
     <script>
-        const userId = 8;
-        const apiUrl = 'http://localhost:8000';
-        console.log('User ID:', userId);
+       const apiUrl = 'http://localhost:8000';
+        
+       
+       //getting user id from session
+       async function initUserId() {
+  try {
+    userId = await getUserIdFromSession();
+ 
+    console.log('User ID retrived from session with data is :', userId );
+  } catch (error) {
+    console.error('Error setting user ID:', error);
+  }
+}
+
+initUserId(); 
+
+//getting user first name from session
+async function initUserfnameId() {
+  try {
+    userfname= await getUserFnameFromSession();
+ 
+    console.log('User name retrived from session with data is :', userfname );
+  } catch (error) {
+    console.error('Error setting user ID:', error);
+  }
+}
+
+initUserfnameId();
+
+//getting user last name from session
+async function initUserlnameId() {
+  try {
+    userlname= await getUserLnameFromSession();
+ 
+    console.log('User last name retrived from session with data is :', userlname );
+  } catch (error) {
+    console.error('Error setting user ID:', error);
+  }
+}
+
+initUserlnameId();
+       
+       
+//fucntion to retrive id 
+        function getUserIdFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.id) {
+                    console.log("User ID found:", userData.id );
+                    resolve(userData.id);
+                } else {
+                    console.error('User ID not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
+}
+//first name from session
+function getUserFnameFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.fName) {
+                    console.log("User  first name found:",  userData.fName);
+                    resolve(userData.fName)
+                } else {
+                    console.error('User first name not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
+}
+// last name from session 
+function getUserLnameFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.fName) {
+                    console.log("User last name found:",  userData.lName);
+                    resolve(userData.lName)
+                } else {
+                    console.error('User last name not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
+}
+
+
 
         document.getElementById('createForumForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -189,6 +321,7 @@ body {
             .then(response => response.text())
             .then(data => alert(data))
             .catch(error => console.error('Error:', error));
+            loadForums(); // Reload the forums after creating a new forum
         });
 
         function loadForums() {
@@ -201,6 +334,10 @@ body {
     // Create a container for the forum cards
     const forumCardsContainer = document.createElement('div');
     forumCardsContainer.className = 'forum-cards-container';
+
+    const fname =  getUserFnameFromSession();
+    const lname =  getUserLnameFromSession();
+    const username = `${fname} ${lname}`;
 
     forums.forEach(forum => {
   const forumElement = document.createElement('div');
@@ -347,6 +484,7 @@ function createComment(content, forumId) {
     const forumElement = document.querySelector(`.forum[data-forum-id="${forumId}"]`);
     if (forumElement) {
       forumElement.remove();
+     
     }
     loadForums();
   })
