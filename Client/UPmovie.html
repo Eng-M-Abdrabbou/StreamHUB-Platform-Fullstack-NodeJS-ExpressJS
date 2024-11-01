@@ -14,38 +14,157 @@
    
     <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/script.js" defer></script>
+
+
+  <link rel="stylesheet" href="assets/css/Inter.css">
+  <link rel="stylesheet" href="assets/css/untitled.css">
+
+  <style>
+
+    .fjalla-one-regular {
+font-family: 'Fjalla One', sans-serif;
+font-weight: 400;
+font-style: normal;
+}
+
+.movie-card {
+position: relative;
+width: calc(120px * 1.618); /* Golden ratio */
+height: 240px;
+margin: 10px;
+transition: transform 0.3s, background 0.3s, z-index 0.3s;
+overflow: hidden;
+display: inline-block;
+}
+
+.movie-card:hover {
+transform: scale(1.1); /* Slight growth */
+background: rgba(128, 128, 128, 0.125); /* Solid grey background */
+z-index: 10; /* Ensure it overlays other elements */
+/* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+border: 2px solid neon;
+animation: glow 0.5s ease; */
+}
+
+/* @keyframes glow {
+0% { box-shadow: 0 0 5px #ff0000; }
+100% { box-shadow: 0 0 15px neon, 0 0 25px neon, 0 0 35px neon, 0 0 45px neon; }
+} */
+
+.movie-card, .movie-card * {
+user-select: none;
+}
+
+
+.movie-poster {
+display: block;
+width: 100%;
+height: 100%;
+transition: opacity 0.3s;
+}
+
+.movie-card:hover .movie-poster {
+opacity: 0.4; 
+}
+
+.movie-info {
+display: none;
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+padding: 10px;
+color: white;
+box-sizing: border-box;
+z-index: 5;
+font-size: 12px; /* Smaller font size */
+}
+
+.movie-card:hover .movie-info {
+display: block;
+}
+
+.movie-info h5 {
+font-weight: bold;
+color: white;
+text-shadow: 1px 1px 2px black;
+font-size: 12px; /* Smaller font size */
+margin: 0;
+}
+
+.movie-info p {
+margin: 5px 0;
+color: lightgrey;
+font-size: 12px; /* Much smaller font size */
+text-shadow: 1px 1px 2px black;
+}
+::-webkit-scrollbar {
+              width: 12px;
+          }
+          ::-webkit-scrollbar-track {
+              background: #000; 
+          }
+          ::-webkit-scrollbar-thumb {
+              background: #fff;
+          }
+       </style>
+
+   <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+   <!-- <style>
+       .fjalla-one-regular {
+     font-family: 'Fjalla One', sans-serif;
+     font-weight: 400;
+     font-style: normal;
+   }
+   </style> -->
+       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+       <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-  <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
-    <div class="container"><img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="UPindex.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navcol-1">
-            <ul class="navbar-nav mx-auto">
-                <li class="nav-item"><a class="nav-link active" href="UPindex.html">Home</a></li>
-                <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong>Movies</strong></a></li>
-                <!-- <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
-                <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
-                <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li> -->
-                <li class="nav-item"><a class="nav-link" href="upForums.html"><strong>Forums</strong></a></li>
-                <li class="nav-item"><a class="nav-link" href="upchat.html"><strong>Chat</strong></a></li>
-                <li class="nav-item"><a class="nav-link" href="userProfile.html"><strong>profile</strong></a></li>
-                <li class="nav-item"><a class="nav-link" href="index.html"><strong>Log out</strong></a></li>
-               
-        </div>
-        <p  style="margin-right: -100px;" id="profile-container"></p>
-    </div>
-</nav>
+<body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
+   <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+      
+       <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
+           <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
+               <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
+                   <li class="nav-item"><a class="nav-link" href="UPindex.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                   <li class="nav-item"><a class="nav-link " href="UPmovies.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
+                   <li class="nav-item"><a class="nav-link" href="upForums.html"><strong style="color: rgb(0, 0, 0);">Forums</strong></a></li>
+                   <li class="nav-item"><a class="nav-link" href="upchat.html"><strong style="color: rgb(0, 0, 0);">Chat</strong></a></li>
+                   <li class="nav-item"><a class="nav-link" href="userProfile.html"><strong style="color: rgb(0, 0, 0);">profile</strong></a></li>
+                   <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Log out</strong></a></li>
+                   <li class="nav-item dropdown">
+                       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 0, 0);">
+                         <i class="fas fa-user" style="margin-right: 5px;"></i> YourUsername
+                       </a>
+                       <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                         <a class="dropdown-item" href="#">Action</a>
+                         <a class="dropdown-item" href="#">Another action</a>
+                         <a class="dropdown-item" href="#">Something else here</a>
+                       </div>
+                     </li>                          
+                     <li class="nav-item d-flex align-items-center">
+                       <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
+                       <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
+                         <i class="fas fa-search"></i>
+                       </button>
+                     </li>                         
+               </ul>                   
+           </div>
+       </div>
+   </nav>
+
     <section class="py-5">
-        <div class="container py-5">
+        <div class="container py-5" style="margin-left: -10px;">
 <div class="d-flex justify-content-center">
     <div class="embed-responsive embed-responsive-16by9">
 
         <div class="video-container paused" data-volume-level="high">
-            <img class="thumbnail-img">
             <div class="video-controls-container">
               <div class="timeline-container">
                 <div class="timeline">
-                  <img class="preview-img">
                   <div class="thumb-indicator"></div>
                 </div>
               </div>
@@ -70,7 +189,7 @@
                       <path fill="currentColor" d="M12,4L9.91,6.09L12,8.18M4.27,3L3,4.27L7.73,9H3V15H7L12,20V13.27L16.25,17.53C15.58,18.04 14.83,18.46 14,18.7V20.77C15.38,20.45 16.63,19.82 17.68,18.96L19.73,21L21,19.73L12,10.73M19,12C19,12.94 18.8,13.82 18.46,14.64L19.97,16.15C20.62,14.91 21,13.5 21,12C21,7.72 18,4.14 14,3.23V5.29C16.89,6.15 19,8.83 19,12M16.5,12C16.5,10.23 15.5,8.71 14,7.97V10.18L16.45,12.63C16.5,12.43 16.5,12.21 16.5,12Z" />
                     </svg>
                   </button>
-                  <input class="volume-slider" type="range" min="0" max="1" step="any" value="1">
+                  <input class="volume-slider" type="range" min="0" max="1" step="any" value="1" style="color: white; background-color: white !important;" onmouseover="this.style.backgroundColor='grey' / !important;" onmouseout="this.style.backgroundColor='white' / !important;">
                 </div>
                 <div class="duration-container">
                   <div class="current-time">0:00</div>
@@ -88,14 +207,6 @@
                 <button class="mini-player-btn">
                   <svg viewBox="0 0 24 24">
                     <path fill="currentColor" d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zm-10-7h9v6h-9z"/>
-                  </svg>
-                </button>
-                <button class="theater-btn">
-                  <svg class="tall" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M19 6H5c-1.1 0-2 .9-2 2v8c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm0 10H5V8h14v8z"/>
-                  </svg>
-                  <svg class="wide" viewBox="0 0 24 24">
-                    <path fill="currentColor" d="M19 7H5c-1.1 0-2 .9-2 2v6c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm0 8H5V9h14v6z"/>
                   </svg>
                 </button>
                 <button class="full-screen-btn">
@@ -120,14 +231,40 @@
    
 <br>
 
-<div id="movie-info"></div>
-<div id="rating-container">
-  <br>
-    <input type="number" id="rating-input" min="1" max="5" step="0.5">
-    <button class="btn btn-primary shadow mx-auto" id ="submit-rating-btn" onclick="submitRating()">Submit Rating</button>
-</div>
+<div class="movie-info-container mt-5" >
+  <table>
+    <tr>
+      <td id="movie-info" class="movie-info-content"></td>
+    </tr>
 
-        </div>
+    <tr>
+      <td id="rating-container" class="rating-widget mt-4" style="margin-left: -20px;"></td>
+      <h5>Rate this movie: </h5>
+      <div class="stars">
+        <input type="radio" name="rating" id="star5" value="5">
+        <label for="star5">★</label>
+        <input type="radio" name="rating" id="star4" value="4">
+        <label for="star4">★</label>
+        <input type="radio" name="rating" id="star3" value="3">
+        <label for="star3">★</label>
+        <input type="radio" name="rating" id="star2" value="2">
+        <label for="star2">★</label>
+        <input type="radio" name="rating" id="star1" value="1">
+        <label for="star1">★</label>
+      </div>
+      <br> <br>
+            <!-- onclick="submitRating()"  -->
+      <!-- <button class="btn btn-primary shadow mt-3" id="submit-rating-btn" 
+      onclick="setupRatingSystem()" 
+      style="margin-top: -20px;">
+        Submit Rating
+      </button> -->
+    </tr>
+  </table>
+    
+  </div>
+</div>
+</div>
 </section>
 
 <footer class="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
@@ -168,11 +305,72 @@
     </footer>
     <script>
 
+// Movie Info and Rating Handler Class
+class MovieInterface {
+  constructor() {
+    this.setupRatingSystem();
+    this.initializeMovieInfo();
+  }
 
+  setupRatingSystem() {
+    const stars = document.querySelectorAll('.stars input');
+    stars.forEach(star => {
+      star.addEventListener('change', (e) => {
+        this.handleRating(e.target.value);
+      });
+    });
+  }
+
+  async handleRating(rating) {
+    const stars = document.querySelectorAll('.stars input');
+    stars.forEach(star => {
+      star.addEventListener('change', (e) => {
+        this.handleRating(e.target.value);
+      });
+    });
+    rating=e.target.value;
+    try {
+      const userId = await getUserIdFromSession();
+      const movieId = await getMovieIdFromSession();
+      
+      const response = await fetch('/submit-rating', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, movieId, rating }),
+      });
+
+      const data = await response.json();
+      
+      if (data.success) {
+        this.showNotification('Rating submitted successfully', 'success');
+      } else {
+        throw new Error(data.message || 'Failed to submit rating');
+      }
+    } catch (error) {
+      console.error('Rating Error:', error);
+      this.showNotification('Failed to submit rating. Please try again.', 'error');
+    }
+  }
+
+  showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }
+
+}
 
 
     document.addEventListener('DOMContentLoaded', () => {
       fetchMovieInfo();
+      window.movieInterface = new MovieInterface();
   });
   
   function getUserIdFromSession() {
@@ -208,25 +406,30 @@
   }
   
   function displayMovieInfo(movieInfo) {
-      const movieInfoDiv = document.getElementById('movie-info');
-  
-      const hours = Math.floor(movieInfo.runtime / 60);
-      const minutes = movieInfo.runtime % 60;
-  
-      movieInfoDiv.innerHTML = `
-          <h2 class="fw-bold">${movieInfo.title}</h2>
-          <p class="fw-bold text-success mb-2">Released: </p>
-          <p>${movieInfo.rdate}</p>
-          <p class="fw-bold text-success mb-2">Genre: </p>
-          <p>${movieInfo.genre}</p>
-          <p class="fw-bold text-success mb-2">Runtime: </p>
-          <p>${hours} hours and ${minutes} minutes</p>
-          <p class="fw-bold text-success mb-2">Description: </p>
-          <p>${movieInfo.description}</p>
-          <br>
-          <button class="btn btn-primary shadow mx-auto" type="button" onclick="window.open('${movieInfo.trailer_url}', '_blank')">Watch Trailer</button>
-          <br>
-      `;
+    const movieInfoDiv = document.getElementById('movie-info');
+    const hours = Math.floor(movieInfo.runtime / 60);
+    const minutes = movieInfo.runtime % 60;
+
+    movieInfoDiv.innerHTML = `
+      <div class="movie-header">
+        <h2 class="movie-title">${movieInfo.title}</h2>
+        <div class="movie-meta">
+          <span class="release-date">${movieInfo.rdate}</span>
+          <span class="separator">•</span>
+          <span class="runtime">${hours}h ${minutes}m</span>
+          <span class="separator">•</span>
+          <span class="genre">${movieInfo.genre}</span>
+        </div>
+      </div>
+      <div class="movie-description">
+        <p>${movieInfo.description}</p>
+      </div>
+      <div class="movie-actions">
+        <button class="btn btn-primary watch-trailer-btn" onclick="window.open('${movieInfo.trailer_url}', '_blank')">
+          <i class="fas fa-play-circle"></i> Watch Trailer
+        </button>
+      </div>
+    `;
   }
   
   function setupVideoPlayer(movieInfo) {
@@ -239,13 +442,19 @@
       }
   }
   
-  
-  async function submitRating() {
-    const rating = document.getElementById('rating-input').value;
-    if (rating < 0 || rating > 5) {
-        alert('Rating has to be between 0 and 5!');
-        return;
-    }
+  function setupRatingSystem() {
+    const stars = document.querySelectorAll('.stars input');
+    stars.forEach(star => {
+      star.addEventListener('change', (e) => {
+        rating = e.target.value;
+        submitRating(rating);
+      });
+    });
+  }
+
+  setupRatingSystem();
+  async function submitRating(rating) {
+
 
     try {
         const userId = await getUserIdFromSession();
