@@ -745,10 +745,147 @@ app.post('/submit-rating', async (req, res) => {
 
 
 
+app.get('/get_movies1', (req, res) => {
+  db.query('SELECT mid, title, genre, description FROM movies', (error, results) => {
+      if (error) throw error;
+      res.json(results);
+  });
+});
+
+// This is not working because the query is not asynchronous, so the callback function is not being executed
+// The logs are not showing because the query is not being executed
+app.get('/get_movie2', async (req, res) => {
+  const movieId = req.query.mid;
+  try {
+    const results = await db.query('SELECT * FROM movies WHERE movie_id = ?', [movieId]);
+    console.log("The results of get_movie2",results);
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Movie not found' });
+    } else {
+      res.json(results[0]);
+    }
+  } catch (error) {
+    console.error('Error getting movie:', error);
+    res.status(500).json({ message: 'An error occurred while getting the movie' });
+  }
+});
+
+
+/*
+app.get('/get_recommendations2', async (req, res) => {
+  const movieId = req.query.mid;
+  console.log("The movie id in get_recommendations2", movieId);
+
+  try {
+    console.log("Executing query to get movie info in get_recommendations2");
+    const results = await db.query('SELECT * FROM movies WHERE movie_id = ?', [movieId]);
+    console.log("Query executed. The results of get_recommendations2:", results);
+
+    if (results.length === 0) {
+      console.log("Movie not found in get_recommendations2", movieId);
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    // The result of the query is an array of objects, so we need to get the first element of the array
+    // to get the selected movie object
+    const selectedMovie = results[0];
+    console.log("Fetching all movies in get_recommendations2", JSON.stringify(selectedMovie));
+    const [allMovies] = await db.query('SELECT * FROM movies');
+    console.log("All movies fetched. Calling getRecommendations function in get_recommendations2", JSON.stringify(selectedMovie), JSON.stringify(allMovies));	
+    const recommendations = getRecommendations(selectedMovie, allMovies);
+    console.log("Recommendations fetched. Sending response in get_recommendations2");
+    res.json(recommendations);
+  } catch (error) {
+    console.error('Error getting recommendations:', error);
+    res.status(500).json({ message: 'An error occurred while getting recommendations' });
+  }
+});
+*/
+
+
+app.get('/get_recommendations2', async (req, res) => {
+  const movieId = req.query.mid;
+  console.log("The movie id in get_recommendations2", movieId);
+
+  try {
+    console.log("Executing query to get movie info in get_recommendations2");
+    const results = await db.query('SELECT * FROM movies WHERE movie_id = ?', [movieId]);
+    console.log("Query executed. The results of get_recommendations2:", results);
+
+    if (results.length === 0) {
+      console.log("Movie not found in get_recommendations2", movieId);
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    const selectedMovie = results[0];
+    console.log("Fetching all movies in get_recommendations2", JSON.stringify(selectedMovie));
+    const allMovies = await db.query('SELECT * FROM movies');
+    console.log("All movies fetched. Calling getRecommendations function in get_recommendations2", JSON.stringify(selectedMovie), JSON.stringify(allMovies));
+    const recommendations = getRecommendations(selectedMovie, allMovies);
+    console.log("Recommendations fetched. Sending response in get_recommendations2");
+    res.json(recommendations);
+  } catch (error) {
+    console.error('Error getting recommendations:', error);
+    res.status(500).json({ message: 'An error occurred while getting recommendations' });
+  }
+});
 
 
 
+function getRecommendations(selectedMovie, allMovies) {
+  const tfidf = calculateTFIDF(allMovies);
+  const selectedMovieIndex = allMovies.findIndex(movie => movie.movie_id == selectedMovie.movie_id);
+  const cosineSim = calculateCosineSimilarity(tfidf, selectedMovieIndex);
+  return cosineSim
+      .map((score, index) => ({ movie: allMovies[index], score }))
+      .sort((a, b) => b.score - a.score)
+      .slice(1, 6); // Get top 5 recommendations
+}
 
+function calculateTFIDF(movies) {
+  console.log("Calculating TFIDF in calculateTFIDF function in get_recommendations2", movies);
+  const tfidf = [];
+  const documentCount = movies.length;
+  const termFrequency = movies.map(movie => {
+      const terms = (movie.genre + ' ' + movie.description).toLowerCase().split(/\W+/);
+      const termCount = {};
+      terms.forEach(term => {
+          termCount[term] = (termCount[term] || 0) + 1;
+      });
+      return termCount;
+  });
+
+  const documentFrequency = {};
+  termFrequency.forEach(termCount => {
+      Object.keys(termCount).forEach(term => {
+          documentFrequency[term] = (documentFrequency[term] || 0) + 1;
+      });
+  });
+
+  termFrequency.forEach(termCount => {
+      const tfidfVector = {};
+      Object.keys(termCount).forEach(term => {
+          const tf = termCount[term] / Object.keys(termCount).length;
+          const idf = Math.log(documentCount / (1 + documentFrequency[term]));
+          tfidfVector[term] = tf * idf;
+      });
+      tfidf.push(tfidfVector);
+  });
+
+  return tfidf;
+}
+
+function calculateCosineSimilarity(tfidf, selectedMovieIndex) {
+  const selectedVector = tfidf[selectedMovieIndex];
+  return tfidf.map(vector => {
+      const dotProduct = Object.keys(selectedVector).reduce((sum, term) => {
+          return sum + (selectedVector[term] * (vector[term] || 0));
+      }, 0);
+      const magnitudeA = Math.sqrt(Object.values(selectedVector).reduce((sum, val) => sum + val * val, 0));
+      const magnitudeB = Math.sqrt(Object.values(vector).reduce((sum, val) => sum + val * val, 0));
+      return dotProduct / (magnitudeA * magnitudeB);
+  });
+}
 
 
 

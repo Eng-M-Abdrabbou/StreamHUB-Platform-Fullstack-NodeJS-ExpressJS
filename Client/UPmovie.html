@@ -264,7 +264,37 @@ text-shadow: 1px 1px 2px black;
     
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h3 style="margin-left: 100px;">Recommended Movies:</h3>
+<div class="movie-carousel" style="margin-left: 1000px; align-content: center;" id="movie-carousel">
+    <!-- Movie cards will be dynamically inserted here -->
 </div>
+
+<div id="recom-movie-carousel" class="row" style="margin-left: 150px; align-content: center;">
+    <!-- Movie card content here -->
+</div>
+
+
+
+
+
+
+
+
+
+
 </section>
 
 <footer class="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
@@ -304,6 +334,8 @@ text-shadow: 1px 1px 2px black;
         </div>
     </footer>
     <script>
+
+
 
 // Movie Info and Rating Handler Class
 class MovieInterface {
@@ -388,15 +420,16 @@ class MovieInterface {
     });
   }
   
-  function fetchMovieInfo() {
+   function  fetchMovieInfo() {
       fetch('/movie-info')
-          .then(response => response.json())
+          .then( response => response.json())
           .then(data => {
               if (data.success) {
                   console.log("the movie info is",data.movieInfo);
                   
                   displayMovieInfo(data.movieInfo);
                   setupVideoPlayer(data.movieInfo);
+                  renderMovieDetails(data.movieInfo);
               } else {
                   console.error('Error:', data.message);
                   window.location.href = '/login.html?alertU=true';
@@ -570,6 +603,72 @@ function displayUserProfile(userData) {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function renderMovieDetails(data) {
+mid = data.movie_id;
+console.log("this is the movie id you are looking for",mid);	
+  // Get the selected movie data
+  fetch(`/get_movie2?mid=${mid}`)
+    .then(response => response.json())
+    .then(data => {
+      // console.log("The data of the response will be here",data);
+      // const carouselContainer = document.getElementById('carouselContainer');
+      // const movieCard = document.createElement('div');
+      // movieCard.className = 'col-md-3';
+      // movieCard.innerHTML = `
+      //   <div class="card mb-4 shadow-sm" style="color: black; ">
+      //     <div class="card-body">
+      //       <h5 class="card-title">${data.title}</h5>
+      //       <p class="card-text">Genre: ${data.genre}</p>
+      //     </div>
+      //   </div>
+      // `;
+      // carouselContainer.appendChild(movieCard);
+    });
+
+  // Fetch the recommended movies data
+  fetch(`/get_recommendations2?mid=${mid}`)
+  
+    .then(response => response.json())
+    .then(data => {
+      const recommendedMovies = data;
+      console.log("this is the recommended movies",recommendedMovies);
+      // Display the recommended movies cards
+      const recommendedMoviesContainer = document.getElementById('recom-movie-carousel');
+      console.log("this is the recommended movies container",recommendedMoviesContainer);
+      recommendedMovies.forEach(rec => {
+        const card = document.createElement('div');
+        card.className = 'col-md-3';
+        card.innerHTML = `
+          <div class="card mb-4 shadow-sm" style="margin-left: 10px; color: black;">
+            <div class="card-body">
+              <h5 class="card-title">${rec.movie.title}</h5>
+              <p class="card-text">Genre: ${rec.movie.genre}</p>
+              <p class="card-text">Score: ${rec.score.toFixed(2)}</p>
+            </div>
+          </div>
+        `;
+        recommendedMoviesContainer.appendChild(card);
+      });
+    });
+}
 
 
 
