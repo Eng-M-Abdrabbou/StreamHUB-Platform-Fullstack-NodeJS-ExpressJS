@@ -649,6 +649,10 @@ app.post("/prepare-movie", async (req, res) => {
 
 
 
+
+
+
+/*
 app.get("/movie", function (req, res) {
   console.log("Session in /movie:", req.session);
   if (!req.session.movieInfo) {
@@ -659,6 +663,42 @@ app.get("/movie", function (req, res) {
   console.log("Movie info found:", req.session.movieInfo);
   res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
 });
+*/
+
+
+
+
+
+
+
+
+app.get("/movie", function (req, res) {
+  console.log("Session in /movie:", req.session);
+  
+  // Get movie ID from query parameters
+  const movieId = req.query.id;
+  
+  // if (!req.session.movieInfo || req.session.movieInfo.id !== movieId) {
+  //     console.log("No matching movie info found in session");
+  //     return res.redirect('/'); // Redirect to home page or movie selection page
+  // }
+  
+  console.log("Movie info found:", req.session.movieInfo);
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.get("/movie-info", (req, res) => {

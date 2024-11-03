@@ -107,6 +107,10 @@ text-shadow: 1px 1px 2px black;
           ::-webkit-scrollbar-thumb {
               background: #fff;
           }
+
+          body {
+  overflow-x: hidden;
+}
        </style>
 
    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
@@ -655,20 +659,155 @@ console.log("this is the movie id you are looking for",mid);
       console.log("this is the recommended movies container",recommendedMoviesContainer);
       recommendedMovies.forEach(rec => {
         const card = document.createElement('div');
-        card.className = 'col-md-3';
+        card.onclick = function() { watchMovie(rec.movie.movie_id); };
+       // card.className = 'col-md-3';
+        card.className = 'movie-card';
+      //  card.setAttribute('data-movie-id', data.movie_id);
+console.log(rec);
+
+        const pathos = rec.movie.imgpath.split('\\').join('/');
+    const duration = rec.movie.runtime < 60 ? `${movieInfo.runtime}m` : `${Math.floor(rec.movie.runtime / 60)}h ${rec.movie.runtime % 60}m`;
+    console.log(pathos); 
+       
+       
+    //   <div class="card mb-4 shadow-sm" style="margin-left: 10px; color: black;">
+        //     <div class="card-body">
+        //       <h5 class="card-title">${rec.movie.title}</h5>
+        //       <p class="card-text">Genre: ${rec.movie.genre}</p>
+        //       <p class="card-text">Score: ${rec.score.toFixed(2)}</p>
+        //     </div>
+        //   </div>
+        // 
+
         card.innerHTML = `
-          <div class="card mb-4 shadow-sm" style="margin-left: 10px; color: black;">
-            <div class="card-body">
-              <h5 class="card-title">${rec.movie.title}</h5>
-              <p class="card-text">Genre: ${rec.movie.genre}</p>
-              <p class="card-text">Score: ${rec.score.toFixed(2)}</p>
-            </div>
-          </div>
+    <div class="movie-card" style="margin-left: -10px; color: black;">
+                <img src="${pathos}" alt="${rec.movie.title}" class="movie-poster" style="width: 100%; height: auto;">
+      <div class="card-body">
+        <div class="movie-info">
+       <h5>${rec.movie.title}</h5>
+       <p>${rec.movie.description.length > 25 ? rec.movie.description.substring(0, 100) + '...' : rec.movie.description}</p>
+       <p>${rec.movie.genre}</p>
+       <p>${duration}</p>
+       </div>
+     </div>
+ </div>
         `;
+
+        console.log("hey this is the data you are looking for : this is the recommended movie ",data.imgpath,pathos,data.runtime,duration,data.title,data.description,data.genre,data.movie_id, data.description );
         recommendedMoviesContainer.appendChild(card);
       });
     });
 }
+
+
+
+
+
+
+
+
+// function createMovieCard(movieInfo) {
+//     const card = document.createElement('div');
+//     card.className = 'movie-card';
+//     card.setAttribute('data-movie-id', movieInfo.id);
+//     card.onclick = function() { watchMovie(movieInfo.movie_id); };
+//     const pathos = movieInfo.imgpath.split('\\').join('/');
+//     const duration = movieInfo.runtime < 60 ? `${movieInfo.runtime}m` : `${Math.floor(movieInfo.runtime / 60)}h ${movieInfo.runtime % 60}m`;
+//     console.log(pathos);
+//     card.innerHTML = `
+//         <img src="${pathos}" alt="${movieInfo.title}" class="movie-poster" style="width: 100%; height: auto;">
+      
+//         <div class="movie-info">
+//        <h5>${movieInfo.title}</h5>
+//        <p>${movieInfo.description.length > 25 ? movieInfo.description.substring(0, 100) + '...' : movieInfo.description}</p>
+//        <p>${movieInfo.genre}</p>
+//        <p>${duration}</p>
+//      </div>
+//     `;
+//     console.log(movieInfo.imgpath);
+//     return card;
+// }
+
+
+
+
+
+async function watchMovie(movieId) {
+    try {
+        const userId = await getUserIdFromSession();
+        if (!userId) {
+            console.error('No user ID found. User might not be logged in.');
+            alert('Please log in to watch the movie.');
+            return;
+        }
+        
+        const response = await fetch('/prepare-movie', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ movieId, userId }),
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            // Instead of using setTimeout, wait for the session to be saved
+            // then do a full page redirect
+            window.location.href = `/movie?id=${movieId}`;
+        } else {
+            console.error('Error preparing movie:', data.message);
+            alert('Error preparing movie: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred: ' + error.message);
+    }
+}
+
+
+/*
+async function watchMovie(movieId) {
+    try {
+        const userId = await getUserIdFromSession();
+        if (!userId) {
+            console.error('No user ID found. User might not be logged in.');
+            alert('Please log in to watch the movie.');
+            return;
+        }
+
+        console.log("Sending request to prepare movie:", { movieId, userId });
+        
+        const response = await fetch('/prepare-movie', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ movieId, userId }),
+        });
+
+        const data = await response.json();
+        console.log("Received response:", data);
+
+        if (data.success) {
+            setTimeout(() => {
+                window.location.href = '/movie';
+            }, 1000);
+        } else {
+            console.error('Error preparing movie:', data.message);
+            alert('Error preparing movie: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred: ' + error.message);
+    }
+}
+*/
+
+
+
+
+
 
 
 
