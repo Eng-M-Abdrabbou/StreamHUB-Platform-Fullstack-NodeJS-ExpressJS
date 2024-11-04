@@ -12,6 +12,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+ .video-background {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+.video-background video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
         .fjalla-one-regular {
       font-family: 'Fjalla One', sans-serif;
       font-weight: 400;
@@ -44,35 +67,27 @@
                     <li class="nav-item"><a class="nav-link" href="team.html"><strong style="color: rgb(0, 0, 0);">Team</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="contacts.html"><strong style="color: rgb(0, 0, 0);">Contacts</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><strong style="color: rgb(0, 0, 0);">Log in</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html"><strong style="color: rgb(0, 0, 0);">Sign up</strong></a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 0, 0);">
-                          <strong>Dropdown link</strong>  
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                          <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';"
-                           onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Action</a>
-                          <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Another action</a>
-                          <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Something else here</a>
-                        </div>
-                        
-                      </li>
-                      <li class="nav-item d-flex align-items-center">
-                        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
-                        <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
-                          <i class="fas fa-search"></i>
-                        </button>
-                      </li>
-                      
                 </ul><a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Sign up</a>
-               
+                <li class="nav-item d-flex align-items-center">
+                    <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
+                    <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </li>
+            </ul><a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="login.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Login</a>
+ 
+                    <!-- <li class="nav-item"><a class="nav-link" href="login.html"><strong style="color: rgb(0, 0, 0);">Log in</strong></a></li> -->
+                    <!-- <li class="nav-item"><a class="nav-link" href="signup.html"><strong style="color: rgb(0, 0, 0);">Sign up</strong></a></li> -->
+                   
+                      
+ 
             </div>
         </div>
     </nav>
     <header class="bg-dark">
-        <div class="container pt-4 pt-xl-5">
+
+
+        <div class="container pt-4 pt-xl-5" >
             <div class="row pt-5">
                 <div class="col-md-8 col-xl-6 text-center text-md-start mx-auto">
                     <div class="text-center">
@@ -90,19 +105,36 @@
                 </div>
             </div>
         </div>
+    </div>
     </header>
     <section class="py-5">
+
+          
+        <div class="video-background">
+            <video autoplay muted loop playsinline>
+                <source src="assets\vids\vid.mp4" type="video/mp4">
+            </video>
+            <div class="content">
+                <!-- Your content here -->
+            </div>
+        </div>
+
         <div class="container text-center py-5">
             <p class="mb-4" style="font-size: 1.6rem;">Inspired by some of&nbsp;<span class="text-success"></span>the best companies in the whole world.</p><a href="#"> <img class="m-3" src="assets/img/brands/google.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/microsoft.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/apple.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/facebook.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/twitter.png"></a>
         </div>
     </section>
     <section>
         <div class="container bg-dark py-5">
-            <div class="row">
+         
+           
+            <!-- <div class="row">
                 <div class="col-md-8 col-xl-6 text-center mx-auto">
                     <p class="fw-bold text-success mb-2">Our Services</p>
                     <h3 class="fw-bold">What we can do for you</h3>
-                </div>
+                </div> -->
+          
+          
+          
             </div>
             <div class="py-5 p-lg-5">
                 <div class="row row-cols-1 row-cols-md-2 mx-auto" style="max-width: 900px;">

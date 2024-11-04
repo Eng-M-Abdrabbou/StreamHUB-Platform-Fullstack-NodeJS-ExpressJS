@@ -150,27 +150,29 @@
 
     </header>
 
-    <section class="py-5">
-        <div class="container py-5">
+    <section class="py-5 d-flex justify-content-center">
+        <div class="container py-5 d-flex justify-content-center" >
             <div class="row">
-                <div class="col-md-4">
+                <div class="col">
                     <h2>User Profile</h2>
                     <h4 id="profile-container2"></h4>
                 </div>
-                <div class="col-md-8">
-                    <!-- <h2>Recommended Movies</h2> -->
-                    <h4 id="recs"></h4>
+            </div>
+            <div class="row">
+                <div class="col">
+
+                    <div>
+                      <h3>Recommended Movies:</h3>
+                                  <div class="movie-carousel" id="movie-carousel">
+                                      <!-- Movie cards will be dynamically inserted here -->
+                                  </div>
+                      
+                              </div>
                    
                 </div>
             </div>
         </div>
-        <div>
-<h3 style="margin-left: 100px;"> Recommended Movies:</h3>
-            <div class="movie-carousel" style="margin-left: 100px;" id="movie-carousel">
-                <!-- Movie cards will be dynamically inserted here -->
-            </div>
 
-        </div>
         
     </section>
 
@@ -322,7 +324,7 @@ function displayRecommendedMovies(recommendations) {
   
 
 
-
+/*
 function createMovieCard(movieInfo) {
   const card = document.createElement('div');
   card.className = 'movie-card';
@@ -343,7 +345,7 @@ function createMovieCard(movieInfo) {
 
   return card;
 }
-
+*/
 
 
   function watchMovie(movieId) {
@@ -403,7 +405,7 @@ function displayRecommendedMovies(recommendations) {
         fetch(`/movie-info/${movie}`)
         .then((response) => response.json())
         .then((movieInfo) => {
-            console.log(movieInfo);
+            console.log("displayRecommendedMovies the movie info is",movieInfo);
             const movieCard = createMovieCard(movieInfo);
             carousel.appendChild(movieCard);
         })
@@ -412,10 +414,11 @@ function displayRecommendedMovies(recommendations) {
 }
 
 function createMovieCard(movieInfo) {
+    console.log("Here is all the movie info",movieInfo);
     const card = document.createElement('div');
     card.className = 'movie-card';
-    card.setAttribute('data-movie-id', movieInfo.id);
-    card.onclick = function() { watchMovie(movieInfo.movie_id); };
+    card.setAttribute('data-movie-id', movieInfo.data.movie_id);
+    card.onclick = function() { watchMovie(movieInfo.data.movie_id); };
     const pathos = movieInfo.data.imgpath.split('\\').join('/');
     const duration = movieInfo.data.runtime < 60 ? `${movieInfo.data.runtime}m` : `${Math.floor(movieInfo.data.runtime / 60)}h ${movieInfo.data.runtime % 60}m`;
     console.log(pathos);
@@ -486,6 +489,46 @@ function getUserIdFromSession() {
     });
 }
 
+/*
+async function watchMovie(movieId) {
+    try {
+        const userId = await getUserIdFromSession();
+        if (!userId) {
+            console.error('No user ID found. User might not be logged in.');
+            alert('Please log in to watch the movie.');
+            return;
+        }
+
+        console.log("Sending request to prepare movie:", { movieId, userId });
+        
+        const response = await fetch('/prepare-movie', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ movieId, userId }),
+        });
+
+        const data = await response.json();
+        console.log("Received response:", data);
+
+        if (data.success) {
+            setTimeout(() => {
+                window.location.href = '/movie';
+            }, 1000);
+        } else {
+            console.error('Error preparing movie:', data.message);
+            alert('Error preparing movie: ' + data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred: ' + error.message);
+    }
+}
+*/
+
+
+
 
 async function watchMovie(movieId) {
     try {
@@ -522,6 +565,7 @@ async function watchMovie(movieId) {
         alert('An error occurred: ' + error.message);
     }
 }
+
 
 
 
