@@ -9,26 +9,85 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/Inter.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+ .video-background {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+.video-background video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+}
+
+.content {
+    position: relative;
+    z-index: 1;
+}
+        .fjalla-one-regular {
+      font-family: 'Fjalla One', sans-serif;
+      font-weight: 400;
+      font-style: normal;
+    }
+
+    ::-webkit-scrollbar {
+                width: 12px;
+            }
+            ::-webkit-scrollbar-track {
+                background: #000; 
+            }
+            ::-webkit-scrollbar-thumb {
+                background: #fff;
+            }
+    </style>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
-        <div class="container"><img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="index.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="products.html"><strong>Movies</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><strong>Log in</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html"><strong>Sign up</strong></a></li>
-                </ul><a class="btn btn-primary shadow mx-auto" role="button" href="/signup.html" style="height: 61.68px;width: 130.52px;margin: 0px;padding: 17px 10px;">Sign up</a>
+<body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
+    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+       
+        <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
+            <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
+                <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
+                    <li class="nav-item"><a class="nav-link active" href="index.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                    <li class="nav-item"><a class="nav-link " href="products.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="team.html"><strong style="color: rgb(0, 0, 0);">Team</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong style="color: rgb(0, 0, 0);">Contacts</strong></a></li>
+                </ul><a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Sign up</a>
+                <li class="nav-item d-flex align-items-center">
+                    <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
+                    <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
+                      <i class="fas fa-search"></i>
+                    </button>
+                  </li>
+            </ul><a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="login.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Login</a>
+ 
+                    <!-- <li class="nav-item"><a class="nav-link" href="login.html"><strong style="color: rgb(0, 0, 0);">Log in</strong></a></li> -->
+                    <!-- <li class="nav-item"><a class="nav-link" href="signup.html"><strong style="color: rgb(0, 0, 0);">Sign up</strong></a></li> -->
+                   
+                      
+ 
             </div>
         </div>
     </nav>
     <header class="bg-dark">
-        <div class="container pt-4 pt-xl-5">
+
+
+        <div class="container pt-4 pt-xl-5" >
             <div class="row pt-5">
                 <div class="col-md-8 col-xl-6 text-center text-md-start mx-auto">
                     <div class="text-center">
@@ -38,26 +97,44 @@
                 </div>
                 <div class="col-12 col-lg-10 mx-auto">
                     <div class="position-relative" style="display: flex;flex-wrap: wrap;justify-content: flex-end;">
-                        <div style="position: relative;flex: 0 0 45%;transform: translate3d(-15%, 35%, 0);"><img class="img-fluid" data-bss-parallax="" data-bss-parallax-speed="0.8" src="assets/img/products/t%20(2).jpeg" width="320" height="643"></div>
-                        <div style="position: relative;flex: 0 0 45%;transform: translate3d(-5%, 20%, 0);"><img class="img-fluid" data-bss-parallax="" data-bss-parallax-speed="0.4" src="assets/img/products/t1.jpeg" width="310" height="568"></div>
-                        <div style="position: relative;flex: 0 0 60%;transform: translate3d(0, 0%, 0);"><img class="img-fluid" data-bss-parallax="" data-bss-parallax-speed="0.25" src="assets/img/products/t%20(3).jpeg" width="309" height="603"></div>
-                    </div>
+                        <div style="position: relative;flex: 0 0 45%;transform: translate3d(-15%, 35%, 0);"><img class="img-fluid" data-bss-parallax="" data-bss-parallax-speed="0.8" src="assets/img/products/t%20(2).jpeg" width="400" height="750"></div>
+                        <div style="position: relative;flex: 0 0 45%;transform: translate3d(-5%, 20%, 0);"><img class="img-fluid" data-bss-parallax="" data-bss-parallax-speed="0.4" src="assets/img/products/t1.jpeg" width="400" height="750"></div>
+                        <div style="position: relative;flex: 0 0 60%;transform: translate3d(0, 0%, 0);"><img class="img-fluid" data-bss-parallax="" data-bss-parallax-speed="0.25" src="assets/img/products/t%20(3).jpeg" width="400" height="750"></div>
+                        <div style="position: relative;flex: 0 0 45%;transform: translate3d(-10%, 30%, 0);"><img class="img-fluid" data-bss-parallax="" data-bss-parallax-speed="0.5" src="assets/img/products/t4.jpg" width="400" height="750"></div>
+                        <div style="position: relative;flex: 0 0 50%;transform: translate3d(-5%, 20%, 0);"><img class="img-fluid" data-bss-parallax="" data-bss-parallax-speed="0.11" src="assets/img/products/f5.jpg" width="400" height="750"></div>
                 </div>
             </div>
         </div>
+    </div>
     </header>
     <section class="py-5">
+
+          
+        <div class="video-background">
+            <video autoplay muted loop playsinline>
+                <source src="assets\vids\vid.mp4" type="video/mp4">
+            </video>
+            <div class="content">
+                <!-- Your content here -->
+            </div>
+        </div>
+
         <div class="container text-center py-5">
             <p class="mb-4" style="font-size: 1.6rem;">Inspired by some of&nbsp;<span class="text-success"></span>the best companies in the whole world.</p><a href="#"> <img class="m-3" src="assets/img/brands/google.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/microsoft.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/apple.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/facebook.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/twitter.png"></a>
         </div>
     </section>
     <section>
         <div class="container bg-dark py-5">
-            <div class="row">
+         
+           
+            <!-- <div class="row">
                 <div class="col-md-8 col-xl-6 text-center mx-auto">
                     <p class="fw-bold text-success mb-2">Our Services</p>
                     <h3 class="fw-bold">What we can do for you</h3>
-                </div>
+                </div> -->
+          
+          
+          
             </div>
             <div class="py-5 p-lg-5">
                 <div class="row row-cols-1 row-cols-md-2 mx-auto" style="max-width: 900px;">
@@ -198,13 +275,20 @@
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 col-xl-4">
                     <div>
-                        <form class="p-3 p-xl-4" method="post">
-                            <div class="mb-3"><input class="form-control" type="text" id="name-1" name="name" placeholder="Name"></div>
-                            <div class="mb-3"><input class="form-control" type="email" id="email-1" name="email" placeholder="Email"></div>
-                            <div class="mb-3"><textarea class="form-control" id="message-1" name="message" rows="6" placeholder="Message"></textarea></div>
-                            <div><button class="btn btn-primary shadow d-block w-100" type="submit">Send </button></div>
-                        </form>
-                    </div>
+                        <form class="p-3 p-xl-4" method="post" onsubmit="sendEmail(event)">
+                            <div class="mb-3">
+                                <input class="form-control" type="text" id="name-1" name="name" placeholder="Name">
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-control" type="email" id="email-1" name="email" placeholder="Email">
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" id="message-1" name="message" rows="6" placeholder="Message"></textarea>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary shadow d-block w-100" id="send-mail" type="submit">Send</button>
+                            </div>
+                        
                 </div>
                 <div class="col-md-4 col-xl-4 d-flex justify-content-center justify-content-xl-start">
                     <div class="d-flex flex-wrap flex-md-column justify-content-md-start align-items-md-start h-100">
@@ -235,7 +319,7 @@
         </div>
     </section>
     <section class="py-5"></section>
-    <footer class="bg-dark">
+    <footer class="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
         <div class="container py-4 py-lg-5">
             <div class="row justify-content-center">
                 <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
@@ -270,10 +354,46 @@
                 </ul>
             </div>
         </div>
-    </footer>
+<footer class="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/bold-and-dark.js"></script>
+    <script>function sendEmail(event) {
+        event.preventDefault();
+        
+        var name = document.getElementById('name-1').value;
+        var email = document.getElementById('email-1').value;
+        var message = document.getElementById('message-1').value;
+        
+        var mailtoLink = 'mailto:202010177@aau.ac.ae' +
+                         '?subject=Msg%20from%20User%20' + encodeURIComponent(name) +
+                         '&body=' + encodeURIComponent('Name: ' + name + '\nEmail: ' + email + '\nMessage: ' + message);
+        
+        window.location.href = mailtoLink;
+    }
+    
+    
+document.querySelectorAll('button').forEach(button => {
+    button.addEventListener('click', function() {
+        if (this.innerHTML.trim().toLowerCase() === 'learn' || this.innerHTML.trim().toLowerCase() === 'learn more') {
+            window.location.href = 'learn.html';
+        }
+    });
+});
+    
+
+document.querySelectorAll('a').forEach(link => {
+    if (['company', 'legacy', 'team'].includes(link.innerHTML.trim().toLowerCase())) {
+        link.addEventListener('click', function(event) {
+            if (!link.closest('.navbar')) { // Check if the link is not inside a navbar
+                event.preventDefault(); // Prevent default anchor behavior
+                window.location.href = 'Aboutus.html'; // Redirect to about.html
+            }
+        });
+    }
+});
+
+    </script>
 </body>
 
 </html>

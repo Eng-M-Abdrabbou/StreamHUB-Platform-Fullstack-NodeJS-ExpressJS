@@ -9,21 +9,125 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/Inter.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
+
+    <style>
+
+        .fjalla-one-regular {
+ font-family: 'Fjalla One', sans-serif;
+ font-weight: 400;
+ font-style: normal;
+}
+
+.movie-card {
+ position: relative;
+ width: calc(120px * 1.618); /* Golden ratio */
+ height: 240px;
+ margin: 10px;
+ transition: transform 0.3s, background 0.3s, z-index 0.3s;
+ overflow: hidden;
+ display: inline-block;
+}
+
+.movie-card:hover {
+ transform: scale(1.1); /* Slight growth */
+ background: rgba(128, 128, 128, 0.125); /* Solid grey background */
+ z-index: 10; /* Ensure it overlays other elements */
+ /* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+ border: 2px solid neon;
+ animation: glow 0.5s ease; */
+}
+
+/* @keyframes glow {
+ 0% { box-shadow: 0 0 5px #ff0000; }
+ 100% { box-shadow: 0 0 15px neon, 0 0 25px neon, 0 0 35px neon, 0 0 45px neon; }
+} */
+
+.movie-card, .movie-card * {
+ user-select: none;
+}
+
+
+.movie-poster {
+ display: block;
+ width: 100%;
+ height: 100%;
+ transition: opacity 0.3s;
+}
+
+.movie-card:hover .movie-poster {
+ opacity: 0.4; 
+}
+
+.movie-info {
+ display: none;
+ position: absolute;
+ bottom: 0;
+ left: 0;
+ width: 100%;
+ padding: 10px;
+ color: white;
+ box-sizing: border-box;
+ z-index: 5;
+ font-size: 12px; /* Smaller font size */
+}
+
+.movie-card:hover .movie-info {
+ display: block;
+}
+
+.movie-info h5 {
+ font-weight: bold;
+ color: white;
+ text-shadow: 1px 1px 2px black;
+ font-size: 12px; /* Smaller font size */
+ margin: 0;
+}
+
+.movie-info p {
+ margin: 5px 0;
+ color: lightgrey;
+ font-size: 12px; /* Much smaller font size */
+ text-shadow: 1px 1px 2px black;
+}
+::-webkit-scrollbar {
+               width: 12px;
+           }
+           ::-webkit-scrollbar-track {
+               background: #000; 
+           }
+           ::-webkit-scrollbar-thumb {
+               background: #fff;
+           }
+           </style>
+
+       <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+       <!-- <style>
+           .fjalla-one-regular {
+         font-family: 'Fjalla One', sans-serif;
+         font-weight: 400;
+         font-style: normal;
+       }
+       </style> -->
+           <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+           <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+           <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
-        <div class="container"><img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="index.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav ms-0">
-                    <li class="nav-item"><a class="nav-link active" href="admin.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="movies.html">All Movies</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="users.html">All Users</a></li>
-                    <li class="nav-item"><a class="nav-link" href="index.html"><strong>Log out</strong></a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+   <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
+       <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+          
+           <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
+               <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
+                   <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
+                    <li class="nav-item"><a class="nav-link active" href="admin.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                    <li class="nav-item"><a class="nav-link " href="movies.html"><strong style="color: rgb(0, 0, 0);">All Movies</strong></a></li>
+                    <li class="nav-item"><a class="nav-link " href="users.html"><strong style="color: rgb(0, 0, 0);">All Users</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Log out</strong></a></li>                                           
+                   </ul>                   
+               </div>
+           </div>
+       </nav>
 
     <header class="bg-dark">
         <div class="container pt-4 pt-xl-5">
@@ -36,8 +140,10 @@
         <div class="container bg-dark py-5">
             <div class="row">
                 <div class="col-md-8 col-xl-6 text-center mx-auto">
-                    <p class="fw-bold text-success mb-2">Welcome Back</p>
-                    <h4 class="fw-bold">This page is for admins only.<br> <br> Here you can manage the users or the movies on StreaHUB</h4>
+                    <p class="fw-bold text-success mb-2">Welcome Back Boss</p>
+                    <h4 class="fw-bold">Here you can manage the users or the movies on StreaHUB</h4>
+                    <br>
+
                 </div>
             </div>
             <div class="py-5 p-lg-5">
@@ -52,37 +158,29 @@
                 <tbody>
                     <tr>
                         <td>
-                            <table class="table table-dark table-hover">
+                            <table class="table table-dark">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Add Movie</th>
-                                        <th scope="col">Remove Movie</th>
-                                        <th scope="col">Update Movie</th>
+                                        <th scope="col">Movies</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="AddMovie.php">Add Movie</a></td>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="RemoveMovie.php">Remove Movie</a></td>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="UpdateMovie.php">Update Movie</a></td>
+                                        <td><a class="btn btn-primary shadow mx-auto d-block" role="button" href="movies.html">Manage Movies</a></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </td>
                         <td>
-                            <table class="table table-dark table-hover">
+                            <table class="table table-dark">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Add User</th>
-                                        <th scope="col">Remove User</th>
-                                        <th scope="col">Update User</th>
+                                        <th scope="col">Users</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="AddUser.php">Add User</a></td>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="RemoveUser.php">Remove User</a></td>
-                                        <td><a class="btn btn-primary shadow mx-auto" role="button" href="UpdateUser.php">Update User</a></td>
+                                        <td><a class="btn btn-primary shadow mx-auto d-block" role="button" href="users.html">Manage Users</a></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -92,6 +190,7 @@
             </table>
 
             </div>
+            <h6 class="fw-bold">This page is for admins only.</h6>
         </div>
     </section>
    
@@ -142,6 +241,18 @@
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/bold-and-dark.js"></script>
+    <script>
+        document.querySelectorAll('a').forEach(link => {
+    if (['company', 'legacy', 'team'].includes(link.innerHTML.trim().toLowerCase())) {
+        link.addEventListener('click', function(event) {
+            if (!link.closest('.navbar')) { // Check if the link is not inside a navbar
+                event.preventDefault(); // Prevent default anchor behavior
+                window.location.href = 'Aboutus.html'; // Redirect to about.html
+            }
+        });
+    }
+});
+    </script>
 </body>
 
 </html>
