@@ -12,6 +12,69 @@
 
     <style>
 
+
+.video-background {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 160vh;
+}
+
+.video-background video {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 100vw;
+    height: 160vh;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    filter: grayscale(100%);
+}
+
+
+
+.award-card {
+        width: 250px;
+        height: 320px;
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        padding: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        filter: grayscale(100%);
+        opacity: 0.6;
+        pointer-events: none;
+        margin: 10px;
+    }
+    .award-card img {
+        width: 200px;
+        height: 200px;
+        border-radius: 10px;
+    }
+    .award-card p {
+        margin-top: 10px;
+        font-size: 18px;
+        color: #555;
+    }
+    .award-card.active {
+        filter: grayscale(0%);
+        opacity: 1;
+        pointer-events: auto;
+        cursor: pointer;
+        box-shadow: 0 8px 15px rgba(0, 128, 0, 0.3);
+    }
+    .award-card.active:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 20px rgba(0, 128, 0, 0.5);
+    }
+
+
+
+
+
+
          .fjalla-one-regular {
   font-family: 'Fjalla One', sans-serif;
   font-weight: 400;
@@ -124,16 +187,16 @@
                         <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
                         <li class="nav-item"><a class="nav-link" href="upForums.html"><strong style="color: rgb(0, 0, 0);">Forums</strong></a></li>
                         <li class="nav-item"><a class="nav-link" href="upchat.html"><strong style="color: rgb(0, 0, 0);">Chat</strong></a></li>
-                        <li class="nav-item"><a class="nav-link active" href="userProfile.html"><strong style="color: rgb(0, 0, 0);">profile</strong></a></li>
-                        <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Log out</strong></a></li>
+                        <!-- <li class="nav-item"><a class="nav-link active" href="userProfile.html"><strong style="color: rgb(0, 0, 0);">profile</strong></a></li> -->
+                        <!-- <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Log out</strong></a></li> -->
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 0, 0);">
                               <i class="fas fa-user" style="margin-right: 5px;"></i> YourUsername
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                              <a class="dropdown-item" href="#">Action</a>
-                              <a class="dropdown-item" href="#">Another action</a>
-                              <a class="dropdown-item" href="#">Something else here</a>
+                              <a class="dropdown-item" href="index.html">Logout</a>
+                              <a class="dropdown-item" href="userProfile.html">profile</a>
+                              <!-- <a class="dropdown-item" href="#">Something else here</a> -->
                             </div>
                           </li>                          
                           <li class="nav-item d-flex align-items-center">
@@ -150,8 +213,16 @@
 
     </header>
 
-    <section class="py-5 d-flex justify-content-center">
-        <div class="container py-5 d-flex justify-content-center" >
+          
+    <div class="video-background">
+        <video autoplay muted loop playsinline>
+            <source src="assets\vids\vid.mp4" type="video/mp4">
+        </video>
+        <div class="content">
+          
+            <div class="container py-5 d-flex justify-content-center" style="height: max-content;">
+
+
             <div class="row">
                 <div class="col">
                     <h2>User Profile</h2>
@@ -172,12 +243,18 @@
                 </div>
             </div>
         </div>
-
         
-    </section>
-<div id="user-award">
+    <h2 style="margin-left: 70px; margin-top: -60px;">User Awards:</h2>
+    <br>
+    <div id="user-award" style="margin-left: 70px;  text-align: left;">
 
+
+         </div>
+    </div>
+          
+           
 </div>
+
     <section class="py-5">
         <div class="container text-center py-5">
             <p class="mb-4" style="font-size: 1.6rem;">Inspired by some of&nbsp;<span class="text-success"></span>the best companies in the world.</p><a href="#"> <img class="m-3" src="assets/img/brands/google.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/microsoft.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/apple.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/facebook.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/twitter.png"></a>
@@ -588,34 +665,181 @@ document.querySelectorAll('a').forEach(link => {
 
 
 
+userAwards();
+
+
+
+// async function userAwards(){
+// const userId = await getUserIdFromSession();
+// console.log("User ID:", userId);
+
+
+// const response = await fetch('/fetchPostCount', {
+//   method: 'POST',
+//   headers: {
+//     'Content-Type': 'application/json',
+//   },
+//   body: JSON.stringify({ userId }),
+// });
+
+
+// response.json().then(data => {
+//   console.log(data);
+//   //const postCount = data.count;
+
+//   const { data: { COUNT: postCount } } = data;
+//   console.log('Post count:', postCount);
+
+
+//   switch (postCount) {
+//     case 0:
+//         document.getElementById('userAwards').innerHTML = `
+//                 <img src="assets/img/badges/badge (2).jpg" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}
+
+//         <i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`
+//         break
+
+//     case 10:
+
+//         document.getElementById('userAwards').innerHTML = 
+//         `<img src="assets/img/badges/badge (1).png" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}
+
+//         <i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Award`
+//         break
+
+//     case 30:
+    
+//     document.getElementById('userAwards').innerHTML = 
+//     `<img src="assets/img/badges/badge (1).jpg" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}`
+
+//     `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Award`
+//         break
+
+//     case 50:
+
+//         document.getElementById('userAwards').innerHTML = 
+//         `<img src="assets/img/badges/badge (2).png" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}`
+
+//         `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`
+//         break
+
+//     default:
+//         document.getElementById('userAwards').innerHTML = 
+//         `<img src="assets/img/badges/badge (2).jpg" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}`
+
+//         `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`
+//         break
+// }
 
 
 
 
-async function userAwards(){
-const userId = await getUserIdFromSession();
-console.log("User ID:", userId);
+
+// });
 
 
-const response = await fetch('fetchPostCount', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({ userId }),
-});
+// }
+
+async function userAwards() {
+    const userId = await getUserIdFromSession();
+    console.log("User ID:", userId);
+
+    const response = await fetch('/fetchPostCount', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId }),
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    // Correctly destructure the data
+    const postCount = data.data['COUNT(user_id)'];
+    console.log('Post count:', postCount);
+
+    // Update the HTML based on postCount
+    /*
+  //  switch (postCount) {
+        case 0:
+            document.getElementById('user-award').innerHTML =
+                `<img src="assets/img/badges/badge (2).jpg" style="width: 250px; height: 250px; margin-right: 5px;">` +
+                `<p>You have:</p>`+
+                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Interactions`;
+            break;
+        case 10:
+            document.getElementById('user-award').innerHTML =
+                `<img src="assets/img/badges/badge (1).png" style="width: 250px; height: 250px; margin-right: 5px;">` +
+                `<p>You have:</p>`+
+                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Award`;
+            break;
+        case 30:
+            document.getElementById('user-award').innerHTML =
+                `<img src="assets/img/badges/badge (1).jpg" style="width: 250px; height: 250px; margin-right: 5px;">` +
+                `<p>You have:</p>`+
+                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Award`;
+            break;
+        case 50:
+            document.getElementById('user-award').innerHTML =
+                `<img src="assets/img/badges/badge (2).png" style="width: 250px; height: 250px; margin-right: 5px;">` +
+                `<p>You have:</p>`+
+                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`;
+            break;
+        default:
+            document.getElementById('user-award').innerHTML =
+                `<img src="assets/img/badges/badge (2).jpg" style="width: 250px; height: 250px; margin-right: 5px;">` +
+                `<p>You have:</p>`+
+                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`;
+            break;
+    }
+*/
 
 
-response.json().then(data => {
-  console.log(data);
-  const postCount = data.count;
-  const postCountElement = document.getElementById('postCount');
-  postCountElement.textContent = postCount;
-});
+    let cardHTML;
 
+// Update the HTML based on postCount using a switch statement
+if (postCount >= 0 && postCount <= 10) {
+    cardHTML = `
+        <div class="award-card active">
+            <img src="assets/img/badges/badge (2).jpg" alt="Badge 0">
+            <p>0-10 Awards</p>
+            <i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Interactions
+        </div>`;
+} else if (postCount >= 11 && postCount <= 30) {
+    cardHTML = `
+        <div class="award-card active">
+            <img src="assets/img/badges/badge (1).png" alt="Badge 11-30">
+            <p>11-30 Awards</p>
+            <i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Interactions
+        </div>`;
+} else if (postCount >= 31 && postCount <= 50) {
+    cardHTML = `
+        <div class="award-card active">
+            <img src="assets/img/badges/badge (1).jpg" alt="Badge 31-50">
+            <p>31-50 Awards</p>
+            <i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Interactions
+        </div>`;
+} else if (postCount > 50) {
+    cardHTML = `
+        <div class="award-card active">
+            <img src="assets/img/badges/badge (2).png" alt="Badge 50+">
+            <p>50+ Awards</p>
+            <i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Interactions
+        </div>`;
+} else {
+    cardHTML = `
+        <div class="award-card">
+            <img src="assets/img/badges/badge (2).jpg" alt="Default Badge">
+            <p>${postCount} Awards</p>
+            <i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Interactions
+        </div>`;
+}
+// Insert the card into the DOM
+
+document.getElementById('user-award').innerHTML = cardHTML;
 
 }
-
 
 
 
