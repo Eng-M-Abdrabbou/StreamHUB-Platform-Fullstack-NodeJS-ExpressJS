@@ -7,7 +7,7 @@ from sklearn.neighbors import NearestNeighbors
 app = Flask(__name__)
 
 # Establish SQLAlchemy connection
-engine = create_engine('mysql+mysqlconnector://root:@localhost/streamhubdb')
+engine = create_engine('mysql+mysqlconnector://root:@localhost/streamhubdb3')
 
 # Fetch the data from the MySQL tables using SQLAlchemy
 def fetch_data():
