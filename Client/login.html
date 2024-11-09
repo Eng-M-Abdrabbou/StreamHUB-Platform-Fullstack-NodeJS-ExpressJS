@@ -1,77 +1,170 @@
-
-
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
-
 <head>
+    <!-- Previous head content remains the same -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Log in - StreamHub</title>
-    <meta name="description" content="Experience seamless streaming with Stream Hub. Our platform integrates advanced social media features and an AI-driven recommendation system to personalize your entertainment. Discover, connect, and enjoy—all in one place.">
+    <meta name="description" content="Experience seamless streaming with Stream Hub. Our platform integrates advanced social media features and an AI-driven recommendation system to personalize your entertainment.">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/Inter.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
     <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Previous styles remain the same -->
     <style>
+        /* Previous styles remain the same */
         .fjalla-one-regular {
-      font-family: 'Fjalla One', sans-serif;
-      font-weight: 400;
-      font-style: normal;
-    }
-    ::-webkit-scrollbar {
-                width: 12px;
-            }
-            ::-webkit-scrollbar-track {
-                background: #000; 
-            }
-            ::-webkit-scrollbar-thumb {
-                background: #fff;
-            }
+            font-family: 'Fjalla One', sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fff;
+        }
+
+        /* Panda Styles */
+        .panda-container {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            top: 50px;
+        }
+        .panda-face {
+            height: 120px;
+            width: 134px;
+            background-color: #ffffff;
+            border: 3px solid #000000;
+            border-radius: 120px 120px 90px 90px;
+            position: relative;
+            margin: auto;
+            margin-top: 10px;
+        }
+        .ear-l, .ear-r {
+            background-color: #000000;
+            height: 40px;
+            width: 45px;
+            border: 3px solid #000000;
+            border-radius: 40px 40px 0 0;
+            position: absolute;
+            top: 28px;
+        }
+        .ear-l {
+            transform: rotate(-38deg);
+            left: 172px;
+        }
+        .ear-r {
+            transform: rotate(38deg);
+            right: 172px;
+        }
+        .eye-l, .eye-r {
+            background-color: #000000;
+            height: 35px;
+            width: 32px;
+            border-radius: 32px;
+            position: absolute;
+            top: 35px;
+            transition: height 0.3s;
+        }
+        .eye-l {
+            left: 22px;
+            transform: rotate(-20deg);
+        }
+        .eye-r {
+            right: 22px;
+            transform: rotate(20deg);
+        }
+        .eyeball-l, .eyeball-r {
+            height: 10px;
+            width: 10px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            transition: 0.3s all;
+        }
+        .nose {
+            height: 16px;
+            width: 16px;
+            background-color: #000000;
+            position: absolute;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            border-radius: 19px 0 0 4px;
+        }
+        .mouth {
+            height: 12px;
+            width: 15px;
+            position: absolute;
+            top: 85px;
+            left: 50px;
+            background-color: transparent;
+            border-radius: 50%;
+            box-shadow: 0 3px #000000;
+        }
+        .mouth:before {
+            content: "";
+            position: absolute;
+            height: 12px;
+            width: 15px;
+            background-color: transparent;
+            border-radius: 50%;
+            box-shadow: 0 3px #000000;
+            left: 14px;
+        }
+        
+        /* Eyes closed state */
+        .eyes-closed .eye-l,
+        .eyes-closed .eye-r {
+            height: 4px;
+            border-radius: 0;
+        }
+        .eyes-closed .eyeball-l,
+        .eyes-closed .eyeball-r {
+            opacity: 0;
+        }
+
+        /* Custom card styling */
+        .login-card {
+            background: rgb(255, 255, 255);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
     </style>
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-
 <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
-    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
-       
-        <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
-            <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
-                <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
-                    <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
-                    <li class="nav-item"><a class="nav-link " href="products.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="team.html"><strong style="color: rgb(0, 0, 0);">Team</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong style="color: rgb(0, 0, 0);">Contacts</strong></a></li>
-                    <li class="nav-item"><a class="nav-link active" href="login.html"><strong style="color: rgb(0, 0, 0);">Log in</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html"><strong style="color: rgb(0, 0, 0);">Sign up</strong></a></li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 0, 0);">
-                          <strong>Dropdown link</strong>  
-                        </a>
-
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                          <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';"
-                           onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Action</a>
-                          <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Another action</a>
-                          <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Something else here</a>
-                        </div>
-                        
-                      </li>
-                      <li class="nav-item d-flex align-items-center">
-                        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
-                        <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
-                          <i class="fas fa-search"></i>
-                        </button>
-                      </li>
-                      
-                </ul><a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Sign up</a>
-               
+    <!-- Navbar with Login and Sign Up buttons -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">StreamHub</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <!-- Add other links as needed -->
+                </ul>
+                <div class="d-flex justify-content-center align-items-center" style="gap: 10px;">
+                    <a class="btn btn-dark shadow d-inline-block" role="button" href="login.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5;">Login</a>
+                    <a class="btn btn-dark shadow d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5;">Sign up</a>
+                </div>
             </div>
         </div>
     </nav>
+
     <section class="py-5">
         <div class="container py-5">
             <div class="row mb-4 mb-lg-5">
@@ -81,189 +174,139 @@
                 </div>
             </div>
 
-
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 col-xl-4">
-                    <div class="card" style="background-color: #ffffff; color: rgb(0, 0, 0);">
-                        <div class="card-body text-center d-flex flex-column align-items-center">
-                            <div class="bs-icon-xl bs-icon-circle bs-icon-dark shadow bs-icon my-4"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-person">
-                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0Zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4Zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10Z"></path>
-                                </svg></div>
-                                <form id="loginForm" action="login.html" method="post">
-                                <div class="mb-3"><input class="form-control" id="email" type="email" name="email" placeholder="Email" required></div>
-                                <div class="mb-3"><input class="form-control" id="password" type="password" name="password" placeholder="Password" required></div>
-                                <div class="mb-3"><button class="btn btn-dark shadow d-block w-100" type="submit">Log in</button></div>
-                            </form>
-                            <p>don't have an account? <a href="signup.html" style="color: rgb(0, 0, 0);">Sign up</a></p>
+                    <div class="login-card">
+                        <div class="panda-container">
+                            <div class="ear-l"></div>
+                            <div class="ear-r"></div>
+                            <div class="panda-face">
+                                <div class="eye-l">
+                                    <div class="eyeball-l"></div>
+                                </div>
+                                <div class="eye-r">
+                                    <div class="eyeball-r"></div>
+                                </div>
+                                <div class="nose"></div>
+                                <div class="mouth"></div>
+                            </div>
                         </div>
+                        
+                        <!-- Fixed form action -->
+                        <form id="loginForm">
+                            <div class="mb-3">
+                                <input class="form-control" id="email" type="email" name="email" placeholder="Email" required>
+                            </div>
+                            <div class="mb-3">
+                                <input class="form-control" id="password" type="password" name="password" placeholder="Password" required>
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-dark shadow d-block w-100" type="submit">Log in</button>
+                            </div>
+                        </form>
+                        <p class="text-center">don't have an account? <a href="signup.html" style="color: rgb(0, 0, 0);">Sign up</a></p>
                     </div>
                 </div>
             </div>
-         
         </div>
     </section>
-    <footer class="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
-        <div class="container py-4 py-lg-5">
-            <div class="row justify-content-center">
-                <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
-                    <h3 class="fs-6 fw-bold">About</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Company</a></li>
-                        <li><a href="#">Team</a></li>
-                        <li><a href="#">Legacy</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last">
-                    <div class="fw-bold d-flex align-items-center mb-2"><span class="bs-icon-sm bs-icon-circle bs-icon-primary d-flex justify-content-center align-items-center bs-icon me-2"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-play-btn">
-                                <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"></path>
-                                <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"></path>
-                            </svg></span><span>StreamHub</span></div>
-                    <p class="text-muted">Streaming at its best.</p>
-                </div>
-                <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
-                    <h3 class="fs-6 fw-bold">Services</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="#">Streaming</a></li>
-                        <li><a href="#">Movies</a></li>
-                        <li><a href="#">Live</a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
-                    <h3 class="fs-6 fw-bold">Contact</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="#">LinkedIn</a></li>
-                        <li><a href="#">Facebook</a></li>
-                        <li><a href="#">Twitter</a></li>
-                    </ul>
-                </div>
-            </div>
-            <hr>
-            <div class="d-flex justify-content-between align-items-center pt-3">
-                <p class="text-white mb-0">Copyright © 2024 StreamHub</p>
-                <ul class="list-inline mb-0">
-                    <li class="list-inline-item"><a href="#">Privacy Policy</a></li>
-                    <li class="list-inline-item"><a href="#">Terms of Use</a></li>
-                </ul>
-            </div>
-        </div>
-    </footer>
+
+    <!-- Your footer code here -->
+
     <script>
-   
-let movieId = null;
-   window.onload = function() {
-  const urlParams = new URLSearchParams(window.location.search);
-  
-  if (urlParams.get('alert')) {
-    alert('You must sign up or log in to watch movies on StreamHub');
-     movieId = urlParams.get('movieId');
-     movieId = localStorage.getItem('movieId');
-     console.log(" movieId is this one",movieId);
-  }
+        // Updated login form handling
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();  // Prevent default form submission
 
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
 
-  if (urlParams.get('alertU')) {
-    alert('You must sign up or log in to be able to access your profile on StreamHub');
-  }
+            try {
+                const response = await fetch('/login', {  // Changed from /login.html to /login
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
 
-}
+                const data = await response.json();
 
+                if (response.status === 401) {
+                    console.log('Invalid email or password');
+                    alert('Invalid email or password');
+                } else if (response.ok) {
+                    // Store session data if needed
+                    if (data.success) {
+                        localStorage.setItem('sessionData', JSON.stringify({
+                            recommendations: data.recommendations
+                        }));
+                    }
 
-
-   document.querySelector('form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    const email = document.querySelector('#email').value.trim();
-    const password = document.querySelector('#password').value.trim();
-
-    try {
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password }),
-        });
-
-        const data = await response.json();
-
-        if (data.success) {
-            // Store user data and recommendations in localStorage
-            localStorage.setItem('sessionData', JSON.stringify({
-                //fName: data.user.fName,
-              //  lName: data.user.lName,
-                recommendations: data.recommendations
-            }));
-
-            if (response.status === 401) {
-                console.log('Invalid email or password');
-                alert('Invalid email or password');
-            } else if (response.ok) {
-                fetch('/api/admin-email')
-                    .then(response => response.json())
-                    .then(data => {
-                        const adminEmail = data.email;
-                        // Use the admin email variable to redirect the user
-                        if (adminEmail === email) {
-                            // Redirect to admin page
-                            console.log('Login successful');
-                            window.location.href = '/admin.html';
+                    // Check for admin status and redirect accordingly
+                    const adminResponse = await fetch('/api/admin-email');
+                    const adminData = await adminResponse.json();
+                    
+                    if (adminData.email === email) {
+                        console.log('Admin login successful');
+                        window.location.href = '/admin.html';
+                    } else {
+                        const movieId = localStorage.getItem('movieId');
+                        if (movieId) {
+                            console.log('Going to movie, Login successful');
+                            window.location.href = `/userprofile.html?movieId=${movieId}`;
                         } else {
-                            if (movieId != null) {
-                                console.log('going to movie, Login successful');
-                                window.location.href = `/userprofile.html?movieId=${movieId}`
-                            }
-                            else{
-
-                                   // Redirect to regular user page
                             console.log('Login successful');
                             window.location.href = '/userprofile.html';
                         }
-                            }
-                         
-                    })
-                    .catch(error => {
-                        console.error('Fetch error:', error);
-                        alert('An error occurred, please try again.');
-                    });
-            } else {
-                console.log('An error occurred:', response.status);
+                    }
+                } else {
+                    console.log('An error occurred:', response.status);
+                    alert('An error occurred, please try again.');
+                }
+            } catch (err) {
+                console.error('Fetch error:', err);
                 alert('An error occurred, please try again.');
             }
-        } else {
-            console.log('An error occurred:', data.message);
-            alert('An error occurred, please try again.');
-        }
-    } catch (err) {
-        console.error('Fetch error:', err);
-        alert('An error occurred, please try again.');
-    }
-    });
+        });
 
-//     window.onload = function() {
-//   const urlParams = new URLSearchParams(window.location.search);
-  
-//   if (urlParams.get('alert')) {
-//     alert('You must sign up or log in to be able to watch movies on StreamHub');
-//   }
-// }
+        // Panda animation logic
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const pandaFace = document.querySelector('.panda-face');
+        const eyeL = document.querySelector('.eye-l');
+        const eyeR = document.querySelector('.eye-r');
+        const eyeballL = document.querySelector('.eyeball-l');
+        const eyeballR = document.querySelector('.eyeball-r');
 
+        emailInput.addEventListener('focus', () => {
+            pandaFace.classList.remove('eyes-closed');
+            eyeballL.style.top = '5px';
+            eyeballR.style.top = '5px';
+        });
 
+        passwordInput.addEventListener('focus', () => {
+            pandaFace.classList.add('eyes-closed');
+            eyeballL.style.top = '10px';
+            eyeballR.style.top = '10px';
+        });
 
-document.querySelectorAll('a').forEach(link => {
-    if (['company', 'legacy', 'team'].includes(link.innerHTML.trim().toLowerCase())) {
-        link.addEventListener('click', function(event) {
-            if (!link.closest('.navbar')) { // Check if the link is not inside a navbar
-                event.preventDefault(); // Prevent default anchor behavior
-                window.location.href = 'Aboutus.html'; // Redirect to about.html
+        document.addEventListener('click', (e) => {
+            if (e.target !== emailInput && e.target !== passwordInput) {
+                pandaFace.classList.remove('eyes-closed');
+                eyeballL.style.top = '10px';
+                eyeballR.style.top = '10px';
             }
         });
-    }
-});
 
+        emailInput.addEventListener('input', (e) => {
+            const inputRect = e.target.getBoundingClientRect();
+            const inputCenter = inputRect.left + inputRect.width / 2;
+            const normalizedPosition = (inputCenter - window.innerWidth / 2) / (window.innerWidth / 4);
+            
+            eyeballL.style.left = `${10 + normalizedPosition * 5}px`;
+            eyeballR.style.left = `${10 + normalizedPosition * 5}px`;
+        });
     </script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
 </body>
-
 </html>
-
