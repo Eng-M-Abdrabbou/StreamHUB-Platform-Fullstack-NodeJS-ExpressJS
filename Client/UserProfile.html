@@ -175,7 +175,9 @@
 
         
     </section>
+<div id="user-award">
 
+</div>
     <section class="py-5">
         <div class="container text-center py-5">
             <p class="mb-4" style="font-size: 1.6rem;">Inspired by some of&nbsp;<span class="text-success"></span>the best companies in the world.</p><a href="#"> <img class="m-3" src="assets/img/brands/google.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/microsoft.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/apple.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/facebook.png"></a><a href="#"> <img class="m-3" src="assets/img/brands/twitter.png"></a>
@@ -582,6 +584,46 @@ document.querySelectorAll('a').forEach(link => {
         });
     }
 });
+
+
+
+
+
+
+
+
+async function userAwards(){
+const userId = await getUserIdFromSession();
+console.log("User ID:", userId);
+
+
+const response = await fetch('fetchPostCount', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({ userId }),
+});
+
+
+response.json().then(data => {
+  console.log(data);
+  const postCount = data.count;
+  const postCountElement = document.getElementById('postCount');
+  postCountElement.textContent = postCount;
+});
+
+
+}
+
+
+
+
+
+
+
+
+
 
     </script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
