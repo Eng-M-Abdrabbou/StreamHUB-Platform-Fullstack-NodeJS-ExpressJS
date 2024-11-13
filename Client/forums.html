@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .forum, .comment { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+
+.forum-cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  grid-gap: 20px; /* gap between boxes */
+  align-items: flex-start;
+  width: 100%;
+  margin-left: auto; /* center horizontally */
+  margin-right: auto; /* center horizontally */
+}
+.forum {
+  margin: 2rem 0 2rem 0rem; /* add 1rem left margin */
+  width: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+#collapse-create-forum .form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#collapse-create-forum .form-group label {
+  margin-right: px;
+}
+
+#collapse-create-forum .form-group input, #collapse-create-forum .form-group textarea {
+  flex: 1;
+}
+
+body {
+  background-color: #000; /* black background */
+  margin-left: 80px; /* add margin to the left */
+  margin-right: 80px; /* add margin to the right */
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.5); /* 50% transparent white background */
+  padding: 30px;
+  margin: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#create-forum-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+#create-forum-header span:first-child {
+  justify-self: start;
+}
+
+#create-forum-header span:last-child {
+  justify-self: end;
+}
+
+.video-background { position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: -1; overflow: hidden; } 
+.video-background video { min-height: 100%; min-width: 100%; } /* Ensure your page content is not obscured by the video */
+ body { position: relative; z-index: 1; }
+
+ /* Add this CSS to your existing stylesheet */
+.card {
+  background: rgba(255, 255, 255, 0.5); /* 50% transparent white background */
+  color: #000; /* Ensure the text is readable */
+  border: none; /* Optional: Remove border if you want a cleaner look */
+  padding: 20px; /* Adjust padding as needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a slight shadow for depth */
+}
+
+.card-body {
+  background: transparent /* 50% transparent white background for the card body */
+}
+
+.card-header {
+  background: rgba(255, 255, 255, 0.5); /* 50% transparent white background for the card header */
+  color: #000; /* Ensure the text is readable */
+}
+
+
+       
+    </style>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+   
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+ <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+ <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
+ <link rel="stylesheet" href="assets/css/Inter.css">
+ <link rel="stylesheet" href="assets/css/untitled.css">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <link rel="stylesheet" href="assets/css/custom.css">
+  </head>
+  <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
+    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+       
+        <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
+            <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
+                <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
+                    <li class="nav-item"><a class="nav-link" href="UPindex.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="forums.html"><strong style="color: rgb(0, 0, 0);">Forums</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="upchat.html"><strong style="color: rgb(0, 0, 0);">Chat</strong></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="userProfile.html"><strong style="color: rgb(0, 0, 0);">profile</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Log out</strong></a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 0, 0);">
+                          <i class="fas fa-user" style="margin-right: 5px;"></i> YourUsername
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                      </li>                          
+                      <li class="nav-item d-flex align-items-center">
+                        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
+                        <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
+                          <i class="fas fa-search"></i>
+                        </button>
+                      </li>                         
+                </ul>                   
+            </div>
+        </div>
+    </nav>
+    <div class="video-background"> <video autoplay muted loop playsinline> 
+        <source src="assets/vids/vid.mp4" type="video/mp4"> </video> </div>
+</div>
+
+   <div class="card" style="background-color: transparent;">
+    <div class="card-header" id="create-forum-header">
+        <button class="btn btn-primary btn-sm" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum">
+            <i class="fas fa-chevron-down"></i> Create Forum
+        </button>
+        <span style="float: right; font-size: 12px; color: #ffffff !important;">Logged in as: ${userfname} ${userlname}</span>
+    </div>
+    <div id="collapse-create-forum" class="collapse" style="background-color: transparent">
+        <div class="card-body" style="background-color: transparent">
+            <div class="card-title" style="color: #ffffff; margin-bottom: 20px;">
+                <h2 style="text-align: left; margin-left: -20px;">Enter Forum Details</h2>
+            </div>
+            <form id="createForumForm">
+                <div class="form-group row" style="margin-bottom: 10px;">
+                    <div class="col-sm-10" style="margin-left: -20px;">
+                        <input type="text" id="forumTitle" placeholder="Title" required>
+                    </div>
+                </div>
+                <div class="form-group row" style="margin-bottom: 10px;">
+                    <div class="col-sm-10" style="margin-left: -20px;">
+                        <input type="text" id="forumContent" placeholder="Content" required>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-10" style="margin-left: -20px; text-align: left; margin-top: 10px;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i> Create Forum
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+
+
+ 
+   </div>
+     </div>
+  
+
+    <div id="forums"></div>
+
+    <div>
+<div>
+    
+
+    <script>
+       const apiUrl = 'http://localhost:8000';
+        
+       
+       //getting user id from session
+       async function initUserId() {
+  try {
+    userId = await getUserIdFromSession();
+ 
+    console.log('User ID retrived from session with data is :', userId );
+  } catch (error) {
+    console.error('Error setting user ID:', error);
+  }
+}
+
+initUserId(); 
+
+//getting user first name from session
+async function initUserfnameId() {
+  try {
+    userfname = await getUserFnameFromSession();
+
+    console.log('User name retrived from session with data is :', userfname );
+
+    await initUserlnameId();
+
+    const createForumHeaderElement = document.getElementById('create-forum-header');
+    createForumHeaderElement.innerHTML = `
+   <button class="btn btn-xs btn-primary" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum" style="max-width: 150px;">
+     <i class="fas fa-chevron-down"></i> Create forum
+   </button>
+      <span style="float: right; font-size: 20px; color:white">Welcome: ${userfname} ${userlname}</span>
+    `;
+  } catch (error) {
+    console.error('Error setting user ID:', error);
+  }
+}
+
+initUserfnameId();
+
+//getting user last name from session
+async function initUserlnameId() {
+  try {
+    userlname= await getUserLnameFromSession();
+ 
+    console.log('User last name retrived from session with data is :', userlname );
+  } catch (error) {
+    console.error('Error setting user ID:', error);
+  }
+}
+
+initUserlnameId();
+       
+       
+//fucntion to retrive id 
+        function getUserIdFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.id) {
+                    console.log("User ID found:", userData.id );
+                    resolve(userData.id);
+                } else {
+                    console.error('User ID not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
+}
+//first name from session
+function getUserFnameFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.fName) {
+                    console.log("User  first name found:",  userData.fName);
+                    resolve(userData.fName)
+                } else {
+                    console.error('User first name not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
+}
+// last name from session 
+function getUserLnameFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.fName) {
+                    console.log("User last name found:",  userData.lName);
+                    resolve(userData.lName)
+                } else {
+                    console.error('User last name not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
+}
+
+async function getUserName(userid) {
+  try {
+    const response = await fetch(`/api/users/${userid}`);
+    const userData = await response.json();
+    return `${userData.fname} ${userData.lname}`;
+    console.log("User data received from database is:", userData.fName ,userData.lName);
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+
+        document.getElementById('createForumForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const title = document.getElementById('forumTitle').value;
+            const content = document.getElementById('forumContent').value;
+            fetch(`${apiUrl}/forums`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'user-id': userId
+                },
+                body: JSON.stringify({ title, content })
+            })
+            .then( response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+            loadForums(); // Reload the forums after creating a new forum
+        });
+
+        async function loadForums() {
+  fetch(`${apiUrl}/forums`)
+  .then(async response => {
+    const forums = await response.json();
+    const forumsDiv = document.getElementById('forums');
+    forumsDiv.innerHTML = ''; // Clear the previous forums
+
+
+ 
+    const forumCardsContainer = document.createElement('div');
+    forumCardsContainer.className = 'forum-cards-container';
+  
+
+    forums.forEach(async forum => {
+      //getting names from DB
+      const userName = await getUserName(forum.user_id);
+      console.log(' all the User names retrived from databse :', userName);
+
+
+  const forumElement = document.createElement('div');
+  forumElement.className = 'forum';
+  forumElement.innerHTML = `
+ <div class="card"  style="background-color:beige" data-forum-id="${forum.id}">
+ 
+  <div class="card-header" style="color: black;">
+    The forum is made by : ${userName}
+     </div>
+  </div>
+  <div class="card-body"style="color: white;" >
+    <h5 class="card-title">${forum.title}</h5>
+    <p class="card-text">${forum.content}.</p>
+   
+
+    
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapse-${forum.id}" aria-expanded="false" aria-controls="collapse-${forum.id}">
+      <i class="fas fa-comment"></i> View Comments
+    </button>
+    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#createCommentModal-${forum.id}">
+      Add Comment
+    </button>
+    ${forum.user_id == userId ? `<button class="btn btn-danger btn-sm" onclick="deleteForum(${forum.id})"><i class="fas fa-trash-alt"></i> Delete forum</button>` : ''}
+    <div class="collapse" style="color: beige;" id="collapse-${forum.id}">
+      <div class="card-body "style="color: white">
+        <h5>Comments:</h5>
+        <div id="comments-${forum.id}"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal to create comment -->
+<div class="modal fade" id="createCommentModal-${forum.id}" tabindex="-1" role="dialog" aria-labelledby="createCommentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="color: #000;" id="createCommentModalLabel">Add Comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="createCommentForm-${forum.id}">
+          <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
+          <button type="submit" class="btn btn-primary btn-sm">
+            <i class="fas fa-paper-plane"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  `;
+      forumCardsContainer.appendChild(forumElement);
+      forumsDiv.appendChild(forumCardsContainer);
+
+                // Fetch comments for this forum
+                fetch(`${apiUrl}/forums/${forum.id}/comments`)
+                    .then(response => response.json())
+                    .then(comments => {
+                        const commentsDiv = document.getElementById(`comments-${forum.id}`);
+                        comments.forEach(async comment => {
+                          const userName = await getUserName(comment.user_id);
+                          const commentElement = document.createElement('div');
+commentElement.className = 'comment ' ;
+const commentText = document.createElement('p');
+commentText.textContent = ` ${userName} - ${comment.content}`;
+
+const commentContainer = document.createElement('div');
+commentContainer.appendChild(commentText);
+
+if (comment.user_id == userId) {
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'btn btn-danger btn-sm';
+  deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+  deleteButton.onclick = () => deleteComment(comment.id);
+  commentContainer.appendChild(deleteButton);
+}
+
+commentElement.appendChild(commentContainer);
+commentsDiv.appendChild(commentElement);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching comments:', error));
+
+                // Add event listener for comment form submission
+                document.getElementById(`createCommentForm-${forum.id}`).addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    const commentContent = document.getElementById(`commentContent-${forum.id}`).value;
+                    createComment(commentContent, forum.id);
+                });
+            });
+        })
+        .catch(error => console.error('Error:', error));
+}
+
+        
+
+
+function createComment(content, forumId) {
+  fetch(`${apiUrl}/forums/${forumId}/comments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'user-id': userId
+    },
+    body: JSON.stringify({ content: content }) // Send content as a JSON object
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert(data);
+    loadComments(forumId);
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+
+        function deleteComment(commentId) {
+            fetch(`${apiUrl}/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'user-id': userId
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                loadForums();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function deleteForum(forumId) {
+  fetch(`${apiUrl}/forums/${forumId}`, {
+    method: 'DELETE',
+    headers: {
+      'user-id': userId
+    }
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert(data);
+    const forumElement = document.querySelector(`.forum[data-forum-id="${forumId}"]`);
+    if (forumElement) {
+      forumElement.remove();
+     
+    }
+    loadForums();
+  })
+  .catch(error => console.error('Error:', error));
+}
+       
+        loadForums();
+    </script>
+</body>
+</html>
