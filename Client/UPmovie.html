@@ -448,6 +448,7 @@ class MovieInterface {
     const hours = Math.floor(movieInfo.runtime / 60);
     const minutes = movieInfo.runtime % 60;
 
+
     movieInfoDiv.innerHTML = `
       <div class="movie-header">
         <h2 class="movie-title">${movieInfo.title}</h2>
@@ -473,7 +474,9 @@ class MovieInterface {
   function setupVideoPlayer(movieInfo) {
       const videoPlayer = document.getElementById('videoPlayer');
       if (videoPlayer) {
-          videoPlayer.src = `/video?movieId=${movieInfo.id}`;
+        console.log('Video player element found', movieInfo.movie_id);
+          videoPlayer.setAttribute('src', `/video?movieId=${movieInfo.movie_id}`);
+          videoPlayer.src = `/video?movieId=${movieInfo.movie_id}`;
           videoPlayer.load(); // Reload the video player with the new source
       } else {
           console.error('Video player element not found');
@@ -707,29 +710,6 @@ console.log(rec);
 
 
 
-// function createMovieCard(movieInfo) {
-//     const card = document.createElement('div');
-//     card.className = 'movie-card';
-//     card.setAttribute('data-movie-id', movieInfo.id);
-//     card.onclick = function() { watchMovie(movieInfo.movie_id); };
-//     const pathos = movieInfo.imgpath.split('\\').join('/');
-//     const duration = movieInfo.runtime < 60 ? `${movieInfo.runtime}m` : `${Math.floor(movieInfo.runtime / 60)}h ${movieInfo.runtime % 60}m`;
-//     console.log(pathos);
-//     card.innerHTML = `
-//         <img src="${pathos}" alt="${movieInfo.title}" class="movie-poster" style="width: 100%; height: auto;">
-      
-//         <div class="movie-info">
-//        <h5>${movieInfo.title}</h5>
-//        <p>${movieInfo.description.length > 25 ? movieInfo.description.substring(0, 100) + '...' : movieInfo.description}</p>
-//        <p>${movieInfo.genre}</p>
-//        <p>${duration}</p>
-//      </div>
-//     `;
-//     console.log(movieInfo.imgpath);
-//     return card;
-// }
-
-
 
 
 
@@ -766,44 +746,6 @@ async function watchMovie(movieId) {
     }
 }
 
-
-/*
-async function watchMovie(movieId) {
-    try {
-        const userId = await getUserIdFromSession();
-        if (!userId) {
-            console.error('No user ID found. User might not be logged in.');
-            alert('Please log in to watch the movie.');
-            return;
-        }
-
-        console.log("Sending request to prepare movie:", { movieId, userId });
-        
-        const response = await fetch('/prepare-movie', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ movieId, userId }),
-        });
-
-        const data = await response.json();
-        console.log("Received response:", data);
-
-        if (data.success) {
-            setTimeout(() => {
-                window.location.href = '/movie';
-            }, 1000);
-        } else {
-            console.error('Error preparing movie:', data.message);
-            alert('Error preparing movie: ' + data.message);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred: ' + error.message);
-    }
-}
-*/
 
 
 
