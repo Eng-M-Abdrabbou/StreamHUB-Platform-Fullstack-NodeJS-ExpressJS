@@ -139,6 +139,7 @@
            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+           <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 </head>
 
    <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
@@ -344,12 +345,28 @@ function displayUserProfile(userData) {
 
 
 
-    const socket = io('http://localhost:8000');
+   // const socket = io('http://localhost:8000');
+
+
+   const socket = io('http://localhost:8000');
+socket.on('connect', () => {
+    console.log('Connected to server with socket ID:', socket.id);
+});
+socket.on('connect_error', (error) => {
+    console.error('Socket connection error:', error);
+});
+
+
     let currentUserId;
     let currentUserName;
     let receiverId;
     let receiverName;
 
+
+
+
+
+    
     // Get current user data from session
     getUserIdFromSession().then(userId => {
         currentUserId = userId;
@@ -397,6 +414,10 @@ function displayUserProfile(userData) {
         if (e.key === 'Enter') sendMessage(); loadExistingMessages()
     });
 
+
+
+
+    /*
     async function sendMessage() {
       document.getElementById('startChat').click();
       loadExistingMessages();
@@ -416,6 +437,58 @@ function displayUserProfile(userData) {
             messageInput.value = '';
         }
     }
+*/
+
+
+async function sendMessage() {
+    const messageInput = document.getElementById('messageInput');
+    const message = messageInput.value.trim();
+    
+    if (message && receiverId) {
+        try {
+            // First save the message
+            const response = await fetch('/api/messages', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    senderId: currentUserId,
+                    receiverId: receiverId,
+                    message: message
+                })
+            });
+            
+            if (!response.ok) throw new Error('Failed to send message');
+            
+            // Then emit socket event
+            socket.emit('private message', {
+                senderId: currentUserId,
+                receiverId: receiverId,
+                message: message
+            });
+            
+            console.log('Message sent:', {
+                senderId: currentUserId,
+                receiverId: receiverId,
+                message: message
+            });
+            
+            displayMessage(message, true);
+            messageInput.value = '';
+        } catch (error) {
+            console.error('Error sending message:', error);
+            alert('Failed to send message');
+        }
+    }
+}
+
+socket.on('private message', (data) => {
+    console.log('Received message:', data);
+    if (data.senderId === receiverId) {
+        displayMessage(data.message, false);
+    }
+});
+
+
 
     function displayMessage(message, isSent) {
         const messageContainer = document.getElementById('messageContainer');
@@ -440,11 +513,11 @@ function displayUserProfile(userData) {
         }
     }
 
-    socket.on('private message', (data) => {
-        if (data.senderId === receiverId) {
-            displayMessage(data.message, false);
-        }
-    });
+    // socket.on('private message', (data) => {
+    //     if (data.senderId === receiverId) {
+    //         displayMessage(data.message, false);
+    //     }
+    // });
 
 
     document.querySelectorAll('a').forEach(link => {

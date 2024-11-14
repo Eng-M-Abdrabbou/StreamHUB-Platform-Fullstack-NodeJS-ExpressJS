@@ -4,7 +4,15 @@ const fs = require("fs");
 const axios = require('axios');
 
 const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+//const io = require('socket.io')(server);
+
+const io = require('socket.io')(server, {
+  cors: {
+      origin: "http://localhost:8000",
+      methods: ["GET", "POST"]
+  }
+});
+
 
 const multer = require('multer');
 // for file uploading
@@ -77,6 +85,7 @@ app.use((err, req, res, next) => {
 
 
 
+//chatting functionality
 
 app.post('/api/find-user', async (req, res) => {
     try {
@@ -91,6 +100,7 @@ app.post('/api/find-user', async (req, res) => {
     }
 });
 
+/*
 app.get('/api/messages/:userId1/:userId2', async (req, res) => {
     try {
         const messages = await db.getMessages(req.params.userId1, req.params.userId2);
@@ -100,7 +110,8 @@ app.get('/api/messages/:userId1/:userId2', async (req, res) => {
     }
 });
 
-// Socket.IO connection handling
+
+// Socket.IO connection handling 
 io.on('connection', (socket) => {
     socket.on('join', (userId) => {
         socket.join(userId);
@@ -119,6 +130,61 @@ io.on('connection', (socket) => {
         }
     });
 });
+*/
+
+
+
+
+
+
+// Add new endpoint for saving messages
+app.post('/api/messages', async (req, res) => {
+  try {
+      const { senderId, receiverId, message } = req.body;
+      await db.saveMessage(senderId, receiverId, message);
+      res.json({ success: true });
+  } catch (error) {
+      console.error('Error saving message:', error);
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Modify Socket.IO connection handling
+io.on('connection', (socket) => {
+  console.log('New socket connection:', socket.id);
+
+  socket.on('join', (userId) => {
+      console.log(`User ${userId} joined with socket ${socket.id}`);
+      socket.join(userId.toString());
+  });
+
+  socket.on('private message', async (data) => {
+      try {
+          console.log('Received private message:', data);
+          io.to(data.receiverId.toString()).emit('private message', {
+              senderId: data.senderId,
+              message: data.message
+          });
+          console.log('Message emitted to receiver:', data.receiverId);
+      } catch (error) {
+          console.error('Error handling private message:', error);
+          socket.emit('error', { message: 'Failed to send message' });
+      }
+  });
+
+  socket.on('disconnect', () => {
+      console.log('Socket disconnected:', socket.id);
+  });
+});
+
+
+
+
+
+
+
+
+
 
 
 
@@ -449,9 +515,9 @@ app.post('/insert', async (request, response) => {
   }
 });
 
+
+
 // login
-
-
 const bodyParser = require('body-parser');
 const { get } = require("http");
 app.use(bodyParser.json());

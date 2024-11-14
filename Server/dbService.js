@@ -10,9 +10,11 @@ dotenv.config();
 const connection = mysql.createPool({
     connectionLimit: 10, // Adjust the limit as needed
     host: process.env.HOST,
-    user: process.env.USER,
+    user: 'root',
+    //process.env.USER,
     password: process.env.PASSWORD,
-    database: process.env.DATABASE,
+    database: 'streamhubdb',
+    //process.env.DATABASE,
     port: process.env.DB_PORT
 });
 
@@ -53,7 +55,7 @@ class DbService {
 
 
 
-
+//chat functionality
     async findUserByEmail(email) {
         try {
             const result = await this.query(
@@ -102,6 +104,10 @@ class DbService {
     }
 
 
+
+
+
+    //rating functionality
     async updateRating(interaction_id, rating) {
         // Check if the rating is valid
         if (rating < 0 || rating > 5) {
