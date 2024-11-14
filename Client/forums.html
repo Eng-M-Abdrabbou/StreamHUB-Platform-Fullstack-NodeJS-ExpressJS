@@ -1,86 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Forum</title>
-  <style>
-    .forum-card { border: 1px solid #ccc; padding: 1em; margin: 1em 0; }
-    .comments { display: none; margin-top: 1em; }
-    .comment { border-top: 1px solid #eee; padding: 0.5em 0; }
-  </style>
+    <title>Forums</title>
 </head>
 <body>
-  <h1>Discussion Forum</h1>
-  <div id="forum-container"></div>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      fetch('/forums')
-        .then(response => response.json())
-        .then(forums => {
-          const forumContainer = document.getElementById('forum-container');
-          forums.forEach(forum => {
-            const forumCard = document.createElement('div');
-            forumCard.className = 'forum-card';
-            forumCard.innerHTML = `
-              <h2>${forum.title}</h2>
-              <p>${forum.content}</p>
-              <p><strong>Created by: ${forum.username} (ID: ${forum.user_id})</strong></p>
-              <button onclick="toggleComments(${forum.id})">Show Comments</button>
-              <div id="comments-${forum.id}" class="comments"></div>
-              <form onsubmit="addComment(event, ${forum.id})">
-                <input type="hidden" name="user_id" value="USER_ID_HERE"> <!-- Replace with actual user ID -->
-                <textarea name="content" placeholder="Add a comment" required></textarea>
-                <input type="text" name="image_url" placeholder="Image URL">
-                <button type="submit">Submit</button>
-              </form>
-            `;
-            forumContainer.appendChild(forumCard);
-          });
-        });
-    });
+    <h1>Create a Forum</h1>
+    <form action="/addforum" method="post">
 
-    function toggleComments(forumId) {
-      const commentDiv = document.getElementById(`comments-${forumId}`);
-      if (commentDiv.style.display === 'none') {
-        fetch(`/comments?forum_id=${forumId}`)
-          .then(response => response.json())
-          .then(comments => {
-            commentDiv.innerHTML = '';
-            comments.forEach(comment => {
-              const commentElement = document.createElement('div');
-              commentElement.className = 'comment';
-              commentElement.innerHTML = `
-                <strong>${comment.username} (ID: ${comment.user_id})</strong>
-                <p>${comment.content}</p>
-                <img src="${comment.image_url}" alt="Comment Image">
-              `;
-              commentDiv.appendChild(commentElement);
+        <label for="user_id">User ID:</label><br>
+        <input type="text" id="user_id" name="user_id"><br>
+
+
+        <label for="title">Title:</label><br>
+        <input type="text" id="title" name="title"><br>
+
+
+        <label for="content">Content:</label><br>
+        <textarea id="content" name="content"></textarea><br>
+
+
+        <button type="submit">Create Forum</button>
+    </form>
+
+    <h1>Forums</h1>
+    <div id="forums"></div>
+
+    <script>
+        fetch('/forums')
+            .then(response => response.json())
+            .then(data => {
+                let forumContainer = document.getElementById('forums');
+                data.forEach(forum => {
+                    let forumElement = document.createElement('div');
+                    forumElement.innerHTML = `
+                        <h2>${forum.title}</h2>
+                        <p>${forum.content}</p>
+                        <p>User ID: ${forum.user_id}</p>
+                        <h3>Comments:</h3>
+                        <div id="comments-${forum.id}"></div>
+                        <form action="/addcomment" method="post">
+                            <input type="hidden" name="forum_id" value="${forum.id}">
+
+                            <label for="user_id">User ID:</label><br>
+                            <input type="text" id="user_id" name="user_id"><br>
+
+
+                            <label for="content">Comment:</label><br>
+                            <textarea id="content" name="content"></textarea><br>
+
+                            
+                            <button type="submit">Add Comment</button>
+                        </form>
+                    `;
+                    forumContainer.appendChild(forumElement);
+
+                    fetch(`/comments/${forum.id}`)
+                        .then(response => response.json())
+                        .then(comments => {
+                            let commentContainer = document.getElementById(`comments-${forum.id}`);
+                            comments.forEach(comment => {
+                                let commentElement = document.createElement('p');
+                                commentElement.innerHTML = `<strong>${comment.user_id}:</strong> ${comment.content}`;
+                                commentContainer.appendChild(commentElement);
+                            });
+                        });
+                });
             });
-            commentDiv.style.display = 'block';
-          });
-      } else {
-        commentDiv.style.display = 'none';
-      }
-    }
-
-    function addComment(event, forumId) {
-      event.preventDefault();
-      const form = event.target;
-      const user_id = form.user_id.value;
-      const content = form.content.value;
-      const image_url = form.image_url.value;
-
-      fetch('/comments', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ forum_id: forumId, user_id, content, image_url })
-      })
-      .then(() => {
-        form.reset();
-        toggleComments(forumId);
-      });
-    }
-  </script>
+    </script>
 </body>
 </html>
+
