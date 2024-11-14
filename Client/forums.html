@@ -442,44 +442,69 @@ async function getUserName(userid) {
       forumsDiv.appendChild(forumCardsContainer);
 
                 // Fetch comments for this forum
-                fetch(`${apiUrl}/forums/${forum.id}/comments`)
-                    .then(response => response.json())
-                    .then(comments => {
-                        const commentsDiv = document.getElementById(`comments-${forum.id}`);
-                        comments.forEach(async comment => {
-                          const userName = await getUserName(comment.user_id);
-                          const commentElement = document.createElement('div');
-commentElement.className = 'comment ' ;
-const commentText = document.createElement('p');
-commentText.textContent = ` ${userName} - ${comment.content}`;
+          fetch(`${apiUrl}/forums/${forum.id}/comments`)
+            .then(response => response.json())
+            .then(comments => {
+              const commentsDiv = document.getElementById(`comments-${forum.id}`);
+              comments.forEach(async comment => {
+                const userName = await getUserName(comment.user_id);
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment';
+          
+                const commentText = document.createElement('p');
+                commentText.textContent = ` ${userName} - ${comment.content}`;
+          
+                const commentContainer = document.createElement('div');
+                commentContainer.appendChild(commentText);
+          
+                // Check if image URL exists in the comment data
+              if (comment.image_url) {
+                const commentImage = document.createElement('img');
+                commentImage.src = comment.image_url;
+                commentImage.alt = 'Comment image';
+                commentImage.className = 'comment-image'; // Add a class to the image element
+                commentContainer.appendChild(commentImage);
+              }
+              
+              // Add CSS styles to make the comment image small and square
+              const commentImageStyles = `
+                .comment-image {
+                  width: 50px;
+                  height: 50px;
+                  object-fit: cover;
+                  border-radius: 5px;
+                }
+              `;
+              
+              // Create a style element and add the CSS styles to it
+              const style = document.createElement('style');
+              style.innerHTML = commentImageStyles;
+              document.head.appendChild(style);
+          
+                if (comment.user_id == userId) {
+                  const deleteButton = document.createElement('button');
+                  deleteButton.className = 'btn btn-danger btn-sm';
+                  deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+                  deleteButton.onclick = () => deleteComment(comment.id);
+                  commentContainer.appendChild(deleteButton);
+                }
+          
+                commentElement.appendChild(commentContainer);
+                commentsDiv.appendChild(commentElement);
+              });
+            })
+            .catch(error => console.error('Error fetching comments:', error));
 
-const commentContainer = document.createElement('div');
-commentContainer.appendChild(commentText);
-
-if (comment.user_id == userId) {
-  const deleteButton = document.createElement('button');
-  deleteButton.className = 'btn btn-danger btn-sm';
-  deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
-  deleteButton.onclick = () => deleteComment(comment.id);
-  commentContainer.appendChild(deleteButton);
-}
-
-commentElement.appendChild(commentContainer);
-commentsDiv.appendChild(commentElement);
-                        });
-                    })
-                    .catch(error => console.error('Error fetching comments:', error));
-
-                // Add event listener for comment form submission
-                document.getElementById(`createCommentForm-${forum.id}`).addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    const commentContent = document.getElementById(`commentContent-${forum.id}`).value;
-                    createComment(commentContent, forum.id);
-                });
-            });
-        })
-        .catch(error => console.error('Error:', error));
-}
+          const createCommentForm = document.getElementById(`createCommentForm-${forum.id}`);
+          createCommentForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const commentContent = document.getElementById(`commentContent-${forum.id}`).value;
+            createComment(commentContent, forum.id);
+          });
+        });
+      })
+      .catch(error => console.error('Error fetching forums:', error));
+    }
 
         
 
