@@ -3,6 +3,16 @@ const app = express();
 const fs = require("fs");
 const axios = require('axios');
 
+const server = require('http').createServer(app);
+//const io = require('socket.io')(server);
+
+const io = require('socket.io')(server, {
+  cors: {
+      origin: "http://localhost:8000",
+      methods: ["GET", "POST"]
+  }
+});
+
 
 const multer = require('multer');
 // for file uploading
@@ -18,6 +28,9 @@ const cors = require("cors");
 
 const dotenv = require("dotenv").config();
 //helps with config management and security
+
+const router = express.Router();
+
 
 const PORT = process.env.PORT || 8000;
 
@@ -35,8 +48,14 @@ app.use(session({
   cookie: { secure: false }
 }));
 
+server.listen(PORT, () => {
+  console.log(`Server listening on port ${PORT}`);
+});
 
 
+// app.listen(process.env.PORT, () => {
+//   console.log(`App is running on port ${process.env.PORT}`);
+// });
 
 //REQUIRE THE DB SERVICE
 const dbService = require('./dbService.js'); 
@@ -60,6 +79,79 @@ app.use((err, req, res, next) => {
 
 
 
+
+
+
+
+
+//chatting functionality
+
+app.post('/api/find-user', async (req, res) => {
+    try {
+        const user = await db.findUserByEmail(req.body.email);
+        if (user) {
+            res.json({ success: true, user });
+        } else {
+            res.json({ success: false, message: 'User not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ success: false, message: error.message });
+    }
+});
+
+
+// Add new endpoint for saving messages
+app.post('/api/messages', async (req, res) => {
+  try {
+      const { senderId, receiverId, message } = req.body;
+      await db.saveMessage(senderId, receiverId, message);
+      res.json({ success: true });
+  } catch (error) {
+      console.error('Error saving message:', error);
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Modify Socket.IO connection handling
+io.on('connection', (socket) => {
+  console.log('New socket connection:', socket.id);
+
+  socket.on('join', (userId) => {
+      console.log(`User ${userId} joined with socket ${socket.id}`);
+      socket.join(userId.toString());
+  });
+
+  socket.on('private message', async (data) => {
+      try {
+          console.log('Received private message:', data);
+          io.to(data.receiverId.toString()).emit('private message', {
+              senderId: data.senderId,
+              message: data.message
+          });
+          console.log('Message emitted to receiver:', data.receiverId);
+      } catch (error) {
+          console.error('Error handling private message:', error);
+          socket.emit('error', { message: 'Failed to send message' });
+      }
+  });
+
+  socket.on('disconnect', () => {
+      console.log('Socket disconnected:', socket.id);
+  });
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use(cors({
@@ -68,9 +160,24 @@ app.use(cors({
 }));
 
 
+
+
+
+
+
+// Set storage engine
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-      const uploadDir = file.fieldname === 'movie' ? 'uploads/movies' : 'uploads/posters';
+      let uploadDir;
+      if (file.fieldname === 'movie') {
+          uploadDir = 'uploads/movies';
+      } else if (file.fieldname === 'poster') {
+          uploadDir = 'uploads/posters';
+      } else if (file.fieldname === 'image') {
+          uploadDir = 'uploads/forum-images';
+      } else {
+          return cb(new Error('Invalid field name'));
+      }
       cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
@@ -78,6 +185,7 @@ const storage = multer.diskStorage({
   }
 });
 
+// File filter to check file types
 const fileFilter = (req, file, cb) => {
   if (file.fieldname === 'movie' && !file.mimetype.startsWith('video/')) {
       return cb(new Error('Only video files are allowed for movies'));
@@ -85,25 +193,56 @@ const fileFilter = (req, file, cb) => {
   if (file.fieldname === 'poster' && !file.mimetype.startsWith('image/')) {
       return cb(new Error('Only image files are allowed for posters'));
   }
+  if (file.fieldname === 'image' && !file.mimetype.startsWith('image/')) {
+      return cb(new Error('Only image files are allowed for forum images'));
+  }
   cb(null, true);
 };
 
+// Initialize upload
 const upload = multer({
   storage: storage,
   limits: { fileSize: 1000 * 1024 * 1024 }, // 1000 MB limit
   fileFilter: fileFilter
 });
 
-
-const uploadDirs = ['uploads/movies', 'uploads/posters'];
+// Ensure upload directories exist
+const uploadDirs = ['uploads/movies', 'uploads/posters', 'uploads/forum-images'];
 
 uploadDirs.forEach(dir => {
-    const fullPath = path.join(__dirname, dir);
-    if (!fs.existsSync(fullPath)) {
-        fs.mkdirSync(fullPath, { recursive: true });
-        console.log(`Created directory: ${fullPath}`);
-    }
+  const fullPath = path.join(__dirname, dir);
+  if (!fs.existsSync(fullPath)) {
+      fs.mkdirSync(fullPath, { recursive: true });
+      console.log(`Created directory: ${fullPath}`);
+  }
 });
+
+
+
+
+app.post('/fetchPostCount', async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const query = 'SELECT COUNT(user_id)  FROM `forum_posts`  WHERE user_id = ?;';
+    const [postCount] = await db.query(query, [userId]);
+    res.json({ success: true, data: postCount });
+  } catch (error) {
+      console.error('Error fetching post count:', error);
+      res.status(500).json({ success: false, message: 'Error fetching post count', error: error.message });
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Get all movies
 app.get('/getAllMovies', (req, res) => {
@@ -222,7 +361,6 @@ app.patch('/updateMovie/:id', async (req, res) => {
 
 
 
-
 // Delete a movie
 app.delete('/deleteMovie/:id', async (req, res) => {
   console.log(`Received delete request for movie ID: ${req.params.id}`);
@@ -308,76 +446,12 @@ app.get('/searchMovies', async (req, res) => {
 
 
 
-
+// changes this route so it redirects to index.html
  app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, '..', 'Client', 'movie.html'));
+  res.sendFile(path.join(__dirname, '..', 'Client', 'index.html'));
 });
 
-// plan to start a session here, where when a user presses a mvies to watch it will be stored in the session and direct them to this page 
-// where they can watch the video, the video path will be a variable in the session and the video info from the db too.
 
-// app.get("/video", function (req, res) {
-//   // Ensure there is a range given for the video
-//   const range = req.headers.range;
-//   if (!range) {
-//     return res.status(400).send("Requires Range header");
-//   }
-
-//   console.log('Range:', range);
-
-//   // get video stats (about 61MB)
-//   const videoPath = "uploads/movies/1726081504391.mp4";
-  
-//   if (!fs.existsSync(videoPath)) {
-//     console.error(`Video file not found: ${videoPath}`);
-//     return res.status(404).send("Video not found");
-//   }
-
-//   const videoSize = fs.statSync(`${__dirname}/${videoPath}`).size;
-//   // Parse Range
-//   // Example: "bytes=32324-"
-//   const CHUNK_SIZE = 10 ** 6; // 1MB
-//   const start = Number(range.replace(/\D/g, ""));
-//   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-
-//   console.log(`Streaming bytes ${start}-${end} of ${videoSize}`);
-
-//   // Create headers
-//   const contentLength = end - start + 1;
-//   const headers = {
-//     "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-//     "Accept-Ranges": "bytes",
-//     "Content-Length": contentLength,
-//     "Content-Type": "video/mp4",
-//   };
-
-
-//   // HTTP Status 206 for Partial Content
-//   res.writeHead(206, headers);
-
-//   // create video read stream for this particular chunk
-//   const videoStream = fs.createReadStream(videoPath, { start, end });
-
-//   // Stream the video chunk to the client
-//   videoStream.on('open', () => {
-//     videoStream.pipe(res);
-//   });
-
-//   videoStream.on('error', (streamErr) => {
-//     console.error('Stream Error:', streamErr);
-//     res.end(streamErr);
-//   });
-// });
-
-
-
-// app.listen(8000, function () {
-//   console.log("Listening on port 8000!");
-// });
-
-app.listen(process.env.PORT, () => {
-  console.log(`App is running on port ${process.env.PORT}`);
-});
 
 
 // new create
@@ -404,77 +478,17 @@ app.post('/insert', async (request, response) => {
   }
 });
 
+
+
 // login
-
-
 const bodyParser = require('body-parser');
+const { get } = require("http");
 app.use(bodyParser.json());
 
 app.get('/api/admin-email', (req, res) => {
   res.json({ email: process.env.ADMIN_EMAIL });
 });
 
-
-// app.post('/login', async (request, response) => {
-//   const db = dbService.getDbServiceInstance();
-//   const { email, password } = request.body;
-
-//   try {
-//       const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
-//       const results = await db.query(query, [email, password]);
-
-//       if (results.length > 0) {
-//           // User found
-//           const user = results[0];
-//           request.session.userId = user.id;  // Store user ID in session
-//           response.status(200).json({ success: true });
-//       } else {
-//           // User not found
-//           response.status(401).json({ success: false, message: 'Invalid email or password' });
-//       }
-//   } catch (err) {
-//       console.error(err);
-//       response.status(500).json({ success: false, message: 'An error occurred, please try again.' });
-//   }
-// });
-
-
-
-// app.post('/login', async (request, response) => {
-//   const db = dbService.getDbServiceInstance();
-//   const { email, password } = request.body;
-
-//   try {
-//     const query = 'SELECT * FROM user WHERE email = ? AND password = ?';
-//     const results = await db.query(query, [email, password]);
-// console.log(results)
-//     if (results.length > 0) {
-//       // User found
-//       const user = results[0];
-//       request.session.userId = user.id;  // Store user ID in session
-//       response.status(200).json({ success: true });
-//       console.log("the session done")
-//       // Call the Python Flask API to get movie recommendations
-//       const recommendationsResponse = await axios.post('http://localhost:5000/recommend', {
-//         user_id: user.id
-//       });
-//       console.log("called flask")
-//       // Send the recommendations along with the login success response
-//       response.status(200).json({
-//         success: true,
-//         recommendations: recommendationsResponse.data
-      
-//       });
-//       console.log(recommendationsResponse.data)
-//     } else {
-//       // User not found
-//       response.status(401).json({ success: false, message: 'Invalid email or password' });
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     response.status(500).json({ success: false, message: 'An error occurred, please try again.' });
-//   }
-// });
 
 app.post('/login', async (request, response) => {
   const db = dbService.getDbServiceInstance();
@@ -507,9 +521,13 @@ app.post('/login', async (request, response) => {
     
         response.status(200).json({
           success: true,
+          userId: user.id,
+          fName: user.fName, // Assuming you have these fields
+          lName: user.lName,  // Adjust based on your actual column names
           recommendations: recommendationsResponse.data
         });
 
+      
         // response.status(200).json({
         //   success: true,
         //   recommendations: recommendationsResponse.data
@@ -541,6 +559,7 @@ function checkAuth(req, res, next) {
 
 app.get('/profile', checkAuth, async(req, res) => {
   const userId = req.session.userId;
+  console.log("the session id from profile", userId);
   try {
     const query = 'SELECT * FROM user WHERE id = ?';
     const results = await db.query(query, [userId]);
@@ -628,74 +647,6 @@ app.get('/search/:fName/:lName', async (request, response) => {
 });
 
 
-// app.post("/watch-movie", async (req, res) => {
-//   const { movieId, userId } = req.body;
-
-//   try {
-//     // Fetch movie info from the database
-//     const movieInfo = await db.fetchMovieInfoById(movieId);
-
-//     // Store movie info and user info in the session
-//     req.session.movieInfo = movieInfo;
-//     req.session.userId = userId;
-
-//     // Redirect to the movie page
-//     res.redirect("/movie");
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).json({ success: false, message: err.message });
-//   }
-// });
-
-// // Serve the movie page
-// app.get("/movie", function (req, res) {
-//   if (!req.session.movieInfo) {
-//     return res.status(400).send("No movie info in session");
-//   }
-
-//   res.sendFile(path.join(__dirname, '..', 'Client', 'movie.html'));
-// });
-
-// // Serve the video
-// app.get("/video", function (req, res) {
-//   const range = req.headers.range;
-//   if (!range) {
-//     return res.status(400).send("Requires Range header");
-//   }
-
-//   const videoPath = req.session.movieInfo.videoPath;
-//   if (!fs.existsSync(videoPath)) {
-//     console.error(`Video file not found: ${videoPath}`);
-//     return res.status(404).send("Video not found");
-//   }
-
-//   const videoSize = fs.statSync(videoPath).size;
-//   const CHUNK_SIZE = 10 ** 6; // 1MB
-//   const start = Number(range.replace(/\D/g, ""));
-//   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
-
-//   const contentLength = end - start + 1;
-//   const headers = {
-//     "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-//     "Accept-Ranges": "bytes",
-//     "Content-Length": contentLength,
-//     "Content-Type": "video/mp4",
-//   };
-
-//   res.writeHead(206, headers);
-
-//   const videoStream = fs.createReadStream(videoPath, { start, end });
-//   videoStream.pipe(res);
-
-//   videoStream.on('error', (streamErr) => {
-//     console.error('Stream Error:', streamErr);
-//     res.end(streamErr);
-//   });
-// });
-
-
-
-
 
 
 app.post("/prepare-movie", async (req, res) => {
@@ -704,34 +655,34 @@ app.post("/prepare-movie", async (req, res) => {
   console.log("Received request to prepare movie:", { movieId, userId });
   
   try {
-      // Fetch movie info from the database
-      const movieInfo = await db.fetchMovieInfoById(movieId);
-      
-      console.log("Fetched movie info:", movieInfo);
-      
-      if (!movieInfo) {
-          console.log("No movie info found for id:", movieId);
-          return res.status(404).json({ success: false, message: "Movie not found" });
+    // Fetch movie info from the database
+    const movieInfo = await db.fetchMovieInfoById(movieId);
+    
+    console.log("Fetched movie info:", movieInfo);
+    
+    if (!movieInfo) {
+      console.log("No movie info found for id:", movieId);
+      return res.status(404).json({ success: false, message: "Movie not found" });
+    }
+    
+    // Store movie info and user info in the session
+    req.session.movieInfo = movieInfo;
+    req.session.userId = userId;
+    
+    console.log('Movie info set in session:', req.session.movieInfo);
+    
+    // Save the session explicitly
+    req.session.save((err) => {
+      if (err) {
+        console.error("Session save error:", err);
+        return res.status(500).json({ success: false, message: "Error saving session" });
       }
-      
-      // Store movie info and user info in the session
-      req.session.movieInfo = movieInfo;
-      req.session.userId = userId;
-      
-      console.log('Movie info set in session:', req.session.movieInfo);
-      
-      // Save the session explicitly
-      req.session.save((err) => {
-          if (err) {
-              console.error("Session save error:", err);
-              return res.status(500).json({ success: false, message: "Error saving session" });
-          }
-          console.log('Session saved successfully. Session data:', req.session);
-          res.json({ success: true, message: "Movie prepared successfully" });
-      });
+      console.log('Session saved successfully. Session data:', req.session);
+      res.json({ success: true, message: "Movie prepared successfully" });
+    });
   } catch (err) {
-      console.error("Error in /prepare-movie:", err);
-      res.status(500).json({ success: false, message: err.message });
+    console.error("Error in /prepare-movie:", err);
+    res.status(500).json({ success: false, message: err.message });
   }
 });
 
@@ -739,6 +690,8 @@ app.post("/prepare-movie", async (req, res) => {
 
 
 
+
+/*
 app.get("/movie", function (req, res) {
   console.log("Session in /movie:", req.session);
   if (!req.session.movieInfo) {
@@ -749,6 +702,42 @@ app.get("/movie", function (req, res) {
   console.log("Movie info found:", req.session.movieInfo);
   res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
 });
+*/
+
+
+
+
+
+
+
+
+app.get("/movie", function (req, res) {
+  console.log("Session in /movie:", req.session);
+  
+  // Get movie ID from query parameters
+  const movieId = req.query.id;
+  
+  // if (!req.session.movieInfo || req.session.movieInfo.id !== movieId) {
+  //     console.log("No matching movie info found in session");
+  //     return res.redirect('/'); // Redirect to home page or movie selection page
+  // }
+  
+  console.log("Movie info found:", req.session.movieInfo);
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.get("/movie-info", (req, res) => {
@@ -784,6 +773,305 @@ app.use((req, res, next) => {
 
 
 
+app.post('/submit-rating', async (req, res) => {
+  const { userId, movieId, rating } = req.body;
+
+  // Check if the rating is valid
+  if (rating < 0 || rating > 5) {
+    return res.status(400).json({ success: false, message: 'Rating has to be between 0 and 5!' });
+  }
+
+  // Check if the user ID and movie ID are valid
+  if (!userId || !movieId) {
+    return res.status(400).json({ success: false, message: 'User ID and movie ID are required' });
+  }
+
+  try {
+    const oldRating = await db.getRatingByUserIdAndMovieId(userId, movieId);
+
+    if (oldRating) {
+      // Update the old rating
+      const result = await db.updateRating(oldRating.interaction_id, rating);
+
+      if (result.success) {
+        res.json({ success: true, message: 'Rating updated successfully' });
+      } else {
+        res.status(400).json({ success: false, message: result.message });
+      }
+    } else {
+      // Insert the new rating
+      const result = await db.insertRating(userId, movieId, rating);
+
+      if (result.success) {
+
+        res.json({ success: true, message: 'Rating submitted successfully' });
+      } else {
+        res.status(400).json({ success: false, message: result.message });
+      }
+    }
+  } catch (error) {
+    console.error('Error submitting rating:', error);
+    res.status(500).json({ success: false, message: 'An error occurred while submitting the rating' });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+app.get('/get_movies1', (req, res) => {
+  db.query('SELECT mid, title, genre, description FROM movies', (error, results) => {
+      if (error) throw error;
+      res.json(results);
+  });
+});
+
+
+app.get('/get_movie2', async (req, res) => {
+  const movieId = req.query.mid;
+  try {
+    const results = await db.query('SELECT * FROM movies WHERE movie_id = ?', [movieId]);
+    console.log("The results of get_movie2",results);
+    if (results.length === 0) {
+      res.status(404).json({ message: 'Movie not found' });
+    } else {
+      res.json(results[0]);
+    }
+  } catch (error) {
+    console.error('Error getting movie:', error);
+    res.status(500).json({ message: 'An error occurred while getting the movie' });
+  }
+});
+
+
+
+
+
+app.get('/get_recommendations2', async (req, res) => {
+  const movieId = req.query.mid;
+  console.log("The movie id in get_recommendations2", movieId);
+
+  try {
+    console.log("Executing query to get movie info in get_recommendations2");
+    const results = await db.query('SELECT * FROM movies WHERE movie_id = ?', [movieId]);
+    console.log("Query executed. The results of get_recommendations2:", results);
+
+    if (results.length === 0) {
+      console.log("Movie not found in get_recommendations2", movieId);
+      return res.status(404).json({ message: 'Movie not found' });
+    }
+
+    const selectedMovie = results[0];
+    console.log("Fetching all movies in get_recommendations2", JSON.stringify(selectedMovie));
+    const allMovies = await db.query('SELECT * FROM movies');
+    console.log("All movies fetched. Calling getRecommendations function in get_recommendations2", JSON.stringify(selectedMovie), JSON.stringify(allMovies));
+    const recommendations = getRecommendations(selectedMovie, allMovies);
+    console.log("Recommendations fetched. Sending response in get_recommendations2");
+    res.json(recommendations);
+  } catch (error) {
+    console.error('Error getting recommendations:', error);
+    res.status(500).json({ message: 'An error occurred while getting recommendations' });
+  }
+});
+
+
+
+function getRecommendations(selectedMovie, allMovies) {
+  const tfidf = calculateTFIDF(allMovies);
+  const selectedMovieIndex = allMovies.findIndex(movie => movie.movie_id == selectedMovie.movie_id);
+  const cosineSim = calculateCosineSimilarity(tfidf, selectedMovieIndex);
+  return cosineSim
+      .map((score, index) => ({ movie: allMovies[index], score }))
+      .sort((a, b) => b.score - a.score)
+      .slice(1, 6); // Get top 5 recommendations
+}
+
+function calculateTFIDF(movies) {
+  console.log("Calculating TFIDF in calculateTFIDF function in get_recommendations2", movies);
+  const tfidf = [];
+  const documentCount = movies.length;
+  const termFrequency = movies.map(movie => {
+      const terms = (movie.genre + ' ' + movie.description).toLowerCase().split(/\W+/);
+      const termCount = {};
+      terms.forEach(term => {
+          termCount[term] = (termCount[term] || 0) + 1;
+      });
+      return termCount;
+  });
+
+  const documentFrequency = {};
+  termFrequency.forEach(termCount => {
+      Object.keys(termCount).forEach(term => {
+          documentFrequency[term] = (documentFrequency[term] || 0) + 1;
+      });
+  });
+
+  termFrequency.forEach(termCount => {
+      const tfidfVector = {};
+      Object.keys(termCount).forEach(term => {
+          const tf = termCount[term] / Object.keys(termCount).length;
+          const idf = Math.log(documentCount / (1 + documentFrequency[term]));
+          tfidfVector[term] = tf * idf;
+      });
+      tfidf.push(tfidfVector);
+  });
+
+  return tfidf;
+}
+
+function calculateCosineSimilarity(tfidf, selectedMovieIndex) {
+  const selectedVector = tfidf[selectedMovieIndex];
+  return tfidf.map(vector => {
+      const dotProduct = Object.keys(selectedVector).reduce((sum, term) => {
+          return sum + (selectedVector[term] * (vector[term] || 0));
+      }, 0);
+      const magnitudeA = Math.sqrt(Object.values(selectedVector).reduce((sum, val) => sum + val * val, 0));
+      const magnitudeB = Math.sqrt(Object.values(vector).reduce((sum, val) => sum + val * val, 0));
+      return dotProduct / (magnitudeA * magnitudeB);
+  });
+}
+
+
+
+
+
+
+
+router.post('/forums', async (req, res) => {
+  try {
+      const { forumName } = req.body;
+      const userId = req.session.userId;
+      
+      if (!userId) {
+          return res.status(401).json({ success: false, message: 'User not authenticated' });
+      }
+
+      const forumId = await db.createForum(forumName, userId);
+      res.json({ success: true, forumId });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Search forums
+// router.get('/forums/search', async (req, res) => {
+//   try {
+//       const { q } = req.query;
+//       const forums = await db.searchForums(q);
+//       res.json({ success: true, forums });
+//   } catch (error) {
+//       res.status(500).json({ success: false, message: error.message });
+//   }
+// });
+
+router.get('/forums/search', async (req, res) => {
+  try {
+      const { q } = req.query;
+      const forums = await db.searchForums(q);
+      res.json({ success: true, forums });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
+// Get forum details and posts
+router.get('/forums/:forumId', async (req, res) => {
+  try {
+      const { forumId } = req.params;
+      const forum = await db.getForum(forumId);
+      const posts = await db.getForumPosts(forumId);
+      res.json({ success: true, forum, posts });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Delete forum
+router.delete('/forums/:forumId', async (req, res) => {
+  try {
+      const { forumId } = req.params;
+      const userId = req.session.userId;
+      
+      if (!userId) {
+          return res.status(401).json({ success: false, message: 'User not authenticated' });
+      }
+
+      const deleted = await db.deleteForum(forumId, userId);
+      if (!deleted) {
+          return res.status(403).json({ success: false, message: 'Not authorized to delete this forum' });
+      }
+      res.json({ success: true });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Create a new post in a forum
+router.post('/forums/:forumId/posts', upload.single('image'), async (req, res) => {
+  try {
+      const { forumId } = req.params;
+      const { content } = req.body;
+      const userId = req.session.userId;
+      const imagePath = req.file ? `/uploads/forum-images/${req.file.filename}` : null;
+      
+      if (!userId) {
+          return res.status(401).json({ success: false, message: 'User not authenticated' });
+      }
+
+      const postId = await db.createPost(forumId, userId, content, imagePath);
+      res.json({ success: true, postId });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Delete a post
+router.delete('/forums/:forumId/posts/:postId', async (req, res) => {
+  try {
+      const { forumId, postId } = req.params;
+      const userId = req.session.userId;
+      
+      if (!userId) {
+          return res.status(401).json({ success: false, message: 'User not authenticated' });
+      }
+
+      const forum = await db.getForum(forumId);
+      if (forum.creator_id !== userId) {
+          return res.status(403).json({ success: false, message: 'Not authorized to delete posts in this forum' });
+      }
+
+      const deleted = await db.deletePost(postId, forumId);
+      if (!deleted) {
+          return res.status(404).json({ success: false, message: 'Post not found' });
+      }
+      res.json({ success: true });
+  } catch (error) {
+      res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.use('/api', router);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 app.post("/watch-movie", async (req, res) => {
   const { movieId, userId } = req.body;
   
@@ -803,24 +1091,23 @@ app.post("/watch-movie", async (req, res) => {
   }
 });
 
-// app.get("/movie", function (req, res) {
-//   if (!req.session.movieInfo) {
-//       return res.status(400).send("No movie info in session");
-//   }
-  
-//   res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
-// });
 
 app.get("/video", function (req, res) {
   const range = req.headers.range;
   if (!range) {
-      return res.status(400).send("Requires Range header");
+    return res.status(400).send("Requires Range header");
   }
   
+  if (!req.session.movieInfo || !req.session.movieInfo.filepath) {
+    console.error("No movie info or filepath in session");
+    return res.status(400).send("No movie selected");
+  }
+
   const videoPath = req.session.movieInfo.filepath;
+  console.log("Video path:", videoPath);
   if (!fs.existsSync(videoPath)) {
-      console.error(`Video file not found: ${videoPath}`);
-      return res.status(404).send("Video not found");
+    console.error(`Video file not found: ${videoPath}`);
+    return res.status(404).send("Video not found");
   }
   
   const videoSize = fs.statSync(videoPath).size;
@@ -828,12 +1115,16 @@ app.get("/video", function (req, res) {
   const start = Number(range.replace(/\D/g, ""));
   const end = Math.min(start + CHUNK_SIZE, videoSize - 1);
   
+  if (start >= videoSize) {
+    return res.status(416).send("Requested range not satisfiable");
+  }
+
   const contentLength = end - start + 1;
   const headers = {
-      "Content-Range": `bytes ${start}-${end}/${videoSize}`,
-      "Accept-Ranges": "bytes",
-      "Content-Length": contentLength,
-      "Content-Type": "video/mp4",
+    "Content-Range": `bytes ${start}-${end}/${videoSize}`,
+    "Accept-Ranges": "bytes",
+    "Content-Length": contentLength,
+    "Content-Type": "video/mp4",
   };
   
   res.writeHead(206, headers);
@@ -842,26 +1133,14 @@ app.get("/video", function (req, res) {
   videoStream.pipe(res);
   
   videoStream.on('error', (streamErr) => {
-      console.error('Stream Error:', streamErr);
-      res.end(streamErr);
+    console.error('Stream Error:', streamErr);
+    if (!res.headersSent) {
+      res.status(500).send("Error streaming video");
+    } else {
+      res.end();
+    }
   });
 });
-
-
-// app.get("/movie-info", (req, res) => {
-//   if (!req.session.movieInfo) {
-//       return res.status(400).json({ success: false, message: "No movie info in session" });
-//   }
-  
-//   res.json({
-//       success: true,
-//       movieInfo: req.session.movieInfo,
-//       userId: req.session.userId
-//   });
-// });
-
-
-
 
 
 
@@ -880,66 +1159,6 @@ app.get('/movie-info/:title', async (request, response) => {
       response.status(500).json({ success: false, message: err.message });
   }
 });
-
-
-// forums api 
-
-app.post('/users', (req, res) => {
-  const { fName, lName, Email, Password } = req.body;
-  const sql = 'INSERT INTO user (fName, lName, Email, Password) VALUES (?, ?, ?, ?)';
-  db.query(sql, [fName, lName, Email, Password], (err, result) => {
-    if (err) throw err;
-    res.sendStatus(201);
-  });
-});
-
-app.get('/forums', (req, res) => {
-  const sql = 'SELECT forums.*, user.fName as username FROM forums JOIN user ON forums.user_id = user.id';
-  db.query(sql, (err, result) => {
-    if (err) throw err;
-    res.json(result);
-  });
-});
-
-app.get('/comments', (req, res) => {
-  const forumId = req.query.forum_id;
-  const sql = 'SELECT comments.*, user.fName as username FROM comments JOIN user ON comments.user_id = user.id WHERE forum_id = ?';
-  db.query(sql, [forumId], (err, result) => {
-    if (err) throw err;
-    res.json(result);
-  });
-});
-
-app.post('/forums', (req, res) => {
-  const { title, content, user_id } = req.body;
-  const sql = 'INSERT INTO forums (title, content, user_id) VALUES (?, ?, ?)';
-  db.query(sql, [title, content, user_id], (err, result) => {
-    if (err) throw err;
-    res.sendStatus(201);
-  });
-});
-
-app.post('/comments', (req, res) => {
-  const { forum_id, user_id, content, image_url } = req.body;
-  const sql = 'INSERT INTO comments (forum_id, user_id, content, image_url) VALUES (?, ?, ?, ?)';
-  db.query(sql, [forum_id, user_id, content, image_url], (err, result) => {
-    if (err) throw err;
-    res.sendStatus(201);
-  });
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.get("/signup.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'signup.html'));
@@ -993,9 +1212,44 @@ app.get("/UserProfile.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'UserProfile.html'));
 });
 
-// forums link 
-app.get("/forums.html", (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'Client', 'forums.html'));
+app.get("/UPindex.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPindex.html'));
+});
+
+app.get('/UPindex.html', (req, res) => {
+  if (req.session.user) {
+    res.render('UPindex', { user: req.session.user });
+  } else {
+    res.redirect('/login.html');
+  }
+});
+
+
+app.get("/UPmovies.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovies.html'));
+});
+
+
+
+app.get("/UPforums.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPforums.html'));
+});
+
+
+app.get("/UPchat.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPchat.html'));
+});
+
+app.get("/UPmovie.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPmovie.html'));
+});
+
+app.get("/learn.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'learn.html'));
+});
+
+app.get("/Aboutus.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'Aboutus.html'));
 });
 
 app.get("*", (req, res) => {

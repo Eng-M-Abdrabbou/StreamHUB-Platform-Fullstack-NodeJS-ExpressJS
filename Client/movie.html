@@ -11,27 +11,62 @@
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
     <link rel="stylesheet" href="/assets/css/Inter.css">
     <link rel="stylesheet" href="/assets/css/untitled.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+      .fjalla-one-regular {
+    font-family: 'Fjalla One', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  </style>
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+      <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
    
     <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/script.js" defer></script>
 </head>
 
-<body>
-    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav">
-        <div class="container"><img src="/assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"><a class="navbar-brand d-flex align-items-center" href="index.html"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
-            <div class="collapse navbar-collapse" id="navcol-1">
-                <ul class="navbar-nav mx-auto">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link active" href="products.html"><strong>Movies</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="login.html"><strong>Log in</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="signup.html"><strong>Sign up</strong></a></li>
-                </ul><a class="btn btn-primary shadow mx-auto" role="button" href="signup.html" style="height: 61.68px;width: 116.52px;margin: 0px;padding: 4.6px 32px;">Sign up</a>
-            </div>
-        </div>
-    </nav>
+<body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
+  <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+     
+      <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
+          <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
+              <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
+                  <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                  <li class="nav-item"><a class="nav-link active" href="products.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
+                  <li class="nav-item"><a class="nav-link" href="team.html"><strong style="color: rgb(0, 0, 0);">Team</strong></a></li>
+                  <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
+                  <li class="nav-item"><a class="nav-link" href="contacts.html"><strong style="color: rgb(0, 0, 0);">Contacts</strong></a></li>
+                  <li class="nav-item"><a class="nav-link" href="login.html"><strong style="color: rgb(0, 0, 0);">Log in</strong></a></li>
+                  <li class="nav-item"><a class="nav-link" href="signup.html"><strong style="color: rgb(0, 0, 0);">Sign up</strong></a></li>
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 0, 0);">
+                        <strong>Dropdown link</strong>  
+                      </a>
+
+                      <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';"
+                         onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Action</a>
+                        <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Another action</a>
+                        <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Something else here</a>
+                      </div>
+                      
+                    </li>
+                    <li class="nav-item d-flex align-items-center">
+                      <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
+                      <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
+                        <i class="fas fa-search"></i>
+                      </button>
+                    </li>
+                    
+              </ul><a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Sign up</a>
+             
+          </div>
+      </div>
+  </nav>
     <section class="py-5">
         <div class="container py-5">
             <div class="row mb-4 mb-lg-5">
@@ -142,7 +177,7 @@
 <br>
 <br>
 
-    <footer class="bg-dark">
+<footer class="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
         <div class="container py-4 py-lg-5">
             <div class="row justify-content-center">
                 <div class="col-sm-4 col-md-3 text-center text-lg-start d-flex flex-column">
@@ -182,6 +217,18 @@
     <script src="https://cdn.reflowhq.com/v2/toolkit.min.js"></script>
     <script src="/assets/js/bs-init.js"></script>
     <script src="/assets/js/bold-and-dark.js"></script>
+    <script>
+      document.querySelectorAll('a').forEach(link => {
+    if (['company', 'legacy', 'team'].includes(link.innerHTML.trim().toLowerCase())) {
+        link.addEventListener('click', function(event) {
+            if (!link.closest('.navbar')) { // Check if the link is not inside a navbar
+                event.preventDefault(); // Prevent default anchor behavior
+                window.location.href = 'Aboutus.html'; // Redirect to about.html
+            }
+        });
+    }
+});
+    </script>
 </body>
 
 </html>
