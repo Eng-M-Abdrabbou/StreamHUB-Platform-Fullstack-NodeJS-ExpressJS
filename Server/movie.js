@@ -1173,6 +1173,70 @@ app.get("/video", function (req, res) {
 });
 
 
+//search movie api with session 
+// search 
+app.get('/api/search', async (req, res) => {
+  console.log('Received GET request to /api/search');
+  try {
+    console.log('Trying to retrieve search query from request');
+    const searchQuery = req.query.q;
+    console.log(`Search query: ${searchQuery}`);
+    if (!searchQuery) {
+      console.log('Search query is empty');
+      return res.status(400).json({ error: 'Search query is required' });
+    }
+
+    console.log('Creating database query');
+    const query = "SELECT * FROM movies WHERE title LIKE ?";
+    console.log(`Query: ${query}`);
+    const params = `%${searchQuery}%`;
+    console.log(`Params: ${params}`);
+
+    console.log('Executing database query');
+    const results = await db.query(query, [params]);
+    console.log(`Results: ${JSON.stringify(results)}`);
+
+    if (results.length === 0) {
+      console.log('No results found');
+      return res.status(404).json({ error: 'No movies found' });
+    }
+
+    console.log('Sending response');
+    res.json({ results: results });
+  } catch (error) {
+    console.log(`Error handling request: ${error.message}`);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+//search movie api from talal without session
+
+app.get('/searchMovies', async (req, res) => {
+  const { title, genre } = req.query;
+  let query = 'SELECT * FROM movies WHERE 1=1';
+  const params = [];
+
+  if (title) {
+    query += ' AND title LIKE ?';
+    params.push(`%${title}%`);
+  }
+  if (genre) {
+    query += ' AND genre LIKE ?';
+    params.push(`%${genre}%`);
+  }
+
+  try {
+    const results = await db.query(query, params);
+    res.json({ success: true, data: results });
+  } catch (err) {
+    console.error('Error searching movies:', err);
+    res.status(500).json({ success: false, message: 'Error searching movies', error: err.message });
+  }
+});
+
+
+
+
 
 
 
@@ -1280,6 +1344,17 @@ app.get("/learn.html", (req, res) => {
 
 app.get("/Aboutus.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'Aboutus.html'));
+});
+
+//routing link usearch.html 
+
+app.get("/Usearch.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'Usearch.html'));
+});
+
+//routing link search.html
+app.get("/search.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'search.html'));
 });
 
 app.get("*", (req, res) => {
