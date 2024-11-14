@@ -84,7 +84,6 @@ app.use((err, req, res, next) => {
 
 
 
-
 //chatting functionality
 
 app.post('/api/find-user', async (req, res) => {
@@ -99,42 +98,6 @@ app.post('/api/find-user', async (req, res) => {
         res.status(500).json({ success: false, message: error.message });
     }
 });
-
-/*
-app.get('/api/messages/:userId1/:userId2', async (req, res) => {
-    try {
-        const messages = await db.getMessages(req.params.userId1, req.params.userId2);
-        res.json({ success: true, messages });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
-});
-
-
-// Socket.IO connection handling 
-io.on('connection', (socket) => {
-    socket.on('join', (userId) => {
-        socket.join(userId);
-    });
-
-    socket.on('private message', async (data) => {
-        try {
-            await db.saveMessage(data.senderId, data.receiverId, data.message);
-            io.to(data.receiverId.toString()).emit('private message', {
-                senderId: data.senderId,
-                senderName: data.senderName,
-                message: data.message
-            });
-        } catch (error) {
-            console.error('Error handling private message:', error);
-        }
-    });
-});
-*/
-
-
-
-
 
 
 // Add new endpoint for saving messages
