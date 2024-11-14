@@ -831,8 +831,7 @@ app.get('/get_movies1', (req, res) => {
   });
 });
 
-// This is not working because the query is not asynchronous, so the callback function is not being executed
-// The logs are not showing because the query is not being executed
+
 app.get('/get_movie2', async (req, res) => {
   const movieId = req.query.mid;
   try {
@@ -850,36 +849,7 @@ app.get('/get_movie2', async (req, res) => {
 });
 
 
-/*
-app.get('/get_recommendations2', async (req, res) => {
-  const movieId = req.query.mid;
-  console.log("The movie id in get_recommendations2", movieId);
 
-  try {
-    console.log("Executing query to get movie info in get_recommendations2");
-    const results = await db.query('SELECT * FROM movies WHERE movie_id = ?', [movieId]);
-    console.log("Query executed. The results of get_recommendations2:", results);
-
-    if (results.length === 0) {
-      console.log("Movie not found in get_recommendations2", movieId);
-      return res.status(404).json({ message: 'Movie not found' });
-    }
-
-    // The result of the query is an array of objects, so we need to get the first element of the array
-    // to get the selected movie object
-    const selectedMovie = results[0];
-    console.log("Fetching all movies in get_recommendations2", JSON.stringify(selectedMovie));
-    const [allMovies] = await db.query('SELECT * FROM movies');
-    console.log("All movies fetched. Calling getRecommendations function in get_recommendations2", JSON.stringify(selectedMovie), JSON.stringify(allMovies));	
-    const recommendations = getRecommendations(selectedMovie, allMovies);
-    console.log("Recommendations fetched. Sending response in get_recommendations2");
-    res.json(recommendations);
-  } catch (error) {
-    console.error('Error getting recommendations:', error);
-    res.status(500).json({ message: 'An error occurred while getting recommendations' });
-  }
-});
-*/
 
 
 app.get('/get_recommendations2', async (req, res) => {
