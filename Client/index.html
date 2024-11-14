@@ -112,6 +112,198 @@ body { overflow-x: hidden;}
             ::-webkit-scrollbar-thumb {
                 background: #fff;
             }
+
+                    /* Added CSS for the redesigned testimonial section */
+        .testimonial-card {
+            background-color: #1c1c1c;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 24px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 130px;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .testimonial-text {
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 16px;
+            flex-grow: 1;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .testimonial-role {
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+
+        .testimonial-card img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+        }
+
+        /* Floating Testimonials Styles */
+        .floating-testimonials {
+            position: relative;
+            width: 900%;
+            height: 400px;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .testimonial {
+            position: absolute;
+            width: 300px;
+            background-color: #1a1a1a;
+            color: #fff;
+            padding: 20px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            opacity: 0;
+            height: 300px;
+            animation: floatTestimonial 20s linear infinite;
+        }
+
+        .testimonial .author {
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .testimonial .author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .testimonial .author-name {
+            font-weight: bold;
+        }
+
+        @keyframes floatTestimonial {
+    0% {
+        transform: translateX(0%);
+        opacity: 0;
+    }
+
+    10% {
+        transform: translateX(80%);
+        opacity: 1;
+    }
+
+    20% {
+        transform: translateX(160%);
+        opacity: 1;
+    }
+
+    30% {
+        transform: translateX(240%);
+        opacity: 1;
+    }
+
+    40% {
+        transform: translateX(320%);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateX(400%);
+        opacity: 1;
+    }
+
+    60% {
+        transform: translateX(480%);
+        opacity: 1;
+    }
+
+    70% {
+        transform: translateX(560%);
+        opacity: 1;
+    }
+
+    80% {
+        transform: translateX(640%);
+        opacity: 1;
+    }
+
+    90% {
+        transform: translateX(720%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateX(800%);
+        opacity: 0;
+    }
+}
+
+/* Positioning each testimonial at different intervals */
+.testimonial:nth-child(1) {
+    top: 10%;
+    animation-delay: 0s;
+}
+
+.testimonial:nth-child(2) {
+    top: 10%;
+    animation-delay: 5s;
+}
+
+.testimonial:nth-child(3) {
+    top: 10%;
+    animation-delay: 10s;
+}
+
+.testimonial:nth-child(4) {
+    top: 10%;
+    animation-delay: 15s;
+}
+
+.testimonial:nth-child(5) {
+    top: 10%;
+    animation-delay: 20s;
+}
+
+.testimonial:nth-child(6) {
+    top: 10%;
+    animation-delay: 25s;
+}
+
+.testimonial:nth-child(7) {
+    top: 10%;
+    animation-delay: 30s;
+}
+
+.testimonial:nth-child(8) {
+    top: 10%;
+    animation-delay: 35s;
+}
+
+.testimonial:nth-child(9) {
+    top: 10%;
+    animation-delay: 40s;
+}
+
+.testimonial:nth-child(10) {
+    top: 10%;
+    animation-delay: 45s;
+}
+
+.testimonial:nth-child(11) {
+    top: 10%;
+    animation-delay: 50s;
+}
+
+
     </style>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
@@ -120,32 +312,31 @@ body { overflow-x: hidden;}
 
 <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
     <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
-       
-        <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
-            <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
+        <div class="container" style="color: rgb(0, 0, 0);">
+            <a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1" style="color: rgb(0, 0, 0);">
                 <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
                     <li class="nav-item"><a class="nav-link active" href="index.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
                     <li class="nav-item"><a class="nav-link " href="products.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="team.html"><strong style="color: rgb(0, 0, 0);">Team</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="contacts.html"><strong style="color: rgb(0, 0, 0);">Contacts</strong></a></li>
-                </ul><a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Sign up</a>
+                </ul>
+                <div class="d-flex align-items-center" style="gap: 10px;">
+                    <a class="btn btn-dark shadow d-inline-block" role="button" href="login.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5;">Login</a>
+                    <a class="btn btn-dark shadow d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5;">Sign up</a>
+                </div>
                 <li class="nav-item d-flex align-items-center">
                     <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
                     <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
-                      <i class="fas fa-search"></i>
+                        <i class="fas fa-search"></i>
                     </button>
-                  </li>
-            </ul><a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="login.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Login</a>
- 
-                    <!-- <li class="nav-item"><a class="nav-link" href="login.html"><strong style="color: rgb(0, 0, 0);">Log in</strong></a></li> -->
-                    <!-- <li class="nav-item"><a class="nav-link" href="signup.html"><strong style="color: rgb(0, 0, 0);">Sign up</strong></a></li> -->
-                   
-                      
- 
+                </li>
             </div>
         </div>
     </nav>
+
     <header class="">
 
         <div class="video-background">
@@ -311,7 +502,7 @@ body { overflow-x: hidden;}
             </div>
         </div>
     </section>
-    <section class="py-5 mt-5">
+    <!-- <section class="py-5 mt-5">
         <div class="bg3 grayscale-bg"></div>
         <div class="container py-5">
             <div class="row mb-5" style="margin-left: -41px;padding-right: 0px;margin-right: -34px;">
@@ -320,8 +511,8 @@ body { overflow-x: hidden;}
                     <h2 class="fw-bold"><strong>What People Say About us</strong></h2>
                     <p class="text-muted">No matter the project, our team can handle it.&nbsp;</p>
                 </div>
-            </div>
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 d-sm-flex justify-content-sm-center">
+            </div> -->
+            <!-- <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 d-sm-flex justify-content-sm-center">
                 <div class="col mb-4">
                     <div class="d-flex flex-column align-items-center align-items-sm-start">
                         <p class="bg-dark border rounded border-dark p-4"><br><span style="background-color: rgb(43, 43, 43);">StreamHub has completely transformed my viewing experience. The variety of content and the seamless streaming quality make it my go-to platform for entertainment. Highly recommend it to all movie buffs out there!</span><br><br><br></p>
@@ -353,8 +544,133 @@ body { overflow-x: hidden;}
                     </div>
                 </div>
             </div>
+        </div> -->
+<!-- 
+        
+
+    </section> -->
+
+      <!-- Updated Testimonials Section -->
+      <section class="py-5 mt-5">
+        <div class="bg3 grayscale-bg"></div>
+        <div class="container py-5">
+            <div class="row mb-5" style="margin-left: -41px;padding-right: 0px;margin-right: -34px;">
+                <div class="col-md-8 col-xl-6 text-center mx-auto">
+                    <p class="fw-bold text-success mb-2">Testimonials</p>
+                    <h2 class="fw-bold"><strong>What People Say About Us</strong></h2>
+                    <p class="text-muted">Hear from our satisfied users.</p>
+                </div>
+            </div>
+            <div class="floating-testimonials">
+                <!-- Testimonial 1 -->
+                <div class="testimonial">
+                    <p>"StreamHub has completely transformed my viewing experience. The variety of content and the seamless streaming quality make it my go-to platform for entertainment. Highly recommend it to all movie buffs out there!"</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Anonymous">
+                        <div>
+                            <p class="author-name">Anonymous</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 2 -->
+                <div class="testimonial">
+                    <p>"I never knew streaming could be this easy until I discovered StreamHub. It’s reliable, fast, and has an incredible selection of shows and movies. It’s everything I need in one place."</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Mostafa F.">
+                        <div>
+                            <p class="author-name">Mostafa F.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Testimonial 3 -->
+                <div class="testimonial">
+                    <p>"The intuitive design of StreamHub makes it so easy to find exactly what I’m in the mood for. Whether it’s a thriller or a comedy, I can always count on StreamHub for a great selection."</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Mohammed F.">
+                        <div>
+                            <p class="author-name">Mohammed F.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Testimonial 1 -->
+                <div class="testimonial">
+                    <p>"StreamHub’s recommendation engine is spot on! It feels like it knows exactly what I want to watch, and I’ve discovered so many new favorites. It’s a game-changer for movie lovers."</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Sarah L.">
+                        <div>
+                            <p class="author-name">Sarah L.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Testimonial 2 -->
+                <div class="testimonial">
+                    <p>"I love the forums and the community engagement on StreamHub. Sharing opinions and earning badges while discussing movies adds a fun, interactive element to my experience!"</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="James P.">
+                        <div>
+                            <p class="author-name">James P.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- New Testimonial 3 -->
+                <div class="testimonial">
+                    <p>"StreamHub is more than a streaming service – it’s a complete experience. The badges and tiers make me feel rewarded for my engagement, and I always look forward to leveling up."</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Rita K.">
+                        <div>
+                            <p class="author-name">Rita K.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>"I love how seamless it is to share my favorite shows and movies with friends and family on StreamHub. It’s made our movie nights so much more enjoyable!"</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Aisha M.">
+                        <div>
+                            <p class="author-name">Aisha M.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>"The StreamHub app is so clean and easy to use. I can easily find what I want to watch and start streaming in just a few taps."</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Liam A.">
+                        <div>
+                            <p class="author-name">Liam A.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>"I was skeptical about trying a new streaming service, but StreamHub has exceeded my expectations. The content selection is unbeatable!"</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Sofia L.">
+                        <div>
+                            <p class="author-name">Sofia L.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>"I love how StreamHub is constantly adding new features and improving the user experience. It shows that the team is committed to making the best possible experience for users."</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Ethan Y.">
+                        <div>
+                            <p class="author-name">Ethan Y.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    <p>"I was blown away by the depth of the community forums on StreamHub. It's so much more than just a streaming service – it's a community of people who love movies and TV shows."</p>
+                    <div class="author">
+                        <img src="assets/img/team/human%20head.svg" alt="Maya S.">
+                        <div>
+                            <p class="author-name">Maya S.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
+    
     <section class="py-5">
         <div class="bg7 grayscale-bg"></div>
         <div class="container">
