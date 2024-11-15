@@ -124,7 +124,10 @@ body {
  <link rel="stylesheet" href="assets/css/custom.css">
 
  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Algerian&display=swap">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
+ 
   </head>
   <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
     <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
@@ -481,52 +484,82 @@ async function getUserName(userid) {
                 commentContainer.appendChild(commentText);
           
                 // Check if image URL exists in the comment data
-          if (comment.image_url) {
-            const commentImage = document.createElement('img');
-            commentImage.src = comment.image_url;
-            commentImage.alt = 'Comment image';
-            commentImage.className = 'comment-image'; // Add a class to the image element
-            commentImage.addEventListener('click', () => {
-              const fullscreenOverlay = document.createElement('div');
-              fullscreenOverlay.className = 'fullscreen-overlay';
-              const fullscreenImage = document.createElement('img');
-              fullscreenImage.src = commentImage.src;
-              fullscreenImage.alt = commentImage.alt;
-              fullscreenOverlay.appendChild(fullscreenImage);
-              document.body.appendChild(fullscreenOverlay);
-              fullscreenOverlay.addEventListener('click', () => {
-                document.body.removeChild(fullscreenOverlay);
-              });
-            });
-            commentContainer.appendChild(commentImage);
-          }
-              // Add CSS styles to make the comment image small and square
-              const commentImageStyles = `
-                .comment-image {
-                  width: 50px;
-                  height: 50px;
-                  object-fit: cover;
-                  border-radius: 5px;
-                }
-              `;
-              
-              // Create a style element and add the CSS styles to it
-              const style = document.createElement('style');
-              style.innerHTML = commentImageStyles;
-              document.head.appendChild(style);
-          
-              if (comment.user_id == userId) {
-  const deleteButton = document.createElement('button');
-  deleteButton.className = 'btn btn-danger btn-sm';
-  deleteButton.style.marginLeft = '5px'; // Add a margin to the left
-  deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
-  deleteButton.onclick = () => deleteComment(comment.id);
-  commentContainer.appendChild(deleteButton);
-  deleteButton.onclick = () => {
-    deleteComment(comment.id);
-    window.location.href = window.location.href + '?' + new Date().getTime();
-  };
-}
+       if (comment.image_url) {
+         const commentImage = document.createElement('img');
+         commentImage.src = comment.image_url;
+         commentImage.alt = 'Comment image';
+         commentImage.className = 'comment-image'; // Add a class to the image element
+         commentImage.addEventListener('click', () => {
+           const offcanvas = document.createElement('div');
+           offcanvas.className = 'offcanvas offcanvas-start';
+           offcanvas.style.width = '400px'; // adjust the width as needed
+           offcanvas.innerHTML = `
+             <div class="offcanvas-header">
+               <h5 class="offcanvas-title">Image Preview</h5>
+               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+             </div>
+             <div class="offcanvas-body">
+               <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
+             </div>
+           `;
+           document.body.appendChild(offcanvas);
+           const offcanvasElement = new bootstrap.Offcanvas(offcanvas);
+           offcanvasElement.show();
+         });
+         commentContainer.appendChild(commentImage);
+       
+         // Add a Bootstrap button to preview the image
+         const previewButton = document.createElement('button');
+         previewButton.className = 'btn btn-primary btn-sm';
+         previewButton.style.marginLeft = '5px'; // Add a margin to the left
+         previewButton.innerHTML = '<i class="fas fa-eye"></i> Preview';
+         previewButton.onclick = () => {
+           const offcanvas = document.createElement('div');
+           offcanvas.className = 'offcanvas offcanvas-start';
+           offcanvas.style.width = '400px'; // adjust the width as needed
+           offcanvas.innerHTML = `
+             <div class="offcanvas-header">
+               <h5 class="offcanvas-title">Image Preview</h5>
+               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+             </div>
+             <div class="offcanvas-body">
+               <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
+             </div>
+           `;
+           document.body.appendChild(offcanvas);
+           const offcanvasElement = new bootstrap.Offcanvas(offcanvas);
+           offcanvasElement.show();
+         };
+         commentContainer.appendChild(previewButton);
+       }
+       
+       // Add CSS styles to make the comment image small and square
+       const commentImageStyles = `
+         .comment-image {
+           width: 50px;
+           height: 50px;
+           object-fit: cover;
+           border-radius: 5px;
+         }
+       `;
+       
+       // Create a style element and add the CSS styles to it
+       const style = document.createElement('style');
+       style.innerHTML = commentImageStyles;
+       document.head.appendChild(style);
+       
+       if (comment.user_id == userId) {
+         const deleteButton = document.createElement('button');
+         deleteButton.className = 'btn btn-danger btn-sm';
+         deleteButton.style.marginLeft = '5px'; // Add a margin to the left
+         deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+         deleteButton.onclick = () => deleteComment(comment.id);
+         commentContainer.appendChild(deleteButton);
+         deleteButton.onclick = () => {
+           deleteComment(comment.id);
+           window.location.href = window.location.href + '?' + new Date().getTime();
+         };
+       }
 
                 commentElement.appendChild(commentContainer);
                 commentsDiv.appendChild(commentElement);
