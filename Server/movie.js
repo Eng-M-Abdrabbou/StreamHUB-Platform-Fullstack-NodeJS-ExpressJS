@@ -1249,15 +1249,18 @@ app.post('/forums/:forumId/comments/image', isLoggedIn, upload.single('image'), 
 
   const forum_id = req.params.forumId;
   const user_id = req.user.id;
-  const image_url = `/uploads/forum-images/${req.file.filename}`;
   const content = req.body.content; // Get the comment content from the request body
+
+  let image_url = null;
+  if (req.file) {
+    image_url = `/uploads/forum-images/${req.file.filename}`;
+  }
 
   db.query('INSERT INTO comments (forum_id, user_id, content, image_url) VALUES (?, ?, ?, ?)', [forum_id, user_id, content, image_url], (err, result) => {
     if (err) throw err;
-    res.send('Comment image uploaded');
+    res.send('Comment uploaded');
   });
 });
-
 // Get all comments
 app.get('/forums/:id/comments', async (req, res) => {
   try {

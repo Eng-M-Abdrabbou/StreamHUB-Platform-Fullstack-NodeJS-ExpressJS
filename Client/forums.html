@@ -105,6 +105,9 @@ body {
  <link rel="stylesheet" href="assets/css/untitled.css">
  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
  <link rel="stylesheet" href="assets/css/custom.css">
+
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Algerian&display=swap">
+
   </head>
   <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
     <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
@@ -221,7 +224,7 @@ async function initUserfnameId() {
    <button class="btn btn-xs btn-primary" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum" style="max-width: 150px;">
      <i class="fas fa-chevron-down"></i> Create forum
    </button>
-      <span style="float: right; font-size: 20px; color:white">Welcome: ${userfname} ${userlname}</span>
+     <span style="float: right; font-size: 20px; color:white; font-family: 'Berlin Sans FB Demi', sans-serif;">Welcome: ${userfname} ${userlname}</span>
     `;
   } catch (error) {
     console.error('Error setting user ID:', error);
@@ -390,13 +393,13 @@ async function getUserName(userid) {
   forumElement.innerHTML = `
  <div class="card"  style="background-color:beige" data-forum-id="${forum.id}">
  
-  <div class="card-header" style="color: black;">
-    The forum is made by : ${userName}
-     </div>
+ <div class="card-header" style="color: black; font-family: 'Algerian', sans-serif;">
+     The forum is made by : <span style="font-size: 18px;">${userName}</span>
+ </div>
   </div>
   <div class="card-body"style="color: white;" >
-    <h5 class="card-title">${forum.title}</h5>
-    <p class="card-text">${forum.content}.</p>
+ <h5 class="card-title" style="font-family: 'Algerian', sans-serif; font-size: 24px;">${forum.title}</h5>
+    <p class="card-text" >${forum.content}.</p>
    
 
     
@@ -429,7 +432,7 @@ async function getUserName(userid) {
       <div class="modal-body">
         <form id="createCommentForm-${forum.id}">
           <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
-          <input type="file" id="commentImage-${forum.id}" accept="image/*">
+          <input type="file" id="commentImage-${forum.id}" accept="image/*" style="width: 100px; height: 30px;">
           <button type="submit" class="btn btn-primary btn-sm">
             <i class="fas fa-paper-plane"></i>
           </button>
@@ -484,7 +487,7 @@ async function getUserName(userid) {
           
                 if (comment.user_id == userId) {
                   const deleteButton = document.createElement('button');
-                  deleteButton.className = 'btn btn-danger btn-sm';
+                  deleteButton.className = ' btn btn-danger btn-sm';
                   deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
                   deleteButton.onclick = () => deleteComment(comment.id);
                   commentContainer.appendChild(deleteButton);
@@ -514,8 +517,11 @@ function createComment(content, forumId) {
   const commentContent = document.getElementById(`commentContent-${forumId}`).value; // Get the comment content from the input field
 
   const formData = new FormData();
+  const imageFile = document.getElementById(`commentImage-${forumId}`).files[0];
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
   formData.append('content', commentContent); // Append the comment content to the FormData object
-  formData.append('image', document.getElementById(`commentImage-${forumId}`).files[0]);
 
   fetch(`${apiUrl}/forums/${forumId}/comments/image`, {
     method: 'POST',
