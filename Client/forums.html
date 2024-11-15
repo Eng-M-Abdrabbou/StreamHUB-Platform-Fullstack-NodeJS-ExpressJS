@@ -89,6 +89,23 @@ body {
   color: #000; /* Ensure the text is readable */
 }
 
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullscreen-overlay img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 
        
     </style>
@@ -224,7 +241,9 @@ async function initUserfnameId() {
    <button class="btn btn-xs btn-primary" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum" style="max-width: 150px;">
      <i class="fas fa-chevron-down"></i> Create forum
    </button>
-     <span style="float: right; font-size: 20px; color:white; font-family: 'Berlin Sans FB Demi', sans-serif;">Welcome: ${userfname} ${userlname}</span>
+   <div style="float: right; font-size: 20px; color: white; font-family: 'Berlin Sans FB Demi', sans-serif; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #333; width: fit-content; margin-left: auto;">
+     Welcome: ${userfname} ${userlname}
+   </div>
     `;
   } catch (error) {
     console.error('Error setting user ID:', error);
@@ -462,14 +481,25 @@ async function getUserName(userid) {
                 commentContainer.appendChild(commentText);
           
                 // Check if image URL exists in the comment data
-              if (comment.image_url) {
-                const commentImage = document.createElement('img');
-                commentImage.src = comment.image_url;
-                commentImage.alt = 'Comment image';
-                commentImage.className = 'comment-image'; // Add a class to the image element
-                commentContainer.appendChild(commentImage);
-              }
-              
+          if (comment.image_url) {
+            const commentImage = document.createElement('img');
+            commentImage.src = comment.image_url;
+            commentImage.alt = 'Comment image';
+            commentImage.className = 'comment-image'; // Add a class to the image element
+            commentImage.addEventListener('click', () => {
+              const fullscreenOverlay = document.createElement('div');
+              fullscreenOverlay.className = 'fullscreen-overlay';
+              const fullscreenImage = document.createElement('img');
+              fullscreenImage.src = commentImage.src;
+              fullscreenImage.alt = commentImage.alt;
+              fullscreenOverlay.appendChild(fullscreenImage);
+              document.body.appendChild(fullscreenOverlay);
+              fullscreenOverlay.addEventListener('click', () => {
+                document.body.removeChild(fullscreenOverlay);
+              });
+            });
+            commentContainer.appendChild(commentImage);
+          }
               // Add CSS styles to make the comment image small and square
               const commentImageStyles = `
                 .comment-image {
@@ -485,17 +515,18 @@ async function getUserName(userid) {
               style.innerHTML = commentImageStyles;
               document.head.appendChild(style);
           
-                if (comment.user_id == userId) {
-                  const deleteButton = document.createElement('button');
-                  deleteButton.className = ' btn btn-danger btn-sm';
-                  deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
-                  deleteButton.onclick = () => deleteComment(comment.id);
-                  commentContainer.appendChild(deleteButton);
-                  deleteButton.onclick = () => {
-  deleteComment(comment.id);
-  window.location.href = window.location.href + '?' + new Date().getTime();
-};
-                }
+              if (comment.user_id == userId) {
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'btn btn-danger btn-sm';
+  deleteButton.style.marginLeft = '5px'; // Add a margin to the left
+  deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+  deleteButton.onclick = () => deleteComment(comment.id);
+  commentContainer.appendChild(deleteButton);
+  deleteButton.onclick = () => {
+    deleteComment(comment.id);
+    window.location.href = window.location.href + '?' + new Date().getTime();
+  };
+}
 
                 commentElement.appendChild(commentContainer);
                 commentsDiv.appendChild(commentElement);
