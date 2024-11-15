@@ -170,9 +170,9 @@ body {
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-10" style="margin-left: -20px; text-align: left; margin-top: 10px;">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Create Forum
-                        </button>
+                     <button type="submit" class="btn btn-primary" onclick="this.form.submit(); window.location.href = window.location.href;">
+                       <i class="fas fa-paper-plane"></i> Create Forum
+                     </button>
                     </div>
                 </div>
             </form>
@@ -366,7 +366,7 @@ async function getUserName(userid) {
             .then( response => response.text())
             .then(data => alert(data))
             .catch(error => console.error('Error:', error));
-            loadForums(); // Reload the forums after creating a new forum
+            loadForums(); 
         });
 
         async function loadForums() {
@@ -409,7 +409,7 @@ async function getUserName(userid) {
     <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#createCommentModal-${forum.id}">
       Add Comment
     </button>
-    ${forum.user_id == userId ? `<button class="btn btn-danger btn-sm" onclick="deleteForum(${forum.id})"><i class="fas fa-trash-alt"></i> Delete forum</button>` : ''}
+   ${forum.user_id == userId ? `<button class="btn btn-danger btn-sm" onclick="deleteForum(${forum.id}); window.location.href = window.location.href;"><i class="fas fa-trash-alt"></i> Delete forum</button>` : ''}
     <div class="collapse" style="color: beige;" id="collapse-${forum.id}">
       <div class="card-body "style="color: white">
         <h5>Comments:</h5>
@@ -433,9 +433,9 @@ async function getUserName(userid) {
         <form id="createCommentForm-${forum.id}">
           <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
           <input type="file" id="commentImage-${forum.id}" accept="image/*" style="width: 100px; height: 30px;">
-          <button type="submit" class="btn btn-primary btn-sm">
-            <i class="fas fa-paper-plane"></i>
-          </button>
+         <button type="submit" class="btn btn-primary btn-sm" onclick="this.form.submit(); window.location.href = window.location.href;">
+           <i class="fas fa-paper-plane"></i>
+         </button>
         </form>
       </div>
     </div>
@@ -491,8 +491,12 @@ async function getUserName(userid) {
                   deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
                   deleteButton.onclick = () => deleteComment(comment.id);
                   commentContainer.appendChild(deleteButton);
+                  deleteButton.onclick = () => {
+  deleteComment(comment.id);
+  window.location.href = window.location.href + '?' + new Date().getTime();
+};
                 }
-          
+
                 commentElement.appendChild(commentContainer);
                 commentsDiv.appendChild(commentElement);
               });
