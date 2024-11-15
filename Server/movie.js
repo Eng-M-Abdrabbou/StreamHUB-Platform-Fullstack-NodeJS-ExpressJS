@@ -1244,15 +1244,17 @@ app.delete('/forums/:id', isLoggedIn, (req, res) => {
 });
 
 // Create a new comment
-app.post('/forums/:forumId/comments', isLoggedIn, (req, res) => {
+app.post('/forums/:forumId/comments/image', isLoggedIn, upload.single('image'), (req, res) => {
   if (!req.user) return res.status(403).send('Login required');
 
-  const { content } = req.body;
   const forum_id = req.params.forumId;
   const user_id = req.user.id;
-  db.query('INSERT INTO comments (forum_id, user_id, content) VALUES (?, ?, ?)', [forum_id, user_id, content], (err, result) => {
+  const image_url = `/uploads/forum-images/${req.file.filename}`;
+  const content = req.body.content; // Get the comment content from the request body
+
+  db.query('INSERT INTO comments (forum_id, user_id, content, image_url) VALUES (?, ?, ?, ?)', [forum_id, user_id, content, image_url], (err, result) => {
     if (err) throw err;
-    res.send('Comment created');
+    res.send('Comment image uploaded');
   });
 });
 

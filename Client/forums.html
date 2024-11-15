@@ -429,6 +429,7 @@ async function getUserName(userid) {
       <div class="modal-body">
         <form id="createCommentForm-${forum.id}">
           <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
+          <input type="file" id="commentImage-${forum.id}" accept="image/*">
           <button type="submit" class="btn btn-primary btn-sm">
             <i class="fas fa-paper-plane"></i>
           </button>
@@ -510,13 +511,18 @@ async function getUserName(userid) {
 
 
 function createComment(content, forumId) {
-  fetch(`${apiUrl}/forums/${forumId}/comments`, {
+  const commentContent = document.getElementById(`commentContent-${forumId}`).value; // Get the comment content from the input field
+
+  const formData = new FormData();
+  formData.append('content', commentContent); // Append the comment content to the FormData object
+  formData.append('image', document.getElementById(`commentImage-${forumId}`).files[0]);
+
+  fetch(`${apiUrl}/forums/${forumId}/comments/image`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json',
       'user-id': userId
     },
-    body: JSON.stringify({ content: content }) // Send content as a JSON object
+    body: formData
   })
   .then(response => response.text())
   .then(data => {
