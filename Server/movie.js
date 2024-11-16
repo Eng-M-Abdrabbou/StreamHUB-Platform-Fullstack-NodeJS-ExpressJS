@@ -1509,6 +1509,13 @@ app.get("/Usearch.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'Usearch.html'));
 });
 
+//non session search 
+
+app.get("/search.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'search.html'));
+});
+
+
 app.get("*", (req, res) => {
   res.status(404).send("Page not found");
 });
