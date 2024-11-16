@@ -100,24 +100,74 @@
             ::-webkit-scrollbar-thumb {
                 background: #fff;
             }
+
+             
+ .grayscale-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    filter: grayscale(100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.bg1 {
+    background-image: url('/assets/img/backgrounds/pic (1).jpg');
+    z-index: -1;
+}
+
+.bg2  {
+    background-image: url('/assets/img/backgrounds/pic (2).jpg');
+    filter: blur(0px);
+    z-index: -1;
+
+}
+
+.bg3  {
+    background-image: url('/assets/img/backgrounds/pic (3).jpg');
+    background-repeat: repeat;
+    z-index: -1;
+}
+
+.bg4 {
+    background-image: url('/assets/img/backgrounds/pic (4).jpg');
+    z-index: -1;
+
+}
+
+.bg5 {
+    background-image: url('/assets/img/backgrounds/pic (5).jpg');
+    z-index: -1;
+
+}
+
+.bg6  {
+    background-image: url('/assets/img/backgrounds/pic (6).jpg');
+    z-index: -1;
+
+}
+
+.bg7  {
+    background-image: url('/assets/img/backgrounds/pic (7).jpg');
+    z-index: -1;
+    height: 200vh;
+
+}
+
+
+
            </style>
 
        <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-       <!-- <style>
-           .fjalla-one-regular {
-         font-family: 'Fjalla One', sans-serif;
-         font-weight: 400;
-         font-style: normal;
-       }
-       </style> -->
            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
    <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
-    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000; margin-left: -150px;">
            
         <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
             <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
@@ -139,7 +189,6 @@
                         </div>
                       </li>                          
                       <li class="nav-item d-flex align-items-center">
-                        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
                         <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
                           <i class="fas fa-search"></i>
                         </button>
@@ -149,33 +198,34 @@
         </div>
     </nav>
 
+    <div class="bg2 grayscale-bg"></div>
 
    
-    <div class="container mt-5">
+    <div class="container mt-5" style="color: rgb(0, 0, 0);">
       <!-- Forum Creation -->
       <div class="row mb-4">
-          <div class="col-md-6">
-              <div class="card bg-dark text-white">
+          <div class="col-md-6" style="height: 170px;">
+              <div class="card bg-white text-black" style="height: 170px;">
                   <div class="card-body">
                       <h5 class="card-title">Create New Forum</h5>
                       <form id="create-forum-form">
                           <div class="mb-3">
                               <input type="text" class="form-control" id="forum-name" placeholder="Forum Name" required>
                           </div>
-                          <button type="submit" class="btn btn-primary">Create Forum</button>
+                          <button type="submit" class="btn btn-dark">Create Forum</button>
                       </form>
                   </div>
               </div>
           </div>
           
           <!-- Forum Search -->
-          <div class="col-md-6">
-              <div class="card bg-dark text-white">
+          <div class="col-md-6" style="height: 170px;">
+              <div class="card bg-white text-black" style="height: 170px;">
                   <div class="card-body">
                       <h5 class="card-title">Search Forums</h5>
                       <div class="input-group">
                           <input type="text" class="form-control" id="forum-search" placeholder="Search forums...">
-                          <button class="btn btn-primary" id="search-button">Search</button>
+                          <button class="btn btn-dark" id="search-button">Search</button>
                       </div>
                   </div>
               </div>
@@ -193,7 +243,7 @@
   
       <!-- Forum View (Initially Hidden) -->
       <div id="forum-view" class="mt-4" style="display: none;">
-          <div class="card bg-dark text-white">
+          <div class="card bg-white text-black">
               <div class="card-body">
                   <h3 id="forum-title" class="card-title"></h3>
                   <p id="forum-creator" class="text-muted"></p>
@@ -206,7 +256,7 @@
                       <div class="mb-3">
                           <input type="file" class="form-control" id="post-image" accept="image/*">
                       </div>
-                      <button type="submit" class="btn btn-primary">Post</button>
+                      <button type="submit" class="btn btn-dark">Post</button>
                   </form>
   
                   <!-- Posts List -->
@@ -420,7 +470,7 @@ function displayForums(forums) {
     
     forums.forEach(forum => {
         const forumElement = document.createElement('div');
-        forumElement.className = 'list-group-item list-group-item-action bg-dark text-white';
+        forumElement.className = 'list-group-item list-group-item-action bg-white text-black';
         forumElement.innerHTML = `
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">${forum.forum_name}</h5>
@@ -429,7 +479,7 @@ function displayForums(forums) {
             ${forum.creator_id === currentUserId ? 
                 `<button class="btn btn-danger btn-sm float-end delete-forum" data-forum-id="${forum.forum_id}">Delete</button>` : 
                 ''}
-            <button class="btn btn-primary btn-sm float-end me-2 view-forum" data-forum-id="${forum.forum_id}">View Forum</button>
+            <button class="btn btn-dark btn-sm float-end me-2 view-forum" data-forum-id="${forum.forum_id}">View Forum</button>
         `;
         forumsList.appendChild(forumElement);
     });
@@ -498,7 +548,7 @@ function displayPosts(posts, isForumCreator) {
   
   posts.forEach(post => {
       const postElement = document.createElement('div');
-      postElement.className = 'card bg-dark text-white mb-3';
+      postElement.className = 'card bg-white text-black mb-3';
       postElement.innerHTML = `
           <div class="card-body">
               <div class="d-flex justify-content-between align-items-start">

@@ -13,6 +13,64 @@
     <link rel="stylesheet" href="assets/css/untitled.css">
 
     <style>
+ 
+ .grayscale-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    filter: grayscale(100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.bg1 {
+    background-image: url('/assets/img/backgrounds/pic (1).jpg');
+    z-index: -1;
+}
+
+.bg2  {
+    background-image: url('/assets/img/backgrounds/pic (2).jpg');
+    filter: blur(0px);
+    z-index: -1;
+
+}
+
+.bg3  {
+    background-image: url('/assets/img/backgrounds/pic (3).jpg');
+    background-repeat: repeat;
+    z-index: -1;
+}
+
+.bg4 {
+    background-image: url('/assets/img/backgrounds/pic (4).jpg');
+    z-index: -1;
+
+}
+
+.bg5 {
+    background-image: url('/assets/img/backgrounds/pic (5).jpg');
+    z-index: -1;
+
+}
+
+.bg6  {
+    background-image: url('/assets/img/backgrounds/pic (6).jpg');
+    z-index: -1;
+
+}
+
+.bg7  {
+    background-image: url('/assets/img/backgrounds/pic (7).jpg');
+    z-index: -1;
+    height: 200vh;
+
+}
+
+.NoGS{
+
+    filter: grayscale(0%);
+}
 
       .fjalla-one-regular {
 font-family: 'Fjalla One', sans-serif;
@@ -117,7 +175,7 @@ text-shadow: 1px 1px 2px black;
 </head>
 
  <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
-  <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+  <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000; margin-left: -150px;">
            
     <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
         <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
@@ -139,7 +197,6 @@ text-shadow: 1px 1px 2px black;
                     </div>
                   </li>                          
                   <li class="nav-item d-flex align-items-center">
-                    <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
                     <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
                       <i class="fas fa-search"></i>
                     </button>
@@ -149,10 +206,13 @@ text-shadow: 1px 1px 2px black;
     </div>
 </nav>
 
+<div class="bg7 grayscale-bg"></div>
 
    
    <br><br><br><br>
-   <h3 style="margin-left: 100px;"> Featured Movies:</h3>
+   <!-- <h3 style="margin-left: 100px;"> Featured Movies:</h3> -->
+   <h2 style="margin-left: 10px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; margin-left: 100px;  "> &nbsp;Featured Movies:</h2>
+<br>
                     <div class="movie-carousel" style="margin-left: 1000px;" id="movie-carousel">
                         <!-- Movie cards will be dynamically inserted here -->
                     </div>

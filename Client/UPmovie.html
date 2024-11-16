@@ -1,4 +1,3 @@
-<!-- this is temorary, for testing only -->
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
 
@@ -11,7 +10,8 @@
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
     <link rel="stylesheet" href="/assets/css/Inter.css">
     <link rel="stylesheet" href="/assets/css/untitled.css">
-   
+     <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
+
     <link rel="stylesheet" href="/assets/styles.css">
   <script src="/assets/script.js" defer></script>
 
@@ -70,7 +70,7 @@ opacity: 0.4;
 .movie-info {
 display: none;
 position: absolute;
-bottom: 0;
+bottom: 10px;
 left: 0;
 width: 100%;
 padding: 10px;
@@ -128,13 +128,13 @@ text-shadow: 1px 1px 2px black;
 </head>
 
 <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
-  <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+  <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000; margin-left: -150px;">
            
     <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
         <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
             <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
                 <li class="nav-item"><a class="nav-link" href="UPindex.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
-                <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
+                <li class="nav-item"><a class="nav-link active" href="UPmovies.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
                 <li class="nav-item"><a class="nav-link" href="upForums.html"><strong style="color: rgb(0, 0, 0);">Forums</strong></a></li>
                 <li class="nav-item"><a class="nav-link" href="upchat.html"><strong style="color: rgb(0, 0, 0);">Chat</strong></a></li>
                 <!-- <li class="nav-item"><a class="nav-link active" href="userProfile.html"><strong style="color: rgb(0, 0, 0);">profile</strong></a></li> -->
@@ -150,7 +150,6 @@ text-shadow: 1px 1px 2px black;
                     </div>
                   </li>                          
                   <li class="nav-item d-flex align-items-center">
-                    <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
                     <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
                       <i class="fas fa-search"></i>
                     </button>
@@ -218,7 +217,7 @@ text-shadow: 1px 1px 2px black;
                   <svg class="open" viewBox="0 0 24 24">
                     <path fill="currentColor" d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
                   </svg>
-                  <svg class="close" viewBox="0 0 24 24">
+                  <svg class="close" viewBox="0 0 24 24" style=" color: #fff;">
                     <path fill="currentColor" d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/>
                   </svg>
                 </button>

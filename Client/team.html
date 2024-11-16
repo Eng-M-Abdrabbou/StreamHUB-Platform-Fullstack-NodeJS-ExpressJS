@@ -10,6 +10,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
+        .fjalla-one-regular {
+            font-family: 'Fjalla One', sans-serif;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #000;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #fff;
+        }
+
+
         body {
             background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%);
             color: #f0f0f0;
@@ -17,7 +36,7 @@
 
         .testimonial-container {
             padding: 6rem 0;
-            background: rgba(255, 255, 255, 0.02);
+            background: rgba(0, 0, 0, 0.02);
             border-radius: 15px;
             position: relative;
             overflow: hidden;
@@ -30,16 +49,16 @@
             left: 0;
             right: 0;
             height: 1px;
-            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            background: linear-gradient(90deg, transparent, #3763f4, transparent);
         }
 
         .testimonial-title {
-            color: #00d4ff;
+            color: #ffffff;
             font-size: 3rem;
             margin-bottom: 2rem;
             text-align: center;
             font-weight: 700;
-            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         .team-member {
@@ -50,7 +69,7 @@
             transition: all 0.4s ease;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .team-member::before {
@@ -60,7 +79,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(45deg, transparent, rgba(0, 212, 255, 0.1), transparent);
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transform: translateX(-100%);
             transition: transform 0.6s ease;
         }
@@ -68,7 +87,7 @@
         .team-member:hover {
             transform: translateY(-10px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-            border-color: #00d4ff;
+            border-color: #ffffff;
         }
 
         .team-member:hover::before {
@@ -80,7 +99,7 @@
             height: 120px;
             margin: 0 auto 1.5rem;
             position: relative;
-            background: linear-gradient(45deg, #00d4ff, #00ffea);
+            background: linear-gradient(45deg, #ffffff, #5b5b5b);
             border-radius: 50%;
             padding: 3px;
         }
@@ -96,7 +115,7 @@
         }
 
         .team-member h5 {
-            color: #00d4ff;
+            color: #ffffff;
             font-size: 1.5rem;
             margin: 1rem 0;
             font-weight: 600;
@@ -116,18 +135,18 @@
         }
 
         .team-member .social-links a {
-            color: #00d4ff;
+            color: #ffffff;
             font-size: 1.2rem;
             transition: all 0.3s ease;
         }
 
         .team-member .social-links a:hover {
-            color: #00ffea;
+            color: #3763f4;
             transform: scale(1.2);
         }
 
         .role-badge {
-            background: linear-gradient(45deg, #00d4ff, #00ffea);
+            background: linear-gradient(45deg, #ffffff, #5b5b5b);
             color: #000;
             padding: 0.5rem 1rem;
             border-radius: 20px;
@@ -146,12 +165,12 @@
         }
 
         .skill-tag {
-            background: rgba(0, 212, 255, 0.1);
-            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
             padding: 0.3rem 0.8rem;
             border-radius: 15px;
             font-size: 0.8rem;
-            color: #00d4ff;
+            color: #ffffff;
         }
 
         @keyframes float {
@@ -163,46 +182,34 @@
         .floating {
             animation: float 3s ease-in-out infinite;
         }
+
+
     </style>
 </head>
 <body>
     <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
         <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
             <div class="container" style="color: rgb(0, 0, 0);">
-                <a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);">
-                    <span>&nbsp; StreamHub</span>
-                </a>
-                <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
-                    <span class="visually-hidden">Toggle navigation</span>
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+                <a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a>
+                <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navcol-1" style="color: rgb(0, 0, 0);">
                     <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
-                        <li class="nav-item"><a class="nav-link" href="index.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                        <li class="nav-item"><a class="nav-link " href="index.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
                         <li class="nav-item"><a class="nav-link " href="products.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
                         <li class="nav-item"><a class="nav-link active" href="team.html"><strong style="color: rgb(0, 0, 0);">Team</strong></a></li>
-                        <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
+                        <li class="nav-item"><a class="nav-link " href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
                         <li class="nav-item"><a class="nav-link" href="contacts.html"><strong style="color: rgb(0, 0, 0);">Contacts</strong></a></li>
-                        <li class="nav-item"><a class="nav-link" href="login.html"><strong style="color: rgb(0, 0, 0);">Log in</strong></a></li>
-                        <li class="nav-item"><a class="nav-link " href="signup.html"><strong style="color: rgb(0, 0, 0);">Sign up</strong></a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: rgb(0, 0, 0);">
-                                <strong>Dropdown link</strong>
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Action</a>
-                                <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Another action</a>
-                                <a class="dropdown-item" href="#" style="background-color: white; color: black;" onmouseover="this.style.backgroundColor='black'; this.style.color='white';" onmouseout="this.style.backgroundColor='white'; this.style.color='black';">Something else here</a>
-                            </div>
-                        </li>
-                        <li class="nav-item d-flex align-items-center">
-                            <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
-                            <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </li>
                     </ul>
-                    <a class="btn btn-dark shadow mx-auto d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">Sign up</a>
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <a class="btn btn-dark shadow d-inline-block" role="button" href="login.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5;">Login</a>
+                        <a class="btn btn-dark shadow d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5;">Sign up</a>
+                    </div>
+                    <li class="nav-item d-flex align-items-center">
+                        &nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </li>
                 </div>
             </div>
         </nav>
@@ -222,7 +229,7 @@
                     <div class="team-member floating">
                         <div class="avatar">
                             <div class="avatar-inner">
-                                <i class="fas fa-user-astronaut fa-3x" style="color: #00d4ff;"></i>
+                                <i class="fas fa-user-astronaut fa-3x" style="color: #ffffff;"></i>
                             </div>
                         </div>
                         <span class="role-badge">Lead Engineer</span>
@@ -245,7 +252,7 @@
                     <div class="team-member floating" style="animation-delay: 0.2s;">
                         <div class="avatar">
                             <div class="avatar-inner">
-                                <i class="fas fa-code fa-3x" style="color: #00d4ff;"></i>
+                                <i class="fas fa-code fa-3x" style="color: #ffffff;"></i>
                             </div>
                         </div>
                         <span class="role-badge">Backend Specialist</span>
@@ -268,7 +275,7 @@
                     <div class="team-member floating" style="animation-delay: 0.4s;">
                         <div class="avatar">
                             <div class="avatar-inner">
-                                <i class="fas fa-mobile-alt fa-3x" style="color: #00d4ff;"></i>
+                                <i class="fas fa-mobile-alt fa-3x" style="color: #ffffff;"></i>
                             </div>
                         </div>
                         <span class="role-badge">Mobile Expert</span>
@@ -291,7 +298,7 @@
                     <div class="team-member floating" style="animation-delay: 0.6s;">
                         <div class="avatar">
                             <div class="avatar-inner">
-                                <i class="fas fa-paint-brush fa-3x" style="color: #00d4ff;"></i>
+                                <i class="fas fa-paint-brush fa-3x" style="color: #ffffff;"></i>
                             </div>
                         </div>
                         <span class="role-badge">UI/UX Lead</span>

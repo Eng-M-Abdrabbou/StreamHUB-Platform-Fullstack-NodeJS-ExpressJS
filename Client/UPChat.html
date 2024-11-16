@@ -7,6 +7,8 @@
     <title>Chat - StreamHub</title>
     <meta name="description" content="Experience seamless streaming with Stream Hub. Our platform integrates advanced social media features and an AI-driven recommendation system to personalize your entertainment. Discover, connect, and enjoy—all in one place.">
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 
     <!-- <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css"> -->
@@ -197,12 +199,12 @@
 </head>
 
    <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
-    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000; margin-left: -150px;">
            
         <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
             <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
                 <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
-                    <li class="nav-item"><a class="nav-link active" href="UPindex.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                    <li class="nav-item"><a class="nav-link " href="UPindex.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
                     <li class="nav-item"><a class="nav-link" href="upForums.html"><strong style="color: rgb(0, 0, 0);">Forums</strong></a></li>
                     <li class="nav-item"><a class="nav-link active" href="upchat.html"><strong style="color: rgb(0, 0, 0);">Chat</strong></a></li>
@@ -219,7 +221,6 @@
                         </div>
                       </li>                          
                       <li class="nav-item d-flex align-items-center">
-                        <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" style="width: 150px; height: 30px;">
                         <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;">
                           <i class="fas fa-search"></i>
                         </button>
@@ -228,7 +229,8 @@
             </div>
         </div>
     </nav>
-
+    
+    <div class="bg2 grayscale-bg"></div>
    
     <div class="container mt-4" style="color: rgb(0, 0, 0); height: 1000px; overflow-y: hidden;">
         <style>
@@ -250,7 +252,7 @@ row {
 }
 
         </style>
-         <div class="bg2 grayscale-bg"></div>
+    
       <div class="row">
           <div class="col-md-4">
               <div class="card">
@@ -271,7 +273,7 @@ row {
                       <div class="card-body" style="background-color: rgb(0, 0, 0); width: 100%; margin:auto">
                           <div id="messageContainer" style="height: 70vh; overflow-y: auto;"></div>
                           <div class="input-group mt-3">
-                              <input type="text" id="messageInput" class="form-control" placeholder="Type your message...">
+                            <input type="text" id="messageInput" class="form-control" placeholder="Type your message...">
                               <button id="sendMessage" class="btn btn-dark">Send</button>
                           </div>
                       </div>
