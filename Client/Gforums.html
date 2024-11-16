@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forum App</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .forum, .comment { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+
+.forum-cards-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  grid-gap: 20px; /* gap between boxes */
+  align-items: flex-start;
+  width: 100%;
+  margin-left: auto; /* center horizontally */
+  margin-right: auto; /* center horizontally */
+}
+.forum {
+  margin: 2rem 0 2rem 0rem; /* add 1rem left margin */
+  width: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+#collapse-create-forum .form-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#collapse-create-forum .form-group label {
+  margin-right: px;
+}
+
+#collapse-create-forum .form-group input, #collapse-create-forum .form-group textarea {
+  flex: 1;
+}
+
+body {
+  background-color: #000; /* black background */
+  margin-left: 80px; /* add margin to the left */
+  margin-right: 80px; /* add margin to the right */
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.5); /* 50% transparent white background */
+  padding: 30px;
+  margin: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#create-forum-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+#create-forum-header span:first-child {
+  justify-self: start;
+}
+
+#create-forum-header span:last-child {
+  justify-self: end;
+}
+
+.video-background { position: absolute; top: 0; left: 0; height: 100%; width: 100%; z-index: -1; overflow: hidden; } 
+.video-background video { min-height: 100%; min-width: 100%; } /* Ensure your page content is not obscured by the video */
+ body { position: relative; z-index: 1; }
+
+ /* Add this CSS to your existing stylesheet */
+.card {
+  background: rgba(255, 255, 255, 0.5); /* 50% transparent white background */
+  color: #000; /* Ensure the text is readable */
+  border: none; /* Optional: Remove border if you want a cleaner look */
+  padding: 20px; /* Adjust padding as needed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a slight shadow for depth */
+}
+
+.card-body {
+  background: transparent /* 50% transparent white background for the card body */
+}
+
+.card-header {
+  background: rgba(255, 255, 255, 0.5); /* 50% transparent white background for the card header */
+  color: #000; /* Ensure the text is readable */
+}
+
+.fullscreen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullscreen-overlay img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+       
+    </style>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+   
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+
+ <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+ <link rel="stylesheet" href="https://cdn.reflowhq.com/v2/toolkit.min.css">
+ <link rel="stylesheet" href="assets/css/Inter.css">
+ <link rel="stylesheet" href="assets/css/untitled.css">
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <link rel="stylesheet" href="assets/css/custom.css">
+
+ <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Algerian&display=swap">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+ 
+  </head>
+  <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
+    <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
+        <div class="container" style="color: rgb(0, 0, 0);">
+            <a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navcol-1" style="color: rgb(0, 0, 0);">
+                <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
+                    <li class="nav-item"><a class="nav-link active" href="index.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                    <li class="nav-item"><a class="nav-link " href="products.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="team.html"><strong style="color: rgb(0, 0, 0);">Team</strong></a></li>
+                    <li class="nav-item"><a class="nav-link " href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong style="color: rgb(0, 0, 0);">Contacts</strong></a></li>
+                </ul>
+                <div class="d-flex align-items-center" style="gap: 10px;">
+                    <a class="btn btn-dark shadow d-inline-block" role="button" href="login.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5;">Login</a>
+                    <a class="btn btn-dark shadow d-inline-block" role="button" href="signup.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5;">Sign up</a>
+                </div>
+                <li class="nav-item d-flex align-items-center">
+                    &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-dark shadow mx-auto d-inline-block" type="submit" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5; height: auto; width: auto;" onclick="window.location.href='search.html'">
+                        <i class="fas fa-search"></i>
+                      </button>
+                </li>
+            </div>
+        </div>
+    </nav>
+  
+    <div class="video-background"> <video autoplay muted loop playsinline> 
+        <source src="assets/vids/vid.mp4" type="video/mp4"> </video> </div>
+</div>
+
+   <div class="card" style="background-color: transparent;">
+    <div class="card-header" id="create-forum-header">
+        <button class="btn btn-primary btn-sm" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum">
+            <i class="fas fa-chevron-down"></i> Create Forum
+        </button>
+        <span style="float: right; font-size: 12px; color: #ffffff !important;">Logged in as: ${userfname} ${userlname}</span>
+    </div>
+    <div id="collapse-create-forum" class="collapse" style="background-color: transparent">
+        <div class="card-body" style="background-color: transparent">
+            <div class="card-title" style="color: #ffffff; margin-bottom: 20px;">
+                <h2 style="text-align: left; margin-left: -20px;">Please Sign in to post forums</h2>
+            </div>
+            <form id="createForumForm">
+                
+                </div>
+                
+                </div>
+                <div class="form-group row">
+                    
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+
+
+ 
+   </div>
+     </div>
+  
+
+    <div id="forums"></div>
+
+    <div>
+<div>
+    
+
+    <script>
+       const apiUrl = 'http://localhost:8000';
+        
+       
+       //getting user id from session
+       async function initUserId() {
+  try {
+    userId = await getUserIdFromSession();
+ 
+    console.log('User ID retrived from session with data is :', userId );
+  } catch (error) {
+    console.error('Error setting user ID:', error);
+  }
+}
+
+initUserId(); 
+
+//getting user first name from session
+async function initUserfnameId() {
+  try {
+    userfname = await getUserFnameFromSession();
+
+    console.log('User name retrived from session with data is :', userfname );
+
+    await initUserlnameId();
+
+    const createForumHeaderElement = document.getElementById('create-forum-header');
+    createForumHeaderElement.innerHTML = `
+   <button class="btn btn-xs btn-primary" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum" style="max-width: 150px;">
+     <i class="fas fa-chevron-down"></i> Create forum
+   </button>
+   <div style="float: right; font-size: 20px; color: white; font-family: 'Berlin Sans FB Demi', sans-serif; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #333; width: fit-content; margin-left: auto;">
+     Welcome: Guest
+   </div>
+    `;
+
+    // Update navbar link text
+    const navbarLink = document.getElementById('navbarDropdownMenuLink');
+    navbarLink.innerHTML = `
+      <i class="fas fa-user" style="margin-right: 5px;"></i> ${userfname} ${userlname}
+    `;
+  } catch (error) {
+    console.error('Error setting user ID:', error);
+  }
+}
+
+initUserfnameId();
+
+//getting user last name from session
+async function initUserlnameId() {
+  try {
+    userlname= await getUserLnameFromSession();
+ 
+    console.log('User last name retrived from session with data is :', userlname );
+  } catch (error) {
+    console.error('Error setting user ID:', error);
+  }
+}
+
+initUserlnameId();
+       
+       
+//fucntion to retrive id 
+        function getUserIdFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.id) {
+                    console.log("User ID found:", userData.id );
+                    resolve(userData.id);
+                } else {
+                    console.error('User ID not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
+}
+//first name from session
+function getUserFnameFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.fName) {
+                    console.log("User  first name found:",  userData.fName);
+                    resolve(userData.fName)
+                } else {
+                    console.error('User first name not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
+}
+// last name from session 
+function getUserLnameFromSession() {
+    return new Promise((resolve, reject) => {
+        fetch('/profile', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.success) {
+                const userData = data.data;
+                console.log("User data received:", userData);
+                if (userData && userData.fName) {
+                    console.log("User last name found:",  userData.lName);
+                    resolve(userData.lName)
+                } else {
+                    console.error('User last name not found in response');
+                    resolve(null);
+                }
+            } else {
+                console.error('Error:', data.message);
+                resolve(null);
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching user profile:', error);
+            reject(error);
+        });
+    });
+}
+
+async function getUserName(userid) {
+  try {
+    const response = await fetch(`/api/users/${userid}`);
+    const userData = await response.json();
+    return `${userData.fname} ${userData.lname}`;
+    console.log("User data received from database is:", userData.fName ,userData.lName);
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+
+        document.getElementById('createForumForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const title = document.getElementById('forumTitle').value;
+            const content = document.getElementById('forumContent').value;
+            fetch(`${apiUrl}/forums`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'user-id': userId
+                },
+                body: JSON.stringify({ title, content })
+            })
+            .then( response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
+            loadForums(); 
+        });
+
+        async function loadForums() {
+  fetch(`${apiUrl}/forums`)
+  .then(async response => {
+    const forums = await response.json();
+    const forumsDiv = document.getElementById('forums');
+    forumsDiv.innerHTML = ''; // Clear the previous forums
+
+
+ 
+    const forumCardsContainer = document.createElement('div');
+    forumCardsContainer.className = 'forum-cards-container';
+  
+
+    forums.forEach(async forum => {
+      //getting names from DB
+      const userName = await getUserName(forum.user_id);
+      console.log(' all the User names retrived from databse :', userName);
+
+
+  const forumElement = document.createElement('div');
+  forumElement.className = 'forum';
+  forumElement.innerHTML = `
+ <div class="card"  style="background-color:beige" data-forum-id="${forum.id}">
+ 
+ <div class="card-header" style="color: black; font-family: 'Algerian', sans-serif;">
+     The forum is made by : <span style="font-size: 18px;">${userName}</span>
+ </div>
+  </div>
+  <div class="card-body"style="color: white;" >
+ <h5 class="card-title" style="font-family: 'Algerian', sans-serif; font-size: 24px;">${forum.title}</h5>
+    <p class="card-text" >${forum.content}.</p>
+   
+
+    
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapse-${forum.id}" aria-expanded="false" aria-controls="collapse-${forum.id}">
+      <i class="fas fa-comment"></i> View Comments
+    </button>
+  
+   ${forum.user_id == userId ? `<button class="btn btn-danger btn-sm" onclick="deleteForum(${forum.id}); window.location.href = window.location.href;"><i class="fas fa-trash-alt"></i> Delete forum</button>` : ''}
+    <div class="collapse" style="color: beige;" id="collapse-${forum.id}">
+      <div class="card-body "style="color: white">
+        <h5>Comments:</h5>
+        <div id="comments-${forum.id}"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal to create comment -->
+<div class="modal fade" id="createCommentModal-${forum.id}" tabindex="-1" role="dialog" aria-labelledby="createCommentModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" style="color: #000;" id="createCommentModalLabel">Add Comment</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="createCommentForm-${forum.id}">
+          <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
+          <input type="file" id="commentImage-${forum.id}" accept="image/*" style="width: 100px; height: 30px;">
+         <button type="submit" class="btn btn-primary btn-sm" onclick="this.form.submit(); window.location.href = window.location.href;">
+           <i class="fas fa-paper-plane"></i>
+         </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+  `;
+      forumCardsContainer.appendChild(forumElement);
+      forumsDiv.appendChild(forumCardsContainer);
+
+                // Fetch comments for this forum
+          fetch(`${apiUrl}/forums/${forum.id}/comments`)
+            .then(response => response.json())
+            .then(comments => {
+              const commentsDiv = document.getElementById(`comments-${forum.id}`);
+              comments.forEach(async comment => {
+                const userName = await getUserName(comment.user_id);
+                const commentElement = document.createElement('div');
+                commentElement.className = 'comment';
+          
+                const commentText = document.createElement('p');
+                commentText.textContent = ` ${userName} - ${comment.content}`;
+          
+                const commentContainer = document.createElement('div');
+                commentContainer.appendChild(commentText);
+          
+                // Check if image URL exists in the comment data
+       if (comment.image_url) {
+         const commentImage = document.createElement('img');
+         commentImage.src = comment.image_url;
+         commentImage.alt = 'Comment image';
+         commentImage.className = 'comment-image'; // Add a class to the image element
+         commentImage.addEventListener('click', () => {
+           const offcanvas = document.createElement('div');
+           offcanvas.className = 'offcanvas offcanvas-start';
+           offcanvas.style.width = '400px'; // adjust the width as needed
+           offcanvas.innerHTML = `
+             <div class="offcanvas-header">
+               <h5 class="offcanvas-title">Image Preview</h5>
+               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+             </div>
+             <div class="offcanvas-body">
+               <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
+             </div>
+           `;
+           document.body.appendChild(offcanvas);
+           const offcanvasElement = new bootstrap.Offcanvas(offcanvas);
+           offcanvasElement.show();
+         });
+         commentContainer.appendChild(commentImage);
+       
+         // Add a Bootstrap button to preview the image
+         const previewButton = document.createElement('button');
+         previewButton.className = 'btn btn-primary btn-sm';
+         previewButton.style.marginLeft = '5px'; // Add a margin to the left
+         previewButton.innerHTML = '<i class="fas fa-eye"></i> Preview';
+         previewButton.onclick = () => {
+           const offcanvas = document.createElement('div');
+           offcanvas.className = 'offcanvas offcanvas-start';
+           offcanvas.style.width = '400px'; // adjust the width as needed
+           offcanvas.innerHTML = `
+             <div class="offcanvas-header">
+               <h5 class="offcanvas-title">Image Preview</h5>
+               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+             </div>
+             <div class="offcanvas-body">
+               <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
+             </div>
+           `;
+           document.body.appendChild(offcanvas);
+           const offcanvasElement = new bootstrap.Offcanvas(offcanvas);
+           offcanvasElement.show();
+         };
+         commentContainer.appendChild(previewButton);
+       }
+       
+       // Add CSS styles to make the comment image small and square
+       const commentImageStyles = `
+         .comment-image {
+           width: 50px;
+           height: 50px;
+           object-fit: cover;
+           border-radius: 5px;
+         }
+       `;
+       
+       // Create a style element and add the CSS styles to it
+       const style = document.createElement('style');
+       style.innerHTML = commentImageStyles;
+       document.head.appendChild(style);
+       
+       if (comment.user_id == userId) {
+         const deleteButton = document.createElement('button');
+         deleteButton.className = 'btn btn-danger btn-sm';
+         deleteButton.style.marginLeft = '5px'; // Add a margin to the left
+         deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+         deleteButton.onclick = () => deleteComment(comment.id);
+         commentContainer.appendChild(deleteButton);
+         deleteButton.onclick = () => {
+           deleteComment(comment.id);
+           window.location.href = window.location.href + '?' + new Date().getTime();
+         };
+       }
+
+                commentElement.appendChild(commentContainer);
+                commentsDiv.appendChild(commentElement);
+              });
+            })
+            .catch(error => console.error('Error fetching comments:', error));
+
+          const createCommentForm = document.getElementById(`createCommentForm-${forum.id}`);
+          createCommentForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const commentContent = document.getElementById(`commentContent-${forum.id}`).value;
+            createComment(commentContent, forum.id);
+          });
+        });
+      })
+      .catch(error => console.error('Error fetching forums:', error));
+    }
+
+        
+
+
+function createComment(content, forumId) {
+  const commentContent = document.getElementById(`commentContent-${forumId}`).value; // Get the comment content from the input field
+
+  const formData = new FormData();
+  const imageFile = document.getElementById(`commentImage-${forumId}`).files[0];
+  if (imageFile) {
+    formData.append('image', imageFile);
+  }
+  formData.append('content', commentContent); // Append the comment content to the FormData object
+
+  fetch(`${apiUrl}/forums/${forumId}/comments/image`, {
+    method: 'POST',
+    headers: {
+      'user-id': userId
+    },
+    body: formData
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert(data);
+    loadComments(forumId);
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+
+        function deleteComment(commentId) {
+            fetch(`${apiUrl}/comments/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'user-id': userId
+                }
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                loadForums();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function deleteForum(forumId) {
+  fetch(`${apiUrl}/forums/${forumId}`, {
+    method: 'DELETE',
+    headers: {
+      'user-id': userId
+    }
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert(data);
+    const forumElement = document.querySelector(`.forum[data-forum-id="${forumId}"]`);
+    if (forumElement) {
+      forumElement.remove();
+     
+    }
+    loadForums();
+  })
+  .catch(error => console.error('Error:', error));
+}
+       
+        loadForums();
+    </script>
+</body>
+</html>
+

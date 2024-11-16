@@ -1517,6 +1517,10 @@ app.get("/Tforums.html", (req, res) => {
 });
 
 
+app.get("/Gforums.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'Gforums.html'));
+});
+
 //session search 
 app.get("/Usearch.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'Usearch.html'));
