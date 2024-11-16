@@ -220,7 +220,7 @@ uploadDirs.forEach(dir => {
 
 
 
-app.post('/fetchPostCount', async (req, res) => {
+/*app.post('/fetchPostCount', async (req, res) => {
   const { userId } = req.body;
   try {
     const query = 'SELECT COUNT(user_id)  FROM `forum_posts`  WHERE user_id = ?;';
@@ -231,7 +231,20 @@ app.post('/fetchPostCount', async (req, res) => {
       res.status(500).json({ success: false, message: 'Error fetching post count', error: error.message });
   }
 })
+*/
 
+
+app.post('/fetchPostCount', async (req, res) => {
+  const { userId } = req.body;
+  try {
+    const query = 'SELECT COUNT(id)  FROM `forums`  WHERE user_id = ?;';
+    const [postCount] = await db.query(query, [userId]);
+    res.json({ success: true, data: postCount });
+  } catch (error) {
+      console.error('Error fetching post count:', error);
+      res.status(500).json({ success: false, message: 'Error fetching post count', error: error.message });
+  }
+})
 
 
 

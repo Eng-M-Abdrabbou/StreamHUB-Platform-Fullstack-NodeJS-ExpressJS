@@ -788,7 +788,8 @@ async function userAwards() {
     console.log(data);
 
     // Correctly destructure the data
-    const postCount = data.data['COUNT(user_id)'];
+    //changed this line for talals forums 
+   const postCount = data.data['COUNT(id)'];
     console.log('Post count:', postCount);
 
     // Update the HTML based on postCount
