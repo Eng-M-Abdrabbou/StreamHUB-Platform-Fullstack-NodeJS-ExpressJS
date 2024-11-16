@@ -421,7 +421,7 @@ async function getUserName(userid) {
       <i class="fas fa-comment"></i> View Comments
     </button>
   
-   ${forum.user_id == userId ? `<button class="btn btn-danger btn-sm" onclick="deleteForum(${forum.id}); window.location.href = window.location.href;"><i class="fas fa-trash-alt"></i> Delete forum</button>` : ''}
+   
     <div class="collapse" style="color: beige;" id="collapse-${forum.id}">
       <div class="card-body "style="color: white">
         <h5>Comments:</h5>
@@ -538,18 +538,7 @@ async function getUserName(userid) {
        style.innerHTML = commentImageStyles;
        document.head.appendChild(style);
        
-       if (comment.user_id == userId) {
-         const deleteButton = document.createElement('button');
-         deleteButton.className = 'btn btn-danger btn-sm';
-         deleteButton.style.marginLeft = '5px'; // Add a margin to the left
-         deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
-         deleteButton.onclick = () => deleteComment(comment.id);
-         commentContainer.appendChild(deleteButton);
-         deleteButton.onclick = () => {
-           deleteComment(comment.id);
-           window.location.href = window.location.href + '?' + new Date().getTime();
-         };
-       }
+    
 
                 commentElement.appendChild(commentContainer);
                 commentsDiv.appendChild(commentElement);
