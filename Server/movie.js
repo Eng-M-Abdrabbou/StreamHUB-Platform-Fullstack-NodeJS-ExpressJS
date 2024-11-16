@@ -1160,6 +1160,188 @@ app.get('/movie-info/:title', async (request, response) => {
   }
 });
 
+
+
+// talals forums 
+
+
+// Middleware to check if user is logged in
+function isLoggedIn(req, res, next) {
+  if (req.headers['user-id']) {
+      req.user = { id: req.headers['user-id'] };
+      next();
+  } else {
+      next();
+  }
+}
+// Create a new forum
+app.post('/forums', isLoggedIn, (req, res) => {
+  if (!req.user) return res.status(403).send('Login required');
+
+  const { title, content } = req.body;
+  const user_id = req.user.id;
+  db.query('INSERT INTO forums (title, content, user_id) VALUES (?, ?, ?)', [title, content, user_id], (err, result) => {
+      if (err) throw err;
+      res.send('Forum created');
+  });
+});
+
+
+// Get all forums
+app.get('/forums', (req, res) => {
+  db.query('SELECT * FROM forums', (err, result) => {
+      if (err) throw err;
+      res.send(result);
+  });
+});
+
+
+// Delete a forum
+app.delete('/forums/:id', isLoggedIn, (req, res) => {
+  if (!req.user) return res.status(403).send('Login required');
+
+  const forum_id = req.params.id;
+  db.query('DELETE FROM forums WHERE id = ? AND user_id = ?', [forum_id, req.user.id], (err, result) => {
+      if (err) throw err;
+      res.send('Forum deleted');
+  });
+});
+
+// Create a new comment
+app.post('/forums/:forumId/comments/image', isLoggedIn, upload.single('image'), (req, res) => {
+  if (!req.user) return res.status(403).send('Login required');
+
+  const forum_id = req.params.forumId;
+  const user_id = req.user.id;
+  const content = req.body.content; // Get the comment content from the request body
+
+  let image_url = null;
+  if (req.file) {
+    image_url = `/uploads/forum-images/${req.file.filename}`;
+  }
+
+  db.query('INSERT INTO comments (forum_id, user_id, content, image_url) VALUES (?, ?, ?, ?)', [forum_id, user_id, content, image_url], (err, result) => {
+    if (err) throw err;
+    res.send('Comment uploaded');
+  });
+});
+// Get all comments
+app.get('/forums/:id/comments', async (req, res) => {
+  try {
+    const forumId = req.params.id;
+    if (!forumId) {
+      return res.status(400).send({ error: 'Forum ID is required' });
+    }
+
+    const comments = await db.query('SELECT * FROM comments WHERE forum_id = ?', [forumId]);
+    if (comments.length === 0) {
+      return res.status(404).send({ message: 'No comments found for this forum' });
+    }
+
+    res.send(comments);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: 'Database query failed' });
+  }
+});
+
+// Delete a comment
+
+app.delete('/comments/:id', isLoggedIn, (req, res) => {
+  if (!req.user) return res.status(403).send('Login required');
+
+  const comment_id = req.params.id;
+  db.query('DELETE FROM comments WHERE id = ? AND user_id = ?', [comment_id, req.user.id], (err, result) => {
+      if (err) throw err;
+      res.send('Comment deleted');
+  });
+});
+
+
+
+//code for chatting 
+
+// Send message
+app.post('/send', (req, res) => {
+  const { from_user_id, to_user_id, message } = req.body;
+  if (!from_user_id) {
+    res.status(401).json({ success: false, error: "You must be logged in to send a message" });
+    return;
+  }
+
+  db.query("INSERT INTO messages (from_user_id, to_user_id, message) VALUES (?, ?, ?)", [from_user_id, to_user_id, message], (err, result) => {
+    if (err) {
+      res.status(500).json({ success: false, error: err.message });
+    } else {
+      res.status(200).json({ success: true });
+    }
+  });
+});
+
+// Get messages for user
+// Get messages for user
+app.get('/messages/:user_id', (req, res) => {
+  const user_id = req.params.user_id;
+  console.log(`Received request for messages for user ${user_id}`);
+  console.log('Request headers:', req.headers);
+  console.log('Request query:', req.query);
+  console.log('About to execute database query...');
+
+  const queries = [
+    db.query("SELECT * FROM messages WHERE to_user_id = ?", [user_id]),
+    db.query("SELECT * FROM messages WHERE from_user_id = ?", [user_id])
+  ];
+
+  Promise.all(queries)
+    .then(([receivedMessages, sentMessages]) => {
+      const allMessages = receivedMessages.concat(sentMessages);
+      console.log(`Fetched ${allMessages.length} messages for user ${user_id}`);
+      console.log(`Preparing response...`);
+      console.log('Response data:', allMessages);
+      res.json({ messages: allMessages });
+      console.log(`Response sent.`);
+    })
+    .catch(err => {
+      console.error(`Error fetching messages: ${err.message}`);
+      res.status(500).json({ error: err.message });
+    });
+});
+
+
+
+  app.get('/searchUser/:id', async (req, res) => {
+    const id = req.params.id;
+    console.log('Received request to search user with id:', id);
+  
+    if (!id) {
+      console.error('No ID provided');
+      return res.status(400).json({ success: false, error: 'No ID provided' });
+    }
+  
+    try {
+      const result = await db.query("SELECT * FROM user WHERE id = ?", [id]);
+      if (result.length > 0) {
+        const user = result[0];
+        return res.status(200).json({ user });
+      } else {
+        return res.status(404).json({ success: false, error: 'User not found' });
+      }
+    } catch (err) {
+      console.error('Database error:', err);
+      return res.status(500).json({ success: false, error: err.message });
+    }
+  });
+// get names for forum 
+app.get('/api/users/:userid', async (req, res) => {
+  const userId = req.params.userid;
+  const query = `SELECT fname, lname FROM user WHERE id = ?`;
+  const user = await db.query(query, [userId]);
+  console.log(user[0].fname, user[0].lname);
+  res.json({ fname: user[0].fname, lname: user[0].lname });
+});
+
+
+
 app.get("/signup.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'signup.html'));
  });
@@ -1250,6 +1432,11 @@ app.get("/learn.html", (req, res) => {
 
 app.get("/Aboutus.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'Aboutus.html'));
+});
+
+//talals forums 
+app.get("/Tforums.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'Tforums.html'));
 });
 
 app.get("*", (req, res) => {
