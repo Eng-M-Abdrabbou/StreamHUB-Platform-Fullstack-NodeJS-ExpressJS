@@ -13,7 +13,7 @@
   grid-template-columns: repeat(3, 1fr); /* 3 columns */
   grid-gap: 20px; /* gap between boxes */
   align-items: flex-start;
-  width: 100%;
+  width: 1500px;
   margin-left: auto; /* center horizontally */
   margin-right: auto; /* center horizontally */
 }
@@ -22,7 +22,11 @@
   width: 100%;
   flex-grow: 0;
   flex-shrink: 0;
-  overflow: hidden;
+  overflow: hidden; /* add this line */
+}
+
+.forum-content {
+  min-height: auto; /* set minimum height */
 }
 #collapse-create-forum .form-group {
   display: flex;
@@ -46,7 +50,7 @@ body {
 
 .card {
   background-color: rgba(255, 255, 255, 0.5); /* 50% transparent white background */
-  padding: 30px;
+  padding: 20px;
   margin: 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -106,7 +110,63 @@ body {
   max-height: 100%;
 }
 
+body {
+  background-image: url('\assets\img\backgrounds\pic (3).jpg');
+  background-size: cover; /* optional */
+  background-position: center; /* optional */
+}
+.grayscale-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    filter: grayscale(100%);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
 
+.bg1 {
+    background-image: url('/assets/img/backgrounds/pic (1).jpg');
+    z-index: -1;
+}
+
+.bg2  {
+    background-image: url('/assets/img/backgrounds/pic (2).jpg');
+    filter: blur(0px);
+    z-index: -1;
+
+}
+
+.bg3  {
+    background-image: url('/assets/img/backgrounds/pic (3).jpg');
+    background-repeat: repeat;
+    z-index: -1;
+}
+
+.bg4 {
+    background-image: url('/assets/img/backgrounds/pic (4).jpg');
+    z-index: -1;
+
+}
+
+.bg5 {
+    background-image: url('/assets/img/backgrounds/pic (5).jpg');
+    z-index: -1;
+
+}
+
+.bg6  {
+    background-image: url('/assets/img/backgrounds/pic (6).jpg');
+    z-index: -1;
+
+}
+
+.bg7  {
+    background-image: url('/assets/img/backgrounds/pic (7).jpg');
+    z-index: -1;
+    height: 120%;
+
+}
        
     </style>
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -161,13 +221,11 @@ body {
       </div>
   </nav>
   
-    <div class="video-background"> <video autoplay muted loop playsinline> 
-        <source src="assets/vids/vid.mp4" type="video/mp4"> </video> </div>
-</div>
 
+  <div class="bg2 grayscale-bg"></div>
    <div class="card" style="background-color: transparent;">
     <div class="card-header" id="create-forum-header">
-        <button class="btn btn-primary btn-sm" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum">
+        <button class="btn btn-light btn-sm" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum">
             <i class="fas fa-chevron-down"></i> Create Forum
         </button>
         <span style="float: right; font-size: 12px; color: #ffffff !important;">Logged in as: ${userfname} ${userlname}</span>
@@ -190,7 +248,7 @@ body {
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-10" style="margin-left: -20px; text-align: left; margin-top: 10px;">
-                     <button type="submit" class="btn btn-primary" onclick="this.form.submit(); window.location.href = window.location.href;">
+                     <button type="submit" class="btn btn-light" onclick="this.form.submit(); window.location.href = window.location.href;">
                        <i class="fas fa-paper-plane"></i> Create Forum
                      </button>
                     </div>
@@ -241,7 +299,7 @@ async function initUserfnameId() {
 
     const createForumHeaderElement = document.getElementById('create-forum-header');
     createForumHeaderElement.innerHTML = `
-   <button class="btn btn-xs btn-primary" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum" style="max-width: 150px;">
+   <button class="btn btn-xs btn-light" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum" style="max-width: 150px;">
      <i class="fas fa-chevron-down"></i> Create forum
    </button>
    <div style="float: right; font-size: 20px; color: white; font-family: 'Berlin Sans FB Demi', sans-serif; padding: 5px; border: 1px solid #ccc; border-radius: 5px; background-color: #333; width: fit-content; margin-left: auto;">
@@ -419,29 +477,33 @@ async function getUserName(userid) {
   const forumElement = document.createElement('div');
   forumElement.className = 'forum';
   forumElement.innerHTML = `
- <div class="card"  style="background-color:beige" data-forum-id="${forum.id}">
- 
- <div class="card-header" style="color: black; font-family: 'Algerian', sans-serif;">
-     The forum is made by : <span style="font-size: 18px;">${userName}</span>
- </div>
+  <div class="forum-content"
+<div class="card" style="background-color: transparent; ">
+  <div class="card-header" style="color: white; font-family: 'Algerian', sans-serif;">
+    <h5 class="card-title" style="font-family: sans-serif; font-size: 35px; text-align: center;">${forum.title}</h5>
   </div>
-  <div class="card-body"style="color: white;" >
- <h5 class="card-title" style="font-family: 'Algerian', sans-serif; font-size: 24px;">${forum.title}</h5>
-    <p class="card-text" >${forum.content}.</p>
-   
-
-    
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="collapse" data-target="#collapse-${forum.id}" aria-expanded="false" aria-controls="collapse-${forum.id}">
-      <i class="fas fa-comment"></i> View Comments
-    </button>
-    <button class="btn btn-primary btn-sm" type="button" data-toggle="modal" data-target="#createCommentModal-${forum.id}">
-      Add Comment
-    </button>
-   ${forum.user_id == userId ? `<button class="btn btn-danger btn-sm" onclick="deleteForum(${forum.id}); window.location.href = window.location.href;"><i class="fas fa-trash-alt"></i> Delete forum</button>` : ''}
+  <div class="card-body" style="color: white; font-size: 20px;">
+    <p class="card-text">${forum.content}.</p>
     <div class="collapse" style="color: beige;" id="collapse-${forum.id}">
-      <div class="card-body "style="color: white">
+      <div class="card-body" style="color: white">
         <h5>Comments:</h5>
         <div id="comments-${forum.id}"></div>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer" style="background-color: transparent; border-top: 1px solid #ccc;">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <div class="d-flex">
+          <button type="button" class="btn btn-light btn-sm mr-2" data-toggle="collapse" data-target="#collapse-${forum.id}" aria-expanded="false" aria-controls="collapse-${forum.id}">
+            <i class="fas fa-comment"></i> View Comments
+          </button>
+          <button class="btn btn-light btn-sm mr-2" type="button" data-toggle="modal" data-target="#createCommentModal-${forum.id}">
+            Add Comment
+          </button>
+          ${forum.user_id == userId ? `<button class="btn btn-danger btn-sm mr-2" onclick="deleteForum(${forum.id}); window.location.href = window.location.href;"><i class="fas fa-trash-alt"></i> Delete</button>` : ''}
+        </div>
+        <div class="mt-2" style="font-size: 12px;">Made by : ${userName}</div>
       </div>
     </div>
   </div>
@@ -461,7 +523,7 @@ async function getUserName(userid) {
         <form id="createCommentForm-${forum.id}">
           <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
           <input type="file" id="commentImage-${forum.id}" accept="image/*" style="width: 100px; height: 30px;">
-         <button type="submit" class="btn btn-primary btn-sm" onclick="this.form.submit(); window.location.href = window.location.href;">
+         <button type="submit" class="btn btn-light btn-sm" onclick="this.form.submit(); window.location.href = window.location.href;">
            <i class="fas fa-paper-plane"></i>
          </button>
         </form>
@@ -469,6 +531,8 @@ async function getUserName(userid) {
     </div>
   </div>
 </div>
+</div>
+
   `;
       forumCardsContainer.appendChild(forumElement);
       forumsDiv.appendChild(forumCardsContainer);
@@ -500,11 +564,11 @@ async function getUserName(userid) {
            offcanvas.className = 'offcanvas offcanvas-start';
            offcanvas.style.width = '400px'; // adjust the width as needed
            offcanvas.innerHTML = `
-             <div class="offcanvas-header">
+             <div class="offcanvas-header ">
                <h5 class="offcanvas-title">Image Preview</h5>
                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
              </div>
-             <div class="offcanvas-body">
+             <div class="offcanvas-body " style="color: transparent;>
                <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
              </div>
            `;
@@ -516,7 +580,7 @@ async function getUserName(userid) {
        
          // Add a Bootstrap button to preview the image
          const previewButton = document.createElement('button');
-         previewButton.className = 'btn btn-primary btn-sm';
+         previewButton.className = 'btn btn-light btn-sm';
          previewButton.style.marginLeft = '5px'; // Add a margin to the left
          previewButton.innerHTML = '<i class="fas fa-eye"></i> Preview';
          previewButton.onclick = () => {
@@ -524,14 +588,15 @@ async function getUserName(userid) {
            offcanvas.className = 'offcanvas offcanvas-start';
            offcanvas.style.width = '400px'; // adjust the width as needed
            offcanvas.innerHTML = `
-             <div class="offcanvas-header">
-               <h5 class="offcanvas-title">Image Preview</h5>
-               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-             </div>
-             <div class="offcanvas-body">
-               <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
-             </div>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Image Preview</h5>
+    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
+  </div>
            `;
+           offcanvas.style.background = 'black';
            document.body.appendChild(offcanvas);
            const offcanvasElement = new bootstrap.Offcanvas(offcanvas);
            offcanvasElement.show();
