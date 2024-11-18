@@ -26,7 +26,8 @@
 }
 
 .forum-content {
-  min-height: auto; /* set minimum height */
+  max-height: 450px; /* set a maximum height for the content */
+  overflow-y: auto; /* add a scrollbar when content exceeds height */
 }
 #collapse-create-forum .form-group {
   display: flex;
@@ -195,8 +196,8 @@ body {
       <div class="container" style="color: rgb(0, 0, 0);"> <!-- <img src="assets/img/OIG1.z3cSSGdSR0gJJ.jpeg" height="83" width="83"> --><a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a><button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>                    
           <div class="collapse navbar-collapse" id="navcol-1"style="color: rgb(0, 0, 0);">
               <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
-                  <li class="nav-item"><a class="nav-link active" href="UPindex.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
-                  <li class="nav-item"><a class="nav-link" href="UPmovies.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
+                  <li class="nav-item"><a class="nav-link" href="UPindex.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
+                  <li class="nav-item"><a class="nav-link active" href="UPmovies.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
                   <li class="nav-item"><a class="nav-link" href="Tforums.html"><strong style="color: rgb(0, 0, 0);">Forums</strong></a></li>
                   <li class="nav-item"><a class="nav-link" href="upchat.html"><strong style="color: rgb(0, 0, 0);">Chat</strong></a></li>
                   <!-- <li class="nav-item"><a class="nav-link active" href="userProfile.html"><strong style="color: rgb(0, 0, 0);">profile</strong></a></li> -->
@@ -220,6 +221,7 @@ body {
           </div>
       </div>
   </nav>
+  
   
 
   <div class="bg2 grayscale-bg"></div>
@@ -484,6 +486,7 @@ async function getUserName(userid) {
     <p class="card-text">${forum.content}.</p>
     <div class="collapse" style="color: beige;" id="collapse-${forum.id}">
       <div class="card-body" style="color: white">
+         </div>
         <h5>Comments:</h5>
         <div id="comments-${forum.id}"></div>
       </div>
