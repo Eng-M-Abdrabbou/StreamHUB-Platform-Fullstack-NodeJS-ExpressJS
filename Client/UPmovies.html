@@ -545,6 +545,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 }
 
+document.querySelectorAll('a').forEach(link => {
+    if (['company', 'legacy', 'team'].includes(link.innerHTML.trim().toLowerCase())) {
+        link.addEventListener('click', function(event) {
+            if (!link.closest('.navbar')) { // Check if the link is not inside a navbar
+                event.preventDefault(); // Prevent default anchor behavior
+                window.location.href = 'UAboutus.html'; // Redirect to about.html
+            }
+        });
+    }
+});
+
 
 
     </script>

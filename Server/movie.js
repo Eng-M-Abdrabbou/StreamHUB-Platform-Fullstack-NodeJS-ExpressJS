@@ -1532,6 +1532,11 @@ app.get("/search.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'search.html'));
 });
 
+app.get("/Uaboutus.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'Uaboutus.html'));
+});
+
+
 
 app.get("*", (req, res) => {
   res.status(404).send("Page not found");
