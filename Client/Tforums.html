@@ -29,6 +29,22 @@
   max-height: 450px; /* set a maximum height for the content */
   overflow-y: auto; /* add a scrollbar when content exceeds height */
 }
+
+.forum-content::-webkit-scrollbar {
+    width: 10px;
+}
+
+.forum-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.forum-content::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+.forum-content::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
 #collapse-create-forum .form-group {
   display: flex;
   align-items: center;
