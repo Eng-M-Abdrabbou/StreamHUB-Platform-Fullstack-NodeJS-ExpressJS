@@ -225,7 +225,7 @@ uploadDirs.forEach(dir => {
 app.post('/fetchPostCount', async (req, res) => {
   const { userId } = req.body;
   try {
-    const query = 'SELECT COUNT(id)  FROM `forums`  WHERE user_id = ?;';
+    const query = 'SELECT COUNT(id) FROM `comments` WHERE user_id = ?;';
     const [postCount] = await db.query(query, [userId]);
     res.json({ success: true, data: postCount });
   } catch (error) {
@@ -1505,6 +1505,10 @@ app.get("/Tforums.html", (req, res) => {
 });
 
 
+app.get("/Gforums.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'Gforums.html'));
+});
+
 //session search 
 app.get("/Usearch.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'Usearch.html'));
@@ -1515,6 +1519,11 @@ app.get("/Usearch.html", (req, res) => {
 app.get("/search.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'search.html'));
 });
+
+app.get("/Uaboutus.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'Uaboutus.html'));
+});
+
 
 
 app.get("*", (req, res) => {
