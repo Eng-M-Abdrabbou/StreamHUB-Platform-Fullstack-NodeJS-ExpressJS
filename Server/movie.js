@@ -1495,6 +1495,10 @@ app.get("/learn.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'learn.html'));
 });
 
+app.get("/UPlearn.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPlearn.html'));
+});
+
 app.get("/Aboutus.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'Aboutus.html'));
 });
