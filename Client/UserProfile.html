@@ -475,47 +475,6 @@ function displayRecommendedMovies(recommendations) {
 
 
 
-
-
-  // Function to create movie cards
-//   function createMovieCard(movieInfo) {
-//     const card = document.createElement('div');
-//     card.className = 'movie-card';
-//     card.innerHTML = `
-//       <img src="${movieInfo.poster}" alt="${movieInfo.title}" style="width: 100%; height: auto;">
-//       <h5>${movieInfo.title}</h5>
-//       <p>${movieInfo.description}</p>
-//       <button onclick="watchMovie(${movieInfo.id})">Watch</button>
-//     `;
-//     return card;
-//   }
-  
-
-
-/*
-function createMovieCard(movieInfo) {
-  const card = document.createElement('div');
-  card.className = 'movie-card';
-  card.setAttribute('data-movie-id', movieInfo.id);
-  card.onclick = function() { watchMovie(movieInfo.movie_id); };
-  const pathos = movieInfo.imgpath.split('\\').join('/');
-  const duration = movieInfo.runtime < 60 ? `${movieInfo.runtime}m` : `${Math.floor(movieInfo.runtime / 60)}h ${movieInfo.runtime % 60}m`;
-
-  card.innerHTML = `
-    <img src="${pathos}" alt="${movieInfo.title}" class="movie-poster" style="width: 100%; height: auto;>
-    <div class="movie-info">
-      <h5>${movieInfo.title}</h5>
-      <p>${movieInfo.description.length > 25 ? movieInfo.description.substring(0, 100) + '...' : movieInfo.description}</p>
-      <p>${movieInfo.genre}</p>
-      <p>${duration}</p>
-    </div>
-  `;
-
-  return card;
-}
-*/
-
-
   function watchMovie(movieId) {
     window.location.href = `/movie?id=${movieId}`;
   }
@@ -701,76 +660,6 @@ userAwards();
 
 
 
-// async function userAwards(){
-// const userId = await getUserIdFromSession();
-// console.log("User ID:", userId);
-
-
-// const response = await fetch('/fetchPostCount', {
-//   method: 'POST',
-//   headers: {
-//     'Content-Type': 'application/json',
-//   },
-//   body: JSON.stringify({ userId }),
-// });
-
-
-// response.json().then(data => {
-//   console.log(data);
-//   //const postCount = data.count;
-
-//   const { data: { COUNT: postCount } } = data;
-//   console.log('Post count:', postCount);
-
-
-//   switch (postCount) {
-//     case 0:
-//         document.getElementById('userAwards').innerHTML = `
-//                 <img src="assets/img/badges/badge (2).jpg" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}
-
-//         <i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`
-//         break
-
-//     case 10:
-
-//         document.getElementById('userAwards').innerHTML = 
-//         `<img src="assets/img/badges/badge (1).png" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}
-
-//         <i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Award`
-//         break
-
-//     case 30:
-    
-//     document.getElementById('userAwards').innerHTML = 
-//     `<img src="assets/img/badges/badge (1).jpg" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}`
-
-//     `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Award`
-//         break
-
-//     case 50:
-
-//         document.getElementById('userAwards').innerHTML = 
-//         `<img src="assets/img/badges/badge (2).png" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}`
-
-//         `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`
-//         break
-
-//     default:
-//         document.getElementById('userAwards').innerHTML = 
-//         `<img src="assets/img/badges/badge (2).jpg" style="width: 25px; height: 25px; margin-right: 5px;">${postCount}`
-
-//         `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`
-//         break
-// }
-
-
-
-
-
-// });
-
-
-// }
 
 async function userAwards() {
     const userId = await getUserIdFromSession();
@@ -791,43 +680,6 @@ async function userAwards() {
     //changed this line for talals forums 
    const postCount = data.data['COUNT(id)'];
     console.log('Post count:', postCount);
-
-    // Update the HTML based on postCount
-    /*
-  //  switch (postCount) {
-        case 0:
-            document.getElementById('user-award').innerHTML =
-                `<img src="assets/img/badges/badge (2).jpg" style="width: 250px; height: 250px; margin-right: 5px;">` +
-                `<p>You have:</p>`+
-                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Interactions`;
-            break;
-        case 10:
-            document.getElementById('user-award').innerHTML =
-                `<img src="assets/img/badges/badge (1).png" style="width: 250px; height: 250px; margin-right: 5px;">` +
-                `<p>You have:</p>`+
-                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Award`;
-            break;
-        case 30:
-            document.getElementById('user-award').innerHTML =
-                `<img src="assets/img/badges/badge (1).jpg" style="width: 250px; height: 250px; margin-right: 5px;">` +
-                `<p>You have:</p>`+
-                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Award`;
-            break;
-        case 50:
-            document.getElementById('user-award').innerHTML =
-                `<img src="assets/img/badges/badge (2).png" style="width: 250px; height: 250px; margin-right: 5px;">` +
-                `<p>You have:</p>`+
-                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`;
-            break;
-        default:
-            document.getElementById('user-award').innerHTML =
-                `<img src="assets/img/badges/badge (2).jpg" style="width: 250px; height: 250px; margin-right: 5px;">` +
-                `<p>You have:</p>`+
-                `<i class="fas fa-award" style="margin-right: 5px;"></i>${postCount} Awards`;
-            break;
-    }
-*/
-
 
     let cardHTML;
 
