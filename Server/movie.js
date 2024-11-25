@@ -220,20 +220,8 @@ uploadDirs.forEach(dir => {
 
 
 
-/*app.post('/fetchPostCount', async (req, res) => {
-  const { userId } = req.body;
-  try {
-    const query = 'SELECT COUNT(user_id)  FROM `forum_posts`  WHERE user_id = ?;';
-    const [postCount] = await db.query(query, [userId]);
-    res.json({ success: true, data: postCount });
-  } catch (error) {
-      console.error('Error fetching post count:', error);
-      res.status(500).json({ success: false, message: 'Error fetching post count', error: error.message });
-  }
-})
-*/
 
-
+// for the awards system
 app.post('/fetchPostCount', async (req, res) => {
   const { userId } = req.body;
   try {
@@ -1505,6 +1493,10 @@ app.get("/UPmovie.html", (req, res) => {
 
 app.get("/learn.html", (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'Client', 'learn.html'));
+});
+
+app.get("/UPlearn.html", (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'Client', 'UPlearn.html'));
 });
 
 app.get("/Aboutus.html", (req, res) => {

@@ -206,37 +206,6 @@ video {
   aspect-ratio: 1 / 1;
 }
 
-.timeline .preview-img {
-  position: absolute;
-  height: 80px;
-  aspect-ratio: 16 / 9;
-  top: -1rem;
-  transform: translate(-50%, -100%);
-  left: calc(var(--preview-position) * 100%);
-  border-radius: .25rem;
-  border: 2px solid white;
-  display: none;
-}
-
-.thumbnail-img {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-}
-
-.video-container.scrubbing .thumbnail-img {
-  display: block;
-}
-
-.video-container.scrubbing .preview-img,
-.timeline-container:hover .preview-img {
-  display: block;
-}
 
 .video-container.scrubbing .timeline::before,
 .timeline-container:hover .timeline::before {

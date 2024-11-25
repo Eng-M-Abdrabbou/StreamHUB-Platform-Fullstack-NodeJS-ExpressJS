@@ -13,7 +13,7 @@ const connection = mysql.createPool({
     user: 'root',
     //process.env.USER,
     password: process.env.PASSWORD,
-    database: 'streamhubdb',
+    database: 'streamhubdb2',
     //process.env.DATABASE,
     port: process.env.DB_PORT
 });
