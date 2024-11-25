@@ -2,85 +2,91 @@
 <html data-bs-theme="light" lang="en">
 
 <head>
-    <!-- Head content -->
+    <!-- Head Content -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Sign up - StreamHub</title>
     <meta name="description" content="Experience seamless streaming with Stream Hub. Our platform integrates advanced social media features and an AI-driven recommendation system to personalize your entertainment. Discover, connect, and enjoy—all in one place.">
+    
+    <!-- CSS Links -->
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/Inter.css">
     <link rel="stylesheet" href="assets/css/untitled.css">
     <link href="https://fonts.googleapis.com/css2?family=Fjalla+One&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- Inline CSS -->
     <style>
+        /* Background Styles */
+        .grayscale-bg {
+            position: absolute;
+            width: 100%;
+            height: 150vh;
+            filter: grayscale(100%);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
 
-.grayscale-bg {
-    position: absolute;
-    width: 100%;
-    height: 150vh;
-    filter: grayscale(100%);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-}
+        .bg1 {
+            background-image: url('/assets/img/backgrounds/pic (1).jpg');
+            z-index: -1;
+        }
 
-.bg1 {
-    background-image: url('/assets/img/backgrounds/pic (1).jpg');
-    z-index: -1;
-}
+        .bg2 {
+            background-image: url('/assets/img/backgrounds/pic (2).jpg');
+            filter: blur(0px);
+            z-index: -1;
+        }
 
-.bg2  {
-    background-image: url('/assets/img/backgrounds/pic (2).jpg');
-    filter: blur(0px);
-    z-index: -1;
+        .bg3 {
+            background-image: url('/assets/img/backgrounds/pic (3).jpg');
+            background-repeat: repeat;
+            z-index: -1;
+        }
 
-}
+        .bg4 {
+            background-image: url('/assets/img/backgrounds/pic (4).jpg');
+            z-index: -1;
+        }
 
-.bg3  {
-    background-image: url('/assets/img/backgrounds/pic (3).jpg');
-    background-repeat: repeat;
-    z-index: -1;
-}
+        .bg5 {
+            background-image: url('/assets/img/backgrounds/pic (5).jpg');
+            z-index: -1;
+        }
 
-.bg4 {
-    background-image: url('/assets/img/backgrounds/pic (4).jpg');
-    z-index: -1;
+        .bg6 {
+            background-image: url('/assets/img/backgrounds/pic (6).jpg');
+            z-index: -1;
+        }
 
-}
+        .bg7 {
+            background-image: url('/assets/img/backgrounds/pic (7).jpg');
+            z-index: -1;
+            height: 120%;
+        }
 
-.bg5 {
-    background-image: url('/assets/img/backgrounds/pic (5).jpg');
-    z-index: -1;
-
-}
-
-.bg6  {
-    background-image: url('/assets/img/backgrounds/pic (6).jpg');
-    z-index: -1;
-
-}
-
-.bg7  {
-    background-image: url('/assets/img/backgrounds/pic (7).jpg');
-    z-index: -1;
-    height: 120%;
-
-}
-
+        /* Font Styles */
         .fjalla-one-regular {
             font-family: 'Fjalla One', sans-serif;
             font-weight: 400;
             font-style: normal;
         }
+
+        /* Scrollbar Styles */
         ::-webkit-scrollbar {
             width: 12px;
         }
+
         ::-webkit-scrollbar-track {
             background: #000;
         }
+
         ::-webkit-scrollbar-thumb {
             background: #fff;
         }
+
+        /* Panda Styles */
         .panda-container {
             position: relative;
             width: 200px;
@@ -88,6 +94,7 @@
             margin: 0 auto 20px;
             top: 50px;
         }
+
         .panda-face {
             height: 120px;
             width: 134px;
@@ -98,7 +105,9 @@
             margin: auto;
             margin-top: 10px;
         }
-        .ear-l, .ear-r {
+
+        .ear-l,
+        .ear-r {
             background-color: #000000;
             height: 40px;
             width: 45px;
@@ -107,15 +116,19 @@
             position: absolute;
             top: 28px;
         }
+
         .ear-l {
             transform: rotate(-38deg);
             left: 172px;
         }
+
         .ear-r {
             transform: rotate(38deg);
             right: 172px;
         }
-        .eye-l, .eye-r {
+
+        .eye-l,
+        .eye-r {
             background-color: #000000;
             height: 35px;
             width: 32px;
@@ -125,15 +138,19 @@
             transition: height 0.3s;
             overflow: hidden;
         }
+
         .eye-l {
             left: 22px;
             transform: rotate(-20deg);
         }
+
         .eye-r {
             right: 22px;
             transform: rotate(20deg);
         }
-        .eyeball-l, .eyeball-r {
+
+        .eyeball-l,
+        .eyeball-r {
             height: 10px;
             width: 10px;
             background-color: #ffffff;
@@ -143,6 +160,7 @@
             top: 10px;
             transition: 0.3s all;
         }
+
         .nose {
             height: 16px;
             width: 16px;
@@ -153,6 +171,7 @@
             transform: translateX(-50%) rotate(45deg);
             border-radius: 19px 0 0 4px;
         }
+
         .mouth {
             height: 12px;
             width: 15px;
@@ -163,6 +182,7 @@
             border-radius: 50%;
             box-shadow: 0 3px #000000;
         }
+
         .mouth::before {
             content: "";
             position: absolute;
@@ -173,24 +193,20 @@
             box-shadow: 0 3px #000000;
             left: 14px;
         }
-        .eyes-closed .eye-l, .eyes-closed .eye-r {
+
+        /* Eyes Closed State */
+        .eyes-closed .eye-l,
+        .eyes-closed .eye-r {
             height: 4px;
             border-radius: 0;
         }
-        .eyes-closed .eyeball-l, .eyes-closed .eyeball-r {
+
+        .eyes-closed .eyeball-l,
+        .eyes-closed .eyeball-r {
             opacity: 0;
         }
-        @keyframes blink {
-            0%, 20%, 24%, 28%, 100% {
-                height: 35px;
-            }
-            22%, 26% {
-                height: 0;
-            }
-        }
-        .blinking .eye-l, .blinking .eye-r {
-            animation: blink 3s infinite;
-        }
+
+        /* Card Styling */
         .login-card {
             background: rgb(255, 255, 255);
             border-radius: 15px;
@@ -198,23 +214,31 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
     </style>
+    
+    <!-- JavaScript Links -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body style="background-color: rgb(0, 0, 0); color: rgb(255, 255, 255);">
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-md sticky-top py-3 navbar-dark" id="mainNav" style="height: 50px; background: rgb(255, 255, 255); color: #000;">
         <div class="container" style="color: rgb(0, 0, 0);">
-            <a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);"><span>&nbsp; StreamHub</span></a>
-            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1"><span class="visually-hidden">Toggle navigation</span><span class="navbar-toggler-icon"></span></button>
+            <a class="navbar-brand d-flex align-items-center fjalla-one-regular" href="index.html" style="font-size: 30px; color: rgb(0, 0, 0);">
+                <span>&nbsp; StreamHub</span>
+            </a>
+            <button data-bs-toggle="collapse" class="navbar-toggler" data-bs-target="#navcol-1">
+                <span class="visually-hidden">Toggle navigation</span>
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navcol-1" style="color: rgb(0, 0, 0);">
                 <ul class="navbar-nav mx-auto" style="color: rgb(0, 0, 0);">
-                    <li class="nav-item"><a class="nav-link active" href="index.html"><strong style="color: rgb(0, 0, 0);">Home</strong></a></li>
-                    <li class="nav-item"><a class="nav-link " href="products.html"><strong style="color: rgb(0, 0, 0);">Movies</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="team.html"><strong style="color: rgb(0, 0, 0);">Team</strong></a></li>
-                    <li class="nav-item"><a class="nav-link " href="testimonials.html"><strong style="color: rgb(0, 0, 0);">Testimonials</strong></a></li>
-                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong style="color: rgb(0, 0, 0);">Contacts</strong></a></li>
+                    <li class="nav-item"><a class="nav-link active" href="index.html"><strong>Home</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html"><strong>Movies</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="team.html"><strong>Team</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="testimonials.html"><strong>Testimonials</strong></a></li>
+                    <li class="nav-item"><a class="nav-link" href="contacts.html"><strong>Contacts</strong></a></li>
                 </ul>
                 <div class="d-flex align-items-center" style="gap: 10px;">
                     <a class="btn btn-dark shadow d-inline-block" role="button" href="login.html" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; line-height: 1.5;">Login</a>
@@ -234,12 +258,14 @@
     <div class="bg3 grayscale-bg"></div>
     <section class="py-5">
         <div class="container py-5">
+            <!-- Header -->
             <div class="row mb-4 mb-lg-5">
                 <div class="col-md-8 col-xl-6 text-center mx-auto">
                     <p class="fw-bold text-success mb-2">Sign up</p>
                     <h2 class="fw-bold">Welcome</h2>
                 </div>
             </div>
+            <!-- Signup Card -->
             <div class="row d-flex justify-content-center">
                 <div class="col-md-6 col-xl-4">
                     <div class="card login-card" style="background-color: rgb(255, 255, 255); color: #000;">
@@ -263,30 +289,31 @@
                             <!-- Signup Form -->
                             <div class="table" style="margin: auto; width: 80%;">
                                 <div class="mb-3 text-start">
-                                    <label>First Name:</label>
-                                    <input class="form-control" type="text" id="fname-input">
+                                    <label for="fname-input">First Name:</label>
+                                    <input class="form-control" type="text" id="fname-input" placeholder="Enter your first name" required>
                                 </div>
                                 <div class="mb-3 text-start">
-                                    <label>Last Name:</label>
-                                    <input class="form-control" type="text" id="lname-input">
+                                    <label for="lname-input">Last Name:</label>
+                                    <input class="form-control" type="text" id="lname-input" placeholder="Enter your last name" required>
                                 </div>
                                 <div class="mb-3 text-start">
-                                    <label>Email:</label>
-                                    <input class="form-control" type="email" id="email-input">
+                                    <label for="email-input">Email:</label>
+                                    <input class="form-control" type="email" id="email-input" placeholder="Enter your email" required>
                                 </div>
                                 <div class="mb-3 text-start">
-                                    <label>Password:</label>
-                                    <input class="form-control" type="password" id="password-input">
+                                    <label for="password-input">Password:</label>
+                                    <input class="form-control" type="password" id="password-input" placeholder="Enter your password" required>
                                 </div>
                                 <div class="mb-3">
-                                    <button name="SignUp" id="add-name-btn" class="btn btn-dark">Sign Up</button>
+                                    <button name="SignUp" id="add-name-btn" class="btn btn-dark w-100">Sign Up</button>
                                 </div>
                             </div>
                             <p class="text-muted">Already have an account?&nbsp;<a href="/login.html" style="color: rgb(0, 0, 0);">Log in</a></p>
 
-                            <!-- JavaScript -->
+                            <!-- JavaScript for Signup Functionality and Panda Behavior -->
                             <script>
                                 document.addEventListener('DOMContentLoaded', function () {
+                                    // Signup Button Click Event
                                     const addBtn = document.querySelector('#add-name-btn');
                                     if (addBtn) {
                                         addBtn.onclick = function (e) {
@@ -311,66 +338,69 @@
                                                 method: 'POST',
                                                 body: JSON.stringify({ fName, lName, email, password })
                                             })
-                                            .then(response => {
-                                                if (!response.ok) {
-                                                    return response.json().then(data => {
+                                                .then(response => {
+                                                    if (!response.ok) {
+                                                        return response.json().then(data => {
+                                                            throw new Error(data.message || 'Unknown error occurred');
+                                                        });
+                                                    }
+                                                    return response.json();
+                                                })
+                                                .then(data => {
+                                                    if (data.success) {
+                                                        fNameInput.value = "";
+                                                        lNameInput.value = "";
+                                                        emailInput.value = "";
+                                                        passwordInput.value = "";
+                                                        alert('User added successfully!');
+                                                    } else {
                                                         throw new Error(data.message || 'Unknown error occurred');
-                                                    });
-                                                }
-                                                return response.json();
-                                            })
-                                            .then(data => {
-                                                if (data.success) {
-                                                    fNameInput.value = "";
-                                                    lNameInput.value = "";
-                                                    emailInput.value = "";
-                                                    passwordInput.value = "";
-                                                    alert('User added successfully!');
-                                                } else {
-                                                    throw new Error(data.message || 'Unknown error occurred');
-                                                }
-                                            })
-                                            .catch(error => {
-                                                if (error.message === 'Email already used') {
-                                                    alert('User not added because the email is already in use.');
-                                                } else {
-                                                    console.error('Error:', error);
-                                                    alert(`Failed to add user. Error: ${error.message}`);
-                                                }
-                                            });
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    if (error.message === 'Email already used') {
+                                                        alert('User not added because the email is already in use.');
+                                                    } else {
+                                                        console.error('Error:', error);
+                                                        alert(`Failed to add user. Error: ${error.message}`);
+                                                    }
+                                                });
                                         };
                                     }
 
+                                    // Input Fields
                                     const fnameInput = document.getElementById('fname-input');
                                     const lnameInput = document.getElementById('lname-input');
                                     const emailInput = document.getElementById('email-input');
                                     const passwordInput = document.getElementById('password-input');
 
+                                    // Panda Elements
                                     const pandaFace = document.querySelector('.panda-face');
                                     const eyeL = document.querySelector('.eye-l');
                                     const eyeR = document.querySelector('.eye-r');
                                     const eyeballL = document.querySelector('.eyeball-l');
                                     const eyeballR = document.querySelector('.eyeball-r');
 
-                                    function startBlinking() {
-                                        pandaFace.classList.add('blinking');
+                                    // Functions to Handle Eyes
+                                    function closeEyes() {
+                                        pandaFace.classList.add('eyes-closed');
+                                        eyeballL.style.top = '10px';
+                                        eyeballR.style.top = '10px';
                                     }
 
-                                    function stopBlinking() {
-                                        pandaFace.classList.remove('blinking');
-                                        eyeL.style.height = '35px';
-                                        eyeR.style.height = '35px';
+                                    function openEyes() {
+                                        pandaFace.classList.remove('eyes-closed');
+                                        eyeballL.style.top = '5px';
+                                        eyeballR.style.top = '5px';
                                     }
 
+                                
                                     [fnameInput, lnameInput, emailInput].forEach(input => {
                                         input.addEventListener('focus', () => {
-                                            pandaFace.classList.remove('eyes-closed');
-                                            eyeballL.style.top = '5px';
-                                            eyeballR.style.top = '5px';
-                                            startBlinking();
+                                            openEyes();
                                         });
                                         input.addEventListener('blur', () => {
-                                            stopBlinking();
+                                           
                                         });
                                         input.addEventListener('input', (e) => {
                                             const inputRect = e.target.getBoundingClientRect();
@@ -381,25 +411,19 @@
                                         });
                                     });
 
+                                    // Event Listeners for Password Field
                                     passwordInput.addEventListener('focus', () => {
-                                        pandaFace.classList.add('eyes-closed');
-                                        eyeballL.style.top = '10px';
-                                        eyeballR.style.top = '10px';
-                                        stopBlinking();
+                                        closeEyes();
                                     });
 
                                     passwordInput.addEventListener('blur', () => {
-                                        pandaFace.classList.remove('eyes-closed');
-                                        eyeballL.style.top = '5px';
-                                        eyeballR.style.top = '5px';
+                                        openEyes();
                                     });
 
+                                    // Event Listener for Click Outside Input Fields
                                     document.addEventListener('click', (e) => {
                                         if (![fnameInput, lnameInput, emailInput, passwordInput].includes(e.target)) {
-                                            pandaFace.classList.remove('eyes-closed');
-                                            eyeballL.style.top = '10px';
-                                            eyeballR.style.top = '10px';
-                                            stopBlinking();
+                                            openEyes();
                                         }
                                     });
                                 });
@@ -408,9 +432,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
+    <!-- Footer -->
     <footer class="background-color transparent: rgb(0, 0, 0); color: rgb(255, 255, 255);">
         <div class="container py-4 py-lg-5">
             <div class="row justify-content-center">
@@ -423,10 +447,15 @@
                     </ul>
                 </div>
                 <div class="col-lg-3 text-center text-lg-start d-flex flex-column align-items-center order-first align-items-lg-start order-lg-last">
-                    <div class="fw-bold d-flex align-items-center mb-2"><span class="bs-icon-sm bs-icon-circle bs-icon-primary d-flex justify-content-center align-items-center bs-icon me-2"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-play-btn">
+                    <div class="fw-bold d-flex align-items-center mb-2">
+                        <span class="bs-icon-sm bs-icon-circle bs-icon-primary d-flex justify-content-center align-items-center bs-icon me-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-play-btn">
                                 <path d="M6.79 5.093A.5.5 0 0 0 6 5.5v5a.5.5 0 0 0 .79.407l3.5-2.5a.5.5 0 0 0 0-.814l-3.5-2.5z"></path>
                                 <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm15 0a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"></path>
-                            </svg></span><span>StreamHub</span></div>
+                            </svg>
+                        </span>
+                        <span>StreamHub</span>
+                    </div>
                     <p class="text-muted"><strong><span style="color: rgb(255, 255, 255);">The best Streaming platform for You and your Family!</span></strong></p>
                 </div>
             </div>
@@ -434,19 +463,27 @@
             <div class="text-muted d-flex justify-content-between align-items-center pt-3">
                 <p class="mb-0">Copyright © 2024 StreamHub</p>
                 <ul class="list-inline mb-0">
-                    <li class="list-inline-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-facebook">
+                    <li class="list-inline-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-facebook">
                             <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"></path>
-                        </svg></li>
-                    <li class="list-inline-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-twitter">
+                        </svg>
+                    </li>
+                    <li class="list-inline-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-twitter">
                             <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"></path>
-                        </svg></li>
-                    <li class="list-inline-item"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-instagram">
+                        </svg>
+                    </li>
+                    <li class="list-inline-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16" class="bi bi-instagram">
                             <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"></path>
-                        </svg></li>
+                        </svg>
+                    </li>
                 </ul>
             </div>
         </div>
     </footer>
+
+    <!-- External Scripts -->
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
     <script src="assets/js/bs-init.js"></script>
     <script src="assets/js/bold-and-dark.js"></script>
