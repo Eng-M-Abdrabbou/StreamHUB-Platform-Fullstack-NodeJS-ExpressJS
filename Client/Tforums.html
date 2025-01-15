@@ -242,38 +242,52 @@ body {
 
   <div class="bg2 grayscale-bg"></div>
    <div class="card" style="background-color: transparent;">
+  
     <div class="card-header" id="create-forum-header">
-        <button class="btn btn-light btn-sm" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum">
-            <i class="fas fa-chevron-down"></i> Create Forum
-        </button>
-        <span style="float: right; font-size: 12px; color: #ffffff !important;">Logged in as: ${userfname} ${userlname}</span>
+      
+      <button class="btn btn-light btn-sm" id="create-forum-btn" type="button" data-toggle="collapse" data-target="#collapse-create-forum" aria-expanded="false" aria-controls="collapse-create-forum">
+          <i class="fas fa-chevron-down"></i> Create Forum
+      </button>
+      <span style="float: right; font-size: 12px; color: #ffffff !important;">Logged in as: ${userfname} ${userlname}</span>
+  </div>
+  <div id="collapse-create-forum" class="collapse" style="background-color: transparent">
+      <div class="card-body" style="background-color: transparent">
+          <div class="card-title" style="color: #ffffff; margin-bottom: 20px;">
+              <h2 style="text-align: left; margin-left: -20px;">Enter Forum Details</h2>
+          </div>
+          <form id="createForumForm">
+              <div class="form-group row" style="margin-bottom: 10px;">
+                  <div class="col-sm-10" style="margin-left: -20px;">
+                      <input type="text" id="forumTitle" placeholder="Title" required>
+                  </div>
+              </div>
+              <div class="form-group row" style="margin-bottom: 10px;">
+                  <div class="col-sm-10" style="margin-left: -20px;">
+                      <input type="text" id="forumContent" placeholder="Content" required>
+                  </div>
+              </div>
+              <div class="form-group row">
+                  <div class="col-sm-10" style="margin-left: -20px; text-align: left; margin-top: 10px;">
+                   <button type="submit" class="btn btn-light" onclick="this.form.submit(); window.location.href = window.location.href;">
+                     <i class="fas fa-paper-plane"></i> Create Forum
+                   </button>
+                  </div>
+              </div>
+          </form>
+      </div>
+  </div>
+    <div id="forums">
+      <input
+        type="text"
+        id="searchForums"
+        placeholder="Search forums..."
+        class="form-control form-control-sm mb-3"
+        style="width: 150px; font-size: 14px; padding: 16px; margin-left: 18px;"
+      />
+      <div class="forum-cards-container"></div>
     </div>
-    <div id="collapse-create-forum" class="collapse" style="background-color: transparent">
-        <div class="card-body" style="background-color: transparent">
-            <div class="card-title" style="color: #ffffff; margin-bottom: 20px;">
-                <h2 style="text-align: left; margin-left: -20px;">Enter Forum Details</h2>
-            </div>
-            <form id="createForumForm">
-                <div class="form-group row" style="margin-bottom: 10px;">
-                    <div class="col-sm-10" style="margin-left: -20px;">
-                        <input type="text" id="forumTitle" placeholder="Title" required>
-                    </div>
-                </div>
-                <div class="form-group row" style="margin-bottom: 10px;">
-                    <div class="col-sm-10" style="margin-left: -20px;">
-                        <input type="text" id="forumContent" placeholder="Content" required>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col-sm-10" style="margin-left: -20px; text-align: left; margin-top: 10px;">
-                     <button type="submit" class="btn btn-light" onclick="this.form.submit(); window.location.href = window.location.href;">
-                       <i class="fas fa-paper-plane"></i> Create Forum
-                     </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+    
+  
     
 
 
@@ -283,7 +297,7 @@ body {
      </div>
   
 
-    <div id="forums"></div>
+    
 
     <div>
 <div>
@@ -507,220 +521,231 @@ async function getUserName(userid) {
             loadForums(); 
         });
 
+        let allForums = []; // To store all forums fetched from the API
+
         async function loadForums() {
-  fetch(`${apiUrl}/forums`)
-  .then(async response => {
-    const forums = await response.json();
-    const forumsDiv = document.getElementById('forums');
-    forumsDiv.innerHTML = ''; // Clear the previous forums
+  const forumsDiv = document.getElementById('forums');
+  const searchInput = document.getElementById('searchForums'); // Reference the existing search bar
+  const forumCardsContainer = forumsDiv.querySelector('.forum-cards-container'); // Reference the existing container
+
+  try {
+    const response = await fetch(`${apiUrl}/forums`);
+    const allForums = await response.json(); // Fetch and store all forums
+
+    renderForums(allForums, forumCardsContainer); // Render all forums initially
+
+    // Add event listener for the search input
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      const filteredForums = allForums.filter(forum =>
+        forum.title.toLowerCase().includes(query)
+      );
+      renderForums(filteredForums, forumCardsContainer);
+    });
+  } catch (error) {
+    console.error('Error fetching forums:', error);
+  }
+}
 
 
- 
-    const forumCardsContainer = document.createElement('div');
-    forumCardsContainer.className = 'forum-cards-container';
-  
+function renderForums(forums, container) {
+  container.innerHTML = ''; // Clear previous forums
+  forums.forEach(async forum => {
+    const userName = await getUserName(forum.user_id);
 
-    forums.forEach(async forum => {
-      //getting names from DB
-      const userName = await getUserName(forum.user_id);
-      console.log(' all the User names retrived from databse :', userName);
-
-
-  const forumElement = document.createElement('div');
-  forumElement.className = 'forum';
-  forumElement.innerHTML = `
-  <div class="forum-content"
-<div class="card" style="background-color: transparent; ">
-  <div class="card-header" style="color: white; font-family: 'Algerian', sans-serif;">
-    <h5 class="card-title" style="font-family: sans-serif; font-size: 35px; text-align: center;">${forum.title}</h5>
-  </div>
-  <div class="card-body" style="color: white; font-size: 20px;">
-    <p class="card-text">${forum.content}.</p>
-    <div class="collapse" style="color: white;" id="collapse-${forum.id}">
-      <div class="card-body" style="color: white">
-         </div>
-        <h5>Comments:</h5>
-        <div id="comments-${forum.id}" ></div>
-      </div>
+    const forumElement = document.createElement('div');
+    forumElement.className = 'forum';
+    forumElement.innerHTML = `
+    <div class="forum-content">
+  <div class="card" style="background-color: transparent; width: 80%; padding: 1px;">
+    <div class="card-header" style="color: white; font-family: 'Algerian', sans-serif;">
+      <h5 class="card-title" style="font-family: sans-serif; font-size: 28px; text-align: center;">${forum.title}</h5>
     </div>
-  </div>
-  <div class="card-footer" style="background-color: transparent; border-top: 1px solid #ccc;">
-    <div class="d-flex justify-content-between align-items-center">
-      <div>
-        <div class="d-flex">
-          <button type="button" class="btn btn-light btn-sm mr-2" data-toggle="collapse" data-target="#collapse-${forum.id}" aria-expanded="false" aria-controls="collapse-${forum.id}">
-            <i class="fas fa-comment"></i> View Comments
-          </button>
-          <button class="btn btn-light btn-sm mr-2" type="button" data-toggle="modal" data-target="#createCommentModal-${forum.id}">
-            Add Comment
-          </button>
-       ${forum.user_id == userId ? `<button class="btn btn-danger btn-sm mr-2" data-toggle="modal" data-target="#deleteConfirmModal-${forum.id}"><i class="fas fa-trash-alt"></i> Delete</button>` : ''}
-<!-- Modal -->
-<div class="modal fade" id="deleteConfirmModal-${forum.id}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-  <div class="modal-dialog bg-dark text-white" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" style="color: black;" id="deleteConfirmModalLabel">Confirm Deletion of this forum</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" style="color: black;">
-        Are you sure you want to delete this forum?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-danger" onclick="deleteForum(${forum.id}); window.location.reload();">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
+    <div class="card-body" style="color: white; font-size: 16px;">
+      <p class="card-text">${forum.content}.</p>
+      <div class="collapse" style="color: white;" id="collapse-${forum.id}">
+        <div class="card-body" style="color: white">
+          <h5>Comments:</h5>
+          <div id="comments-${forum.id}"></div>
         </div>
-        <div class="mt-2" style="font-size: 12px;">Made by : ${userName}</div>
+      </div>
+    </div>
+    <div class="card-footer" style="background-color: transparent; border-top: 1px solid #ccc;">
+      <div class="d-flex justify-content-between align-items-center">
+        <div>
+          <div class="d-flex">
+            <button type="button" class="btn btn-light btn-sm mr-2" data-toggle="collapse" data-target="#collapse-${forum.id}" aria-expanded="false" aria-controls="collapse-${forum.id}">
+              <i class="fas fa-comment"></i> View Comments
+            </button>
+            <button class="btn btn-light btn-sm mr-2" type="button" data-toggle="modal" data-target="#createCommentModal-${forum.id}">
+              Add Comment
+            </button>
+            ${forum.user_id == userId ? `<button class="btn btn-danger btn-sm mr-2" data-toggle="modal" data-target="#deleteConfirmModal-${forum.id}"><i class="fas fa-trash-alt"></i> Delete</button>` : ''}
+          </div>
+          <div class="mt-2" style="font-size: 12px;">Made by : ${userName}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal to confirm deletion -->
+  <div class="modal fade" id="deleteConfirmModal-${forum.id}" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog bg-dark text-white" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="color: black;" id="deleteConfirmModalLabel">Confirm Deletion of this forum</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" style="color: black;">
+          Are you sure you want to delete this forum?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" onclick="deleteForum(${forum.id}); window.location.reload();">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal to create comment -->
+  <div class="modal fade" id="createCommentModal-${forum.id}" tabindex="-1" role="dialog" aria-labelledby="createCommentModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" style="color: #000;" id="createCommentModalLabel">Add Comment</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="createCommentForm-${forum.id}">
+            <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required style="width: 100%; padding: 5px; margin-bottom: 10px;">
+            <input type="file" id="commentImage-${forum.id}" accept="image/*" style="width: 100px; height: 30px; margin-bottom: 10px;">
+            <button type="submit" class="btn btn-light btn-sm" onclick="this.form.submit(); window.location.href = window.location.href;">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Modal to create comment -->
-<div class="modal fade" id="createCommentModal-${forum.id}" tabindex="-1" role="dialog" aria-labelledby="createCommentModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" style="color: #000;" id="createCommentModalLabel">Add Comment</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="createCommentForm-${forum.id}">
-          <input type="text" id="commentContent-${forum.id}" placeholder="Comment" required>
-          <input type="file" id="commentImage-${forum.id}" accept="image/*" style="width: 100px; height: 30px;">
-         <button type="submit" class="btn btn-light btn-sm" onclick="this.form.submit(); window.location.href = window.location.href;">
-           <i class="fas fa-paper-plane"></i>
-         </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-</div>
+    `;
 
-  `;
-      forumCardsContainer.appendChild(forumElement);
-      forumsDiv.appendChild(forumCardsContainer);
+    container.appendChild(forumElement);
 
-                // Fetch comments for this forum
-          fetch(`${apiUrl}/forums/${forum.id}/comments`)
-            .then(response => response.json())
-            .then(comments => {
-              const commentsDiv = document.getElementById(`comments-${forum.id}`);
-              comments.forEach(async comment => {
-                const userName = await getUserName(comment.user_id);
-                const commentElement = document.createElement('div');
-                commentElement.className = 'comment';
-          
-                const commentText = document.createElement('p');
-                commentText.textContent = ` ${userName} - ${comment.content}`;
-          
-                const commentContainer = document.createElement('div');
-                commentContainer.appendChild(commentText);
-          
-                // Check if image URL exists in the comment data
-       if (comment.image_url) {
-         const commentImage = document.createElement('img');
-         commentImage.src = comment.image_url;
-         commentImage.alt = 'Comment image';
-         commentImage.className = 'comment-image'; // Add a class to the image element
-         commentImage.addEventListener('click', () => {
-           const offcanvas = document.createElement('div');
-           offcanvas.className = 'offcanvas offcanvas-start';
-           offcanvas.style.width = '400px'; // adjust the width as needed
-           offcanvas.innerHTML = `
-             <div class="offcanvas-header ">
-               <h5 class="offcanvas-title">Image Preview</h5>
-               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-             </div>
-             <div class="offcanvas-body " style="color: transparent;>
-               <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
-             </div>
-           `;
-           document.body.appendChild(offcanvas);
-           const offcanvasElement = new bootstrap.Offcanvas(offcanvas);
-           offcanvasElement.show();
-         });
-         commentContainer.appendChild(commentImage);
-       
-         // Add a Bootstrap button to preview the image
-         const previewButton = document.createElement('button');
-         previewButton.className = 'btn btn-light btn-sm';
-         previewButton.style.marginLeft = '5px'; // Add a margin to the left
-         previewButton.innerHTML = '<i class="fas fa-eye"></i> Preview';
-         previewButton.onclick = () => {
-           const offcanvas = document.createElement('div');
-           offcanvas.className = 'offcanvas offcanvas-start';
-           offcanvas.style.width = '400px'; // adjust the width as needed
-           offcanvas.innerHTML = `
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Image Preview</h5>
-    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-  </div>
-  <div class="offcanvas-body">
-    <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
-  </div>
-           `;
-           offcanvas.style.background = 'black';
-           document.body.appendChild(offcanvas);
-           const offcanvasElement = new bootstrap.Offcanvas(offcanvas);
-           offcanvasElement.show();
-         };
-         commentContainer.appendChild(previewButton);
-       }
-       
-       // Add CSS styles to make the comment image small and square
-       const commentImageStyles = `
-         .comment-image {
-           width: 50px;
-           height: 50px;
-           object-fit: cover;
-           border-radius: 5px;
-         }
-       `;
-       
-       // Create a style element and add the CSS styles to it
-       const style = document.createElement('style');
-       style.innerHTML = commentImageStyles;
-       document.head.appendChild(style);
-       
-       if (comment.user_id == userId) {
-         const deleteButton = document.createElement('button');
-         deleteButton.className = 'btn btn-danger btn-sm';
-         deleteButton.style.marginLeft = '5px'; // Add a margin to the left
-         deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
-         deleteButton.onclick = () => deleteComment(comment.id);
-         commentContainer.appendChild(deleteButton);
-         deleteButton.onclick = () => {
-           deleteComment(comment.id);
-           window.location.href = window.location.href + '?' + new Date().getTime();
-         };
-       }
+    // Fetch comments for this forum
+    fetch(`${apiUrl}/forums/${forum.id}/comments`)
+      .then(response => response.json())
+      .then(comments => {
+        const commentsDiv = document.getElementById(`comments-${forum.id}`);
+        comments.forEach(async comment => {
+          const userName = await getUserName(comment.user_id);
+          const commentElement = document.createElement('div');
+          commentElement.className = 'comment';
 
-                commentElement.appendChild(commentContainer);
-                commentsDiv.appendChild(commentElement);
-              });
-            })
-            .catch(error => console.error('Error fetching comments:', error));
+          const commentText = document.createElement('p');
+          commentText.textContent = `${userName} - ${comment.content}`;
 
-          const createCommentForm = document.getElementById(`createCommentForm-${forum.id}`);
-          createCommentForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const commentContent = document.getElementById(`commentContent-${forum.id}`).value;
-            createComment(commentContent, forum.id);
-          });
+          const commentContainer = document.createElement('div');
+          commentContainer.appendChild(commentText);
+
+          if (comment.image_url) {
+            const commentImage = document.createElement('img');
+            commentImage.src = comment.image_url;
+            commentImage.alt = 'Comment image';
+            commentImage.className = 'comment-image';
+
+            const commentImageStyles = `
+  .comment-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+  }
+`;
+const styleTag = document.createElement('style');
+styleTag.innerHTML = commentImageStyles;
+document.head.appendChild(styleTag);
+
+            commentImage.addEventListener('click', () => {
+              const offcanvas = document.createElement('div');
+              offcanvas.className = 'offcanvas offcanvas-start';
+              offcanvas.style.width = '400px'; // adjust the width as needed
+              offcanvas.innerHTML = `
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title">Image Preview</h5>
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
+                </div>
+              `;
+              document.body.appendChild(offcanvas);
+              const offcanvasElement = new bootstrap.Offcanvas(offcanvas);
+              offcanvasElement.show();
+            });
+            commentContainer.appendChild(commentImage);
+
+            const previewButton = document.createElement('button');
+            previewButton.className = 'btn btn-light btn-sm';
+            previewButton.style.marginLeft = '5px';
+            previewButton.innerHTML = '<i class="fas fa-eye"></i> Preview';
+             // Add CSS styles to make the comment image small and square
+      
+            previewButton.onclick = () => {
+              const offcanvas = document.createElement('div');
+              offcanvas.className = 'offcanvas offcanvas-start';
+              offcanvas.style.width = '400px';
+              offcanvas.innerHTML = `
+                <div class="offcanvas-header">
+                  <h5 class="offcanvas-title">Image Preview</h5>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <img src="${commentImage.src}" alt="${commentImage.alt}" class="img-fluid">
+                </div>
+              `;
+              offcanvas.style.background = 'black';
+              document.body.appendChild(offcanvas);
+              const offcanvasElement = new bootstrap.Offcanvas(offcanvas);
+              offcanvasElement.show();
+            };
+            commentContainer.appendChild(previewButton);
+          }
+
+          if (comment.user_id == userId) {
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'btn btn-danger btn-sm';
+            deleteButton.style.marginLeft = '5px';
+            deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i> Delete';
+            deleteButton.onclick = () => deleteComment(comment.id);
+            commentContainer.appendChild(deleteButton);
+            deleteButton.onclick = () => {
+              deleteComment(comment.id);
+              window.location.href = window.location.href + '?' + new Date().getTime();
+            };
+          }
+
+          commentElement.appendChild(commentContainer);
+          commentsDiv.appendChild(commentElement);
         });
       })
-      .catch(error => console.error('Error fetching forums:', error));
-    }
+      .catch(error => console.error('Error fetching comments:', error));
+
+    const createCommentForm = document.getElementById(`createCommentForm-${forum.id}`);
+    createCommentForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const commentContent = document.getElementById(`commentContent-${forum.id}`).value;
+      createComment(commentContent, forum.id);
+    });
+  });
+}
+
+
 
         
 
