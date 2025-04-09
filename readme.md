@@ -43,6 +43,10 @@ Before you begin, make sure you have the following installed:
     ```bash
     npm start
     ```
+4.  **Run the Python Server:** Start the RS.py server:
+    ```bash
+    python RS.py
+    ```
 
 ### Frontend (HTML, CSS, JavaScript)
 
@@ -62,29 +66,29 @@ Before you begin, make sure you have the following installed:
 
 Here are some screenshots of StreamHUB in action:
 
-###Main page:
+Main page:
 **Main Page:**
 
-    ![StreamHUB Screenshot 1](Images/picture1.png)
-![StreamHUB Main Page](CSP2\Images\Picture1.png)
+ 
+![StreamHUB Main Page](/Images/Picture1.png)
 
-###Movies page:
+Movies page:
 **Movies Page:**
 
-    ![StreamHUB Screenshot 2](Images/picture2.jpeg)
-![StreamHUB Movies Page](CSP2\Images/picture2.jpeg)
+
+![StreamHUB Movies Page](/Images/Picture2.jpeg)
 
 ###Login page:
 **Login Page:**
 
-    ![StreamHUB Screenshot 3](Images/picture3.jpeg)
-![StreamHUB Login Page](CSP2\Images/picture3.jpeg)
+
+![StreamHUB Login Page](/Images/Picture3.jpeg)
 
 ###Chatting page:
 **Chatting Page:**
 
-    ![StreamHUB Screenshot 4](Images/picture4.jpeg)
-![StreamHUB Chatting Page](CSP2\Images/picture4.jpeg)
+
+![StreamHUB Chatting Page](/Images/Picture4.jpeg)
 
 
 
