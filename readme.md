@@ -58,44 +58,26 @@ Before you begin, make sure you have the following installed:
 
 ## Demo and Screenshots:
 
-    ### Some Screenshots:
+ ### Some Screenshots:
 
-    Here are some screenshots of StreamHUB in action:
+    **Here are some screenshots of StreamHUB in action:**
 
-    ###Main page:
+###Main page:
+
     ![StreamHUB Screenshot 1](Images/picture1.png)
 
-    ###Movies page:
-    ![StreamHUB Screenshot 2](Images/picture2.png)
+###Movies page:
 
-    ###Login page:
-    ![StreamHUB Screenshot 3](Images/picture3.png)
+    ![StreamHUB Screenshot 2](Images/picture2.jpeg)
 
-    ###Chatting page:
-    ![StreamHUB Screenshot 4](Images/picture4.png)
+###Login page:
 
+    ![StreamHUB Screenshot 3](Images/picture3.jpeg)
 
-**Method 1: Images within your repository**
+###Chatting page:
 
-1.  Create a folder in your repository (e.g., `images`).
-2.  Place your screenshot or demo images in this folder.
-3.  In your README, use the following Markdown syntax:
+    ![StreamHUB Screenshot 4](Images/picture4.jpeg)
 
-    ```markdown
-    ![Optional alt text for the image](images/screenshot1.png)
-    ```
-
-    Replace `images/screenshot1.png` with the actual path to your image file within the repository. You can add multiple image links here.
-
-**Method 2: Images hosted online**
-
-1.  Upload your images to an image hosting service (e.g., Imgur, Cloudinary).
-2.  Get the direct image URL.
-3.  In your README, use the same Markdown syntax, but with the online URL:
-
-    ```markdown
-    ![Optional alt text for the image](https://example.com/your-image.png)
-    ```
 
 ## License and Author Info:
 
