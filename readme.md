@@ -66,25 +66,25 @@ Before you begin, make sure you have the following installed:
 
 Here are some screenshots of StreamHUB in action:
 
-Main page:
+
 **Main Page:**
 
  
 ![StreamHUB Main Page](/Images/Picture1.png)
 
-Movies page:
+
 **Movies Page:**
 
 
 ![StreamHUB Movies Page](/Images/Picture2.jpeg)
 
-###Login page:
+
 **Login Page:**
 
 
 ![StreamHUB Login Page](/Images/Picture3.jpeg)
 
-###Chatting page:
+
 **Chatting Page:**
 
 
